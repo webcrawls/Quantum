@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import dev.kscott.quantum.inject.CommandModule;
+import dev.kscott.quantum.inject.LocationModule;
 import dev.kscott.quantum.inject.PluginModule;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -17,7 +18,8 @@ public final class QuantumPlugin extends JavaPlugin {
         // Plugin startup logic
         final @NonNull Injector injector = Guice.createInjector(
                 new PluginModule(this),
-                new CommandModule(this)
+                new CommandModule(this),
+                new LocationModule(this)
         );
     }
 
