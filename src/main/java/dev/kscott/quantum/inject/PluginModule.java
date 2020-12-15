@@ -4,6 +4,7 @@ import com.google.inject.AbstractModule;
 import dev.kscott.quantum.QuantumPlugin;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -36,6 +37,7 @@ public class PluginModule extends AbstractModule {
     @Override
     public void configure() {
         this.bind(Plugin.class).toInstance(this.plugin);
+        this.bind(JavaPlugin.class).toInstance(this.plugin);
         this.bind(QuantumPlugin.class).toInstance(this.plugin);
         this.bind(BukkitAudiences.class).toInstance(this.audiences);
     }
