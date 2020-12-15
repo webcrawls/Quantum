@@ -1,0 +1,5 @@
+name: Quantum
+version: @version@
+main: dev.kscott.quantum.QuantumPlugin
+api-version: 1.16
+description: A modern RTP & /wild plugin for 1.16+
