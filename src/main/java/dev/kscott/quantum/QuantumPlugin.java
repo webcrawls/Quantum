@@ -1,9 +1,9 @@
 package dev.kscott.quantum;
 
 import com.google.inject.Guice;
-import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import dev.kscott.quantum.command.QuantumCommand;
 import dev.kscott.quantum.inject.CommandModule;
 import dev.kscott.quantum.inject.LocationModule;
 import dev.kscott.quantum.inject.PluginModule;
@@ -21,6 +21,8 @@ public final class QuantumPlugin extends JavaPlugin {
                 new CommandModule(this),
                 new LocationModule(this)
         );
+
+        injector.getInstance(QuantumCommand.class);
     }
 
     @Override

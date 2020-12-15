@@ -32,6 +32,7 @@ public class QuantumCommand {
     public QuantumCommand(final @NonNull CommandManager<CommandSender> commandManager, final @NonNull LocationProvider locationProvider) {
         this.commandManager = commandManager;
         this.locationProvider = locationProvider;
+        setupCommands();
     }
 
     /**

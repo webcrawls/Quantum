@@ -6,6 +6,7 @@ import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import dev.kscott.quantum.QuantumPlugin;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -37,6 +38,7 @@ public class CommandModule extends AbstractModule {
      * Provides the PaperCommandManager, with async completions if possible.
      * @return CommandManager
      */
+    @Provides
     @Singleton
     public final CommandManager<CommandSender> provideCommandManager() {
         try {
@@ -55,7 +57,7 @@ public class CommandModule extends AbstractModule {
 
             return commandManager;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to initialize the CommandManager", e);
+            throw new RuntimeException("Failed to initialize the CommandManager");
         }
     }
 
