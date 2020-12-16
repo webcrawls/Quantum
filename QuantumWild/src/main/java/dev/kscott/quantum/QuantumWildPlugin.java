@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 @Singleton
-public final class QuantumPlugin extends JavaPlugin {
+public final class QuantumWildPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
