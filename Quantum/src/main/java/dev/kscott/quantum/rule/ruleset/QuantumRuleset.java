@@ -11,6 +11,11 @@ import java.util.UUID;
 public class QuantumRuleset {
 
     /**
+     * The id of this Ruleset
+     */
+    private final @NonNull String id;
+
+    /**
      * The UUID of the world for this ruleset
      */
     private final @NonNull UUID worldUuid;
@@ -31,6 +36,7 @@ public class QuantumRuleset {
     private final @NonNull List<QuantumRule> rules;
 
     public QuantumRuleset(
+            final @NonNull String id,
             final @NonNull UUID worldUuid,
             final @NonNull SpawnTarget spawnTarget,
             final @NonNull SearchArea searchArea,
@@ -40,21 +46,26 @@ public class QuantumRuleset {
         this.spawnTarget = spawnTarget;
         this.searchArea = searchArea;
         this.rules = rules;
+        this.id = id;
     }
 
-    public UUID getWorldUuid() {
+    public @NonNull UUID getWorldUuid() {
         return worldUuid;
     }
 
-    public SpawnTarget getSpawnTarget() {
+    public @NonNull SpawnTarget getSpawnTarget() {
         return spawnTarget;
     }
 
-    public SearchArea getSearchArea() {
+    public @NonNull SearchArea getSearchArea() {
         return searchArea;
     }
 
-    public List<QuantumRule> getRules() {
+    public @NonNull List<QuantumRule> getRules() {
         return rules;
+    }
+
+    public @NonNull String getId() {
+        return id;
     }
 }

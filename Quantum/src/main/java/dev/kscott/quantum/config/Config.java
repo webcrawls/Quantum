@@ -1,6 +1,8 @@
 package dev.kscott.quantum.config;
 
 import com.google.inject.Inject;
+import dev.kscott.quantum.QuantumPlugin;
+import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import dev.kscott.quantum.rule.ruleset.target.LowestPossibleSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
@@ -13,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.junit.Rule;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
@@ -146,8 +149,11 @@ public class Config {
 
             final @NonNull SearchArea searchArea = new SearchArea(minX, maxX, minZ, maxZ);
 
+            rulesets.add(new QuantumRuleset(id, worldUuid, spawnTarget, searchArea, new ArrayList<>()));
+        }
 
-
+        for (QuantumRuleset ruleset : rulesets) {
+            this.plugin.getLogger().info(ruleset.getId());
         }
     }
 
