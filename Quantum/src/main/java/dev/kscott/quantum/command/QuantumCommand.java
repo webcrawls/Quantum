@@ -7,7 +7,6 @@ import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
 import dev.kscott.quantum.location.LocationProvider;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;

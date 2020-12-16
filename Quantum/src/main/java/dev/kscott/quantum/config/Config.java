@@ -1,12 +1,11 @@
 package dev.kscott.quantum.config;
 
 import com.google.inject.Inject;
-import dev.kscott.quantum.rule.QuantumRule;
+import dev.kscott.quantum.rule.ruleset.search.SearchArea;
+import dev.kscott.quantum.rule.ruleset.target.LowestPossibleSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
-import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import dev.kscott.quantum.rule.ruleset.target.HighestPossibleSpawnTarget;
-import dev.kscott.quantum.rule.ruleset.target.LowestPossibleSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.target.RangeSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.target.SpawnTarget;
 import org.bukkit.World;
@@ -18,7 +17,6 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
-import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.nio.file.Paths;
 import java.util.*;

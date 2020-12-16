@@ -1,4 +1,4 @@
-package dev.kscott.quantum;
+package dev.kscott.quantumwild;
 
 import com.google.inject.Singleton;
 import org.bukkit.plugin.java.JavaPlugin;

@@ -2,10 +2,8 @@ package dev.kscott.quantum.rule;
 
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import org.bukkit.ChunkSnapshot;
-import org.bukkit.persistence.PersistentDataType;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.List;
 import java.util.Map;
 
 public abstract class QuantumRule {
