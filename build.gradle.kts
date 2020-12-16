@@ -103,6 +103,7 @@ subprojects {
             )
 
             archiveFileName.set(project.name + ".jar")
+            destinationDirectory.set(rootProject.tasks.shadowJar.get().destinationDirectory.get())
             minimize()
         }
         build {
