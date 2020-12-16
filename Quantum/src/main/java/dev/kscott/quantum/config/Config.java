@@ -24,14 +24,31 @@ import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * Stores the Quantum configuration and handles the loading and registration of rulesets
+ */
 public class Config {
 
+    /**
+     * JavaPlugin reference
+     */
     private final @NonNull JavaPlugin plugin;
 
+    /**
+     * RulesetRegistry reference
+     */
     private final @NonNull RulesetRegistry rulesetRegistry;
 
+    /**
+     * The root quantum.conf config node
+     */
     private @MonotonicNonNull CommentedConfigurationNode root;
 
+    /**
+     * Constructs the config, loads it, and loads rulesets.
+     * @param plugin JavaPlugin reference
+     * @param rulesetRegistry RulesetRegistry reference
+     */
     @Inject
     public Config(final @NonNull JavaPlugin plugin, final @NonNull RulesetRegistry rulesetRegistry) {
         this.plugin = plugin;
@@ -47,6 +64,9 @@ public class Config {
         this.loadRulesets();
     }
 
+    /**
+     * Loads the config into the {@link this.root} node
+     */
     private void loadConfig() {
         this.plugin.getLogger().info("Loading config.conf...");
         final HoconConfigurationLoader loader = HoconConfigurationLoader.builder()
@@ -60,6 +80,10 @@ public class Config {
         }
     }
 
+    /**
+     * Loads the Rulesets into the {@link RulesetRegistry}
+     */
+    // TODO create a ruleset builder
     private void loadRulesets() {
         this.plugin.getLogger().info("Loading rulesets...");
 
