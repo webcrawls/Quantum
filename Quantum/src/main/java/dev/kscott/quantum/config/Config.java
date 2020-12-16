@@ -152,6 +152,10 @@ public class Config {
             rulesets.add(new QuantumRuleset(id, worldUuid, spawnTarget, searchArea, new ArrayList<>()));
         }
 
+        for (final QuantumRuleset ruleset : rulesets) {
+            rulesetRegistry.register(ruleset);
+        }
+
         final @NonNull StringBuilder rulesetString = new StringBuilder("[");
 
         for (final QuantumRuleset ruleset : rulesets) {
