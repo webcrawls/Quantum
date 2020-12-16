@@ -7,6 +7,7 @@ import dev.kscott.quantum.command.QuantumCommand;
 import dev.kscott.quantum.inject.CommandModule;
 import dev.kscott.quantum.inject.LocationModule;
 import dev.kscott.quantum.inject.PluginModule;
+import dev.kscott.quantum.location.LocationProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -23,6 +24,8 @@ public final class QuantumPlugin extends JavaPlugin {
         );
 
         injector.getInstance(QuantumCommand.class);
+
+        final @NonNull LocationProvider locationProvider = injector.getInstance(LocationProvider.class);
     }
 
     @Override

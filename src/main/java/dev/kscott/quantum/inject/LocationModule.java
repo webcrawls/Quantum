@@ -1,6 +1,7 @@
 package dev.kscott.quantum.inject;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import dev.kscott.quantum.location.LocationProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +16,7 @@ public class LocationModule extends AbstractModule {
     }
 
     @Singleton
+    @Provides
     public @NonNull LocationProvider provideLocationProvider() {
         return new LocationProvider(this.plugin);
     }
