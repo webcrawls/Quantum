@@ -19,7 +19,7 @@ public final class QuantumPlugin extends JavaPlugin {
                 new PluginModule(this),
                 new CommandModule(this),
                 new LocationModule(this),
-                new RulesetModule(),
+                new RuleModule(),
                 new ConfigModule()
         );
 

@@ -3,6 +3,8 @@ package dev.kscott.quantum.config;
 import com.google.inject.Inject;
 import dev.kscott.quantum.QuantumPlugin;
 import dev.kscott.quantum.rule.QuantumRule;
+import dev.kscott.quantum.rule.RuleRegistry;
+import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import dev.kscott.quantum.rule.ruleset.target.LowestPossibleSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
@@ -20,6 +22,7 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
+import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.nio.file.Paths;
 import java.util.*;
@@ -40,6 +43,11 @@ public class Config {
     private final @NonNull RulesetRegistry rulesetRegistry;
 
     /**
+     * RulesetRegistry reference
+     */
+    private final @NonNull RuleRegistry ruleRegistry;
+
+    /**
      * The root quantum.conf config node
      */
     private @MonotonicNonNull CommentedConfigurationNode root;
@@ -50,9 +58,10 @@ public class Config {
      * @param rulesetRegistry RulesetRegistry reference
      */
     @Inject
-    public Config(final @NonNull JavaPlugin plugin, final @NonNull RulesetRegistry rulesetRegistry) {
+    public Config(final @NonNull JavaPlugin plugin, final @NonNull RulesetRegistry rulesetRegistry, final @NonNull RuleRegistry ruleRegistry) {
         this.plugin = plugin;
         this.rulesetRegistry = rulesetRegistry;
+        this.ruleRegistry = ruleRegistry;
 
         // Save config to file if it doesn't already exist
         plugin.saveResource("config.conf", false);
@@ -173,6 +182,52 @@ public class Config {
 
             final @NonNull SearchArea searchArea = new SearchArea(minX, maxX, minZ, maxZ);
 
+            // TODO find some better way of doing this - configurate might have some mapper function
+            for (final ConfigurationNode ruleConfig : value.node("rules").childrenList()) {
+
+                final @Nullable String ruleType = ruleConfig.node("type").getString();
+
+                if (ruleType == null) {
+                    this.plugin.getLogger().severe("Error loading a rule (type was null)");
+                    continue;
+                }
+
+                QuantumRule rule = ruleRegistry.createFreshRule(ruleType);
+
+                if (rule == null) {
+                    this.plugin.getLogger().severe("Error loading a rule (rule was null, type was probably not registered)");
+                    continue;
+                }
+
+                for (final Map.Entry<Object, ? extends ConfigurationNode> optionEntry : ruleConfig.node("options").childrenMap().entrySet()) {
+                    Object optionKey = entry.getKey();
+                    ConfigurationNode optionValue = entry.getValue();
+
+                    if (!(optionKey instanceof String)) {
+                        this.plugin.getLogger().severe("Error loading a ruleset (key was not a string): "+key.toString());
+                        continue;
+                    }
+
+                    String optionId = (String) optionKey;
+
+                    QuantumRuleOption<?> quantumRuleOption = rule.getOption(optionId);
+
+                    try {
+                        quantumRuleOption
+                                .setValue(
+                                        optionValue
+                                                .get(
+                                                        quantumRuleOption
+                                                                .getType()));
+                    } catch (SerializationException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                System.out.println(ruleType);
+            }
+
+            // add the ruleset to the list
             rulesets.add(new QuantumRuleset(id, worldUuid, spawnTarget, searchArea, new ArrayList<>()));
         }
 

@@ -4,19 +4,34 @@ import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import org.bukkit.ChunkSnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class QuantumRule {
 
-    private final @NonNull String id;
+    private final @NonNull Map<String, QuantumRuleOption<?>> optionMap;
 
-    private final @NonNull Map<String, QuantumRuleOption> options;
+    public QuantumRule(final @NonNull QuantumRuleOption<?>... options) {
 
-    public QuantumRule(
-            final @NonNull String id,
-            final @NonNull Map<String, QuantumRuleOption> options) {
-        this.id = id;
-        this.options = options;
+        optionMap = new HashMap<>();
+
+        for (QuantumRuleOption<?> option : options) {
+            optionMap.put(option.getId(), option);
+        }
+    }
+
+    public QuantumRuleOption<?> getOption(String id) {
+        return optionMap.get(id);
+    }
+
+    public <T> QuantumRuleOption<T> getOption(Class<? extends QuantumRuleOption<T>> quantumRuleOptionClass) {
+        for (QuantumRuleOption<?> option : optionMap.values()) {
+            if (option.getClass() == option.getClass()) {
+                return (QuantumRuleOption<T>) option;
+            }
+        }
+
+        return null;
     }
 
     /**
