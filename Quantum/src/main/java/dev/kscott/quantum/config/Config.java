@@ -152,9 +152,16 @@ public class Config {
             rulesets.add(new QuantumRuleset(id, worldUuid, spawnTarget, searchArea, new ArrayList<>()));
         }
 
-        for (QuantumRuleset ruleset : rulesets) {
-            this.plugin.getLogger().info(ruleset.getId());
+        final @NonNull StringBuilder rulesetString = new StringBuilder("[");
+
+        for (final QuantumRuleset ruleset : rulesets) {
+            rulesetString
+                    .append(ruleset.getId())
+                    .append(ruleset == rulesets.get(rulesets.size() - 1) ? "" : ", ");
         }
+        rulesetString.append("]");
+
+        this.plugin.getLogger().info("Loaded "+rulesets.size()+" rulesets: "+rulesetString);
     }
 
 }
