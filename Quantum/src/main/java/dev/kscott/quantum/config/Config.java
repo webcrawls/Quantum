@@ -150,7 +150,7 @@ public class Config {
 
                 try {
                     min = Integer.parseInt(minString);
-                    max = Integer.parseInt(minString);
+                    max = Integer.parseInt(maxString);
                 } catch (NumberFormatException e) {
                     this.plugin.getLogger().severe("Error loading ruleset "+id+" (spawn-target range was invalid - expected something like '30-70', got "+spawnTargetString+")");
                     continue;
