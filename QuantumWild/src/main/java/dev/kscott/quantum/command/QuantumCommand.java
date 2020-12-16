@@ -87,22 +87,22 @@ public class QuantumCommand {
      * @param context CommandContext
      */
     private void handleTest(final @NonNull CommandContext<CommandSender> context) {
-//        final @NonNull CommandSender sender = context.getSender();
-//
-//        sender.sendMessage("poop");
-//
-//        if (sender instanceof Player) {
-//            final @NonNull Player player = (Player) sender;
-//            locationProvider.getSpawnLocation().thenAccept(loc -> {
-//                new BukkitRunnable() {
-//                    @Override
-//                    public void run() {
-//                        System.out.println("test");
-//                        player.teleportAsync(loc);
-//                    }
-//                }.runTask(plugin);
-//            });
-//        }
+        final @NonNull CommandSender sender = context.getSender();
+
+        sender.sendMessage("poop");
+
+        if (sender instanceof Player) {
+            final @NonNull Player player = (Player) sender;
+            locationProvider.getSpawnLocation().thenAccept(loc -> {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("test");
+                        player.teleportAsync(loc);
+                    }
+                }.runTask(plugin);
+            });
+        }
     }
 
 }

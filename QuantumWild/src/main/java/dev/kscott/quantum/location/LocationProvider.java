@@ -1,13 +1,11 @@
 package dev.kscott.quantum.location;
 
 import com.google.inject.Inject;
-import dev.kscott.quantum.rule.QuantumRule;
-import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
+import dev.kscott.quantum.world.QuantumWorld;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
@@ -40,15 +38,11 @@ public class LocationProvider {
 
     /**
      * Returns a random spawn location for {@code world}
-     * @param ruleset The ruleset to search this world for
-     * @return A CompletableFuture<Location>. Will complete when a valid location is found.
+     * @param quantumWorld The world that applies to
+     * @return
      */
-    public CompletableFuture<Location> getSpawnLocation(final @NonNull QuantumRuleset ruleset) {
-        final @Nullable World world = Bukkit.getWorld(ruleset.getWorldUuid());
-
-        if (world == null) {
-            throw new RuntimeException("World must not be null! Please ensure your world name was correct in quantum.conf.");
-        }
+    public CompletableFuture<Location> getSpawnLocation(final @NonNull QuantumWorld quantumWorld) {
+        final World world = Bukkit.getWorld(quantumWorld.getWorldUuid()); // TODO: Make this a method argument
 
         final int x = random.nextInt(10000) - 500;
         final int z = random.nextInt(10000 - 500);
@@ -74,20 +68,13 @@ public class LocationProvider {
                     final int y = snapshot.getHighestBlockYAt(relativeX, relativeZ);
 
                     System.out.println("Validating x" + x + ", y" + y + ", z" + z);
-
-                    boolean valid = true;
-
-                    for (QuantumRule rule : ruleset.getRules()) {
-                        if (!rule.validate(snapshot, relativeX, y, relativeZ)) {
-                            valid = false;
-                            break;
-                        }
-                    }
+                    boolean valid = validateLocation(snapshot, relativeX, y, relativeZ);
 
                     if (valid) {
+                        System.out.println("Is valid");
                         return new Location(world, x, y, z);
                     } else {
-                        return getSpawnLocation(ruleset).join();
+                        return getSpawnLocation().join();
                     }
                 }, executor);
     }
