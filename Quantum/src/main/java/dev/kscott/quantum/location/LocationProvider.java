@@ -61,9 +61,7 @@ public class LocationProvider {
         final int chunkZ = z >> 4;
 
         return world.getChunkAtAsync(chunkX, chunkZ)
-                .thenApply(chunk -> {
-                    return chunk.getChunkSnapshot();
-                })
+                .thenApply(Chunk::getChunkSnapshot)
                 .thenApplyAsync(snapshot -> {
                     final int relativeX = x & 0b1111;
                     final int relativeZ = z & 0b1111;
