@@ -23,7 +23,7 @@ public class QuantumRuleset {
     /**
      * Where Quantum should prioritize spawning a player
      */
-    private final @NonNull YLocator yValidator;
+    private final @NonNull YLocator yLocator;
 
     /**
      * Where Quantum should search for spawns
@@ -38,12 +38,12 @@ public class QuantumRuleset {
     public QuantumRuleset(
             final @NonNull String id,
             final @NonNull UUID worldUuid,
-            final @NonNull YLocator yValidator,
+            final @NonNull YLocator yLocator,
             final @NonNull SearchArea searchArea,
             final @NonNull List<QuantumRule> rules
     ) {
         this.worldUuid = worldUuid;
-        this.yValidator = yValidator;
+        this.yLocator = yLocator;
         this.searchArea = searchArea;
         this.rules = rules;
         this.id = id;
@@ -63,8 +63,8 @@ public class QuantumRuleset {
      *
      * @return SpawnTarget
      */
-    public @NonNull YLocator getYValidator() {
-        return yValidator;
+    public @NonNull YLocator getYLocator() {
+        return yLocator;
     }
 
     /**

@@ -67,7 +67,7 @@ public class LocationProvider {
 
                     boolean valid = true;
 
-                    final int y = ruleset.getYValidator().getValidY(snapshot, relativeX, relativeZ);
+                    final int y = ruleset.getYLocator().getValidY(snapshot, relativeX, relativeZ);
 
                     if (y == -1) {
                         valid = false;
