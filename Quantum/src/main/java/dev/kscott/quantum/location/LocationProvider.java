@@ -30,6 +30,9 @@ public class LocationProvider {
      */
     private final @NonNull Random random;
 
+    /**
+     * Constructs the LocationProvider
+     */
     @Inject
     public LocationProvider() {
         this.executor = Executors.newCachedThreadPool();
