@@ -1,12 +1,12 @@
-package dev.kscott.quantum.location.yvalidator;
+package dev.kscott.quantum.location.locator;
 
 import org.bukkit.ChunkSnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * A YValidator that searches between a min Y and a max Y
+ * A YLocator that searches between a min Y and a max Y
  */
-public class RangeYValidator implements YValidator {
+public class RangeYLocator implements YLocator {
 
     /**
      * The minimum Y to start checking from
@@ -23,7 +23,7 @@ public class RangeYValidator implements YValidator {
      * @param minY {@link this#minY}
      * @param maxY {@link this#maxY}
      */
-    public RangeYValidator(final int minY, final int maxY) {
+    public RangeYLocator(final int minY, final int maxY) {
         this.minY = minY;
         this.maxY = maxY;
     }

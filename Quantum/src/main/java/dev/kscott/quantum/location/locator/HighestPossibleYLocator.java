@@ -1,12 +1,12 @@
-package dev.kscott.quantum.location.yvalidator;
+package dev.kscott.quantum.location.locator;
 
 import org.bukkit.ChunkSnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * A YValidator that returns the highest Y
+ * A YLocator that returns the highest Y
  */
-public class HighestPossibleYValidator implements YValidator {
+public class HighestPossibleYLocator implements YLocator {
 
     /**
      * Checks against the snapshot's heightmap to get the highest Y value

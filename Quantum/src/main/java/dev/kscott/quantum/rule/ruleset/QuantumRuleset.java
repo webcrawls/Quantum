@@ -1,6 +1,6 @@
 package dev.kscott.quantum.rule.ruleset;
 
-import dev.kscott.quantum.location.yvalidator.YValidator;
+import dev.kscott.quantum.location.locator.YLocator;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -23,7 +23,7 @@ public class QuantumRuleset {
     /**
      * Where Quantum should prioritize spawning a player
      */
-    private final @NonNull YValidator yValidator;
+    private final @NonNull YLocator yValidator;
 
     /**
      * Where Quantum should search for spawns
@@ -38,7 +38,7 @@ public class QuantumRuleset {
     public QuantumRuleset(
             final @NonNull String id,
             final @NonNull UUID worldUuid,
-            final @NonNull YValidator yValidator,
+            final @NonNull YLocator yValidator,
             final @NonNull SearchArea searchArea,
             final @NonNull List<QuantumRule> rules
     ) {
@@ -63,7 +63,7 @@ public class QuantumRuleset {
      *
      * @return SpawnTarget
      */
-    public @NonNull YValidator getYValidator() {
+    public @NonNull YLocator getYValidator() {
         return yValidator;
     }
 

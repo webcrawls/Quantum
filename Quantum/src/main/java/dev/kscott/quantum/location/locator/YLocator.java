@@ -1,12 +1,12 @@
-package dev.kscott.quantum.location.yvalidator;
+package dev.kscott.quantum.location.locator;
 
 import org.bukkit.ChunkSnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * The YValidator is used to locate Y values for a Quantum ruleset
+ * The YLocator is used to locate Y values for a Quantum ruleset
  */
-public interface YValidator {
+public interface YLocator {
 
     /**
      * Locates a valid Y value.

@@ -1,10 +1,10 @@
 package dev.kscott.quantum.config;
 
 import com.google.inject.Inject;
-import dev.kscott.quantum.location.yvalidator.HighestPossibleYValidator;
-import dev.kscott.quantum.location.yvalidator.LowestPossibleYValidator;
-import dev.kscott.quantum.location.yvalidator.RangeYValidator;
-import dev.kscott.quantum.location.yvalidator.YValidator;
+import dev.kscott.quantum.location.locator.HighestPossibleYLocator;
+import dev.kscott.quantum.location.locator.LowestPossibleYLocator;
+import dev.kscott.quantum.location.locator.RangeYLocator;
+import dev.kscott.quantum.location.locator.YLocator;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
@@ -146,12 +146,12 @@ public class Config {
                 continue;
             }
 
-            @MonotonicNonNull YValidator spawnTarget;
+            @MonotonicNonNull YLocator spawnTarget;
 
             if (spawnTargetString.equals("highest-possible")) {
-                spawnTarget = new HighestPossibleYValidator();
+                spawnTarget = new HighestPossibleYLocator();
             } else if (spawnTargetString.equals("lowest-possible")) {
-                spawnTarget = new LowestPossibleYValidator();
+                spawnTarget = new LowestPossibleYLocator();
             } else {
                 // Attempt to parse spawn-target range value
                 final @NonNull String[] slices = spawnTargetString.split("-");
@@ -174,7 +174,7 @@ public class Config {
                     continue;
                 }
 
-                spawnTarget = new RangeYValidator(min, max);
+                spawnTarget = new RangeYLocator(min, max);
             }
 
             final @Nullable ConfigurationNode searchAreaNode = value.node("search-area");
