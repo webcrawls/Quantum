@@ -214,18 +214,13 @@ public class Config {
 
                     String optionId = (String) optionKey;
 
-
                     QuantumRuleOption<?> quantumRuleOption = rule.getOption(optionId);
 
-                    System.out.println(quantumRuleOption.getTypeToken());
-                    System.out.println(quantumRuleOption.getTypeToken().getType());
                     try {
                         quantumRuleOption.setValue(optionValue.get(quantumRuleOption.getTypeToken().getType()));
                     } catch (SerializationException e) {
                         e.printStackTrace();
                     }
-
-                    System.out.println(quantumRuleOption.getValue());
 
                     rules.add(rule);
                 }

@@ -66,26 +66,6 @@ public class QuantumCommand {
                 )
                         .handler(this::handleTest)
         );
-
-        this.commandManager.command(builder.literal(
-                "test2"
-                )
-                .handler(this::handleTest2)
-        );
-    }
-
-    private void handleTest2(CommandContext<CommandSender> context) {
-        CommandSender sender = context.getSender();
-
-        new BukkitRunnable() {
-            long lastMs = 0;
-            @Override
-            public void run() {
-                System.out.println(plugin.getServer().getCurrentTick()+ " - "+System.currentTimeMillis()+" ("+(System.currentTimeMillis() - lastMs)+")");
-                sender.sendMessage("test" + plugin.getServer().getCurrentTick());
-                lastMs = System.currentTimeMillis();
-            }
-        }.runTaskTimer(plugin, 0, 1);
     }
 
     /**
@@ -104,7 +84,6 @@ public class QuantumCommand {
                 new BukkitRunnable() {
                     @Override
                     public void run() {
-                        System.out.println("test");
                         player.teleportAsync(loc);
                     }
                 }.runTask(plugin);

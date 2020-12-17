@@ -71,7 +71,6 @@ public class LocationProvider {
                     boolean valid = true;
 
                     for (QuantumRule rule : ruleset.getRules()) {
-                        System.out.println(rule.getOptions());
                         if (!rule.validate(snapshot, relativeX, y, relativeZ)) {
                             valid = false;
                             break;

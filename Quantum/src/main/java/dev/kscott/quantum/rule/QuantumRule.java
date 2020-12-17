@@ -18,7 +18,6 @@ public abstract class QuantumRule {
         optionMap = new HashMap<>();
 
         for (QuantumRuleOption<?> option : options) {
-            System.out.println(option.getId());
             optionMap.put(option.getId(), option);
         }
     }
