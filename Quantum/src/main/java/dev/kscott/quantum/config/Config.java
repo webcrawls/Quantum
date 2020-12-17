@@ -11,6 +11,8 @@ import dev.kscott.quantum.rule.ruleset.target.HighestPossibleSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.target.LowestPossibleSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.target.RangeSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.target.SpawnTarget;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -22,6 +24,7 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 
+import java.awt.*;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +35,8 @@ import java.util.UUID;
  * Stores the Quantum configuration and handles the loading and registration of rulesets
  */
 public class Config {
+
+    public final Component PREFIX = MiniMessage.get().parse("<gray>[<color:#5bde9f>Quantum</color:#5bde9f>]<gray>");
 
     /**
      * JavaPlugin reference
