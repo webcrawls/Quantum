@@ -6,7 +6,9 @@ import cloud.commandframework.Description;
 import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
 import dev.kscott.quantum.location.LocationProvider;
+import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -26,6 +28,8 @@ public class QuantumCommand {
      */
     private final @NonNull LocationProvider locationProvider;
 
+    private final @NonNull RulesetRegistry rulesetRegistry;
+
     /**
      * JavaPlugin reference
      */
@@ -39,10 +43,11 @@ public class QuantumCommand {
      * @param plugin JavaPlugin reference
      */
     @Inject
-    public QuantumCommand(final JavaPlugin plugin, final @NonNull CommandManager<CommandSender> commandManager, final @NonNull LocationProvider locationProvider) {
+    public QuantumCommand(final JavaPlugin plugin, final @NonNull CommandManager<CommandSender> commandManager, final @NonNull RulesetRegistry rulesetRegistry, final @NonNull LocationProvider locationProvider) {
         this.commandManager = commandManager;
         this.plugin = plugin;
         this.locationProvider = locationProvider;
+        this.rulesetRegistry = rulesetRegistry;
         setupCommands();
     }
 
@@ -86,22 +91,22 @@ public class QuantumCommand {
      * @param context CommandContext
      */
     private void handleTest(final @NonNull CommandContext<CommandSender> context) {
-//        final @NonNull CommandSender sender = context.getSender();
-//
-//        sender.sendMessage("poop");
-//
-//        if (sender instanceof Player) {
-//            final @NonNull Player player = (Player) sender;
-//            locationProvider.getSpawnLocation().thenAccept(loc -> {
-//                new BukkitRunnable() {
-//                    @Override
-//                    public void run() {
-//                        System.out.println("test");
-//                        player.teleportAsync(loc);
-//                    }
-//                }.runTask(plugin);
-//            });
-//        }
+        final @NonNull CommandSender sender = context.getSender();
+
+        sender.sendMessage("poop");
+
+        if (sender instanceof Player) {
+            final @NonNull Player player = (Player) sender;
+            locationProvider.getSpawnLocation(rulesetRegistry.getRuleset("basic")).thenAccept(loc -> {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        System.out.println("test");
+                        player.teleportAsync(loc);
+                    }
+                }.runTask(plugin);
+            });
+        }
     }
 
 }

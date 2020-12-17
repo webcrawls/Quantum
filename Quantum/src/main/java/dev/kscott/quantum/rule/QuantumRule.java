@@ -4,7 +4,9 @@ import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import org.bukkit.ChunkSnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class QuantumRule {
@@ -16,6 +18,7 @@ public abstract class QuantumRule {
         optionMap = new HashMap<>();
 
         for (QuantumRuleOption<?> option : options) {
+            System.out.println(option.getId());
             optionMap.put(option.getId(), option);
         }
     }
@@ -26,12 +29,16 @@ public abstract class QuantumRule {
 
     public <T> QuantumRuleOption<T> getOption(Class<? extends QuantumRuleOption<T>> quantumRuleOptionClass) {
         for (QuantumRuleOption<?> option : optionMap.values()) {
-            if (option.getClass() == option.getClass()) {
+            if (option.getClass().isAssignableFrom(quantumRuleOptionClass)) {
                 return (QuantumRuleOption<T>) option;
             }
         }
 
         return null;
+    }
+
+    public Collection<QuantumRuleOption<?>> getOptions() {
+        return this.optionMap.values();
     }
 
     /**

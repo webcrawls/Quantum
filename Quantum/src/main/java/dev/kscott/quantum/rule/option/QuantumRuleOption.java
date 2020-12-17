@@ -1,7 +1,6 @@
 package dev.kscott.quantum.rule.option;
 
-import dev.kscott.quantum.rule.QuantumRule;
-import org.bukkit.persistence.PersistentDataContainer;
+import com.google.common.reflect.TypeToken;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -12,23 +11,30 @@ public class QuantumRuleOption<T> {
 
     private T value;
 
-    public QuantumRuleOption(final @NonNull String id) {
-        this.id = id;
+    private final boolean isList;
+
+    public QuantumRuleOption(final @NonNull String id, final boolean isList) {
+        this.id = id; this.isList = isList;
     }
 
-    public String getId() {
+    public @NonNull String getId() {
         return id;
     }
 
-    public T getValue() {
+    public @NonNull T getValue() {
         return value;
     }
 
-    public Type getType() {
-        return getClass().getGenericSuperclass();
+    public @NonNull TypeToken<T> getTypeToken() {
+        return new TypeToken<T>(getClass()){};
     }
 
     public void setValue(@Nullable Object value) {
+        System.out.println("setValue: "+value);
         this.value = (T) value;
+    }
+
+    public boolean isList() {
+        return isList;
     }
 }

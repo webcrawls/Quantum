@@ -1,15 +1,14 @@
 package dev.kscott.quantum.config;
 
 import com.google.inject.Inject;
-import dev.kscott.quantum.QuantumPlugin;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
-import dev.kscott.quantum.rule.ruleset.search.SearchArea;
-import dev.kscott.quantum.rule.ruleset.target.LowestPossibleSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
+import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import dev.kscott.quantum.rule.ruleset.target.HighestPossibleSpawnTarget;
+import dev.kscott.quantum.rule.ruleset.target.LowestPossibleSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.target.RangeSpawnTarget;
 import dev.kscott.quantum.rule.ruleset.target.SpawnTarget;
 import org.bukkit.World;
@@ -17,7 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.junit.Rule;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
@@ -25,7 +23,10 @@ import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Stores the Quantum configuration and handles the loading and registration of rulesets
@@ -54,7 +55,8 @@ public class Config {
 
     /**
      * Constructs the config, loads it, and loads rulesets.
-     * @param plugin JavaPlugin reference
+     *
+     * @param plugin          JavaPlugin reference
      * @param rulesetRegistry RulesetRegistry reference
      */
     @Inject
@@ -106,7 +108,7 @@ public class Config {
             ConfigurationNode value = entry.getValue();
 
             if (!(key instanceof String)) {
-                this.plugin.getLogger().severe("Error loading a ruleset (key was not a string): "+key.toString());
+                this.plugin.getLogger().severe("Error loading a ruleset (key was not a string): " + key.toString());
                 continue;
             }
 
@@ -116,14 +118,14 @@ public class Config {
             final @Nullable String worldName = value.node("world").getString();
 
             if (worldName == null) {
-                this.plugin.getLogger().severe("Error loading ruleset "+id+" (world value didn't exist)");
+                this.plugin.getLogger().severe("Error loading ruleset " + id + " (world value didn't exist)");
                 continue;
             }
 
             final @Nullable World world = this.plugin.getServer().getWorld(worldName);
 
             if (world == null) {
-                this.plugin.getLogger().severe("Error loading ruleset "+id+" (world "+worldName+" was null)");
+                this.plugin.getLogger().severe("Error loading ruleset " + id + " (world " + worldName + " was null)");
                 continue;
             }
 
@@ -133,7 +135,7 @@ public class Config {
             final @Nullable String spawnTargetString = value.node("spawn-target").getString();
 
             if (spawnTargetString == null) {
-                this.plugin.getLogger().severe("Error loading ruleset "+id+" (spawn-target was null)");
+                this.plugin.getLogger().severe("Error loading ruleset " + id + " (spawn-target was null)");
                 continue;
             }
 
@@ -148,7 +150,7 @@ public class Config {
                 final @NonNull String[] slices = spawnTargetString.split("-");
 
                 if (slices.length != 2) {
-                    this.plugin.getLogger().severe("Error loading ruleset "+id+" (spawn-target range was null)");
+                    this.plugin.getLogger().severe("Error loading ruleset " + id + " (spawn-target range was null)");
                     continue;
                 }
 
@@ -161,7 +163,7 @@ public class Config {
                     min = Integer.parseInt(minString);
                     max = Integer.parseInt(maxString);
                 } catch (NumberFormatException e) {
-                    this.plugin.getLogger().severe("Error loading ruleset "+id+" (spawn-target range was invalid - expected something like '30-70', got "+spawnTargetString+")");
+                    this.plugin.getLogger().severe("Error loading ruleset " + id + " (spawn-target range was invalid - expected something like '30-70', got " + spawnTargetString + ")");
                     continue;
                 }
 
@@ -171,7 +173,7 @@ public class Config {
             final @Nullable ConfigurationNode searchAreaNode = value.node("search-area");
 
             if (searchAreaNode == null) {
-                this.plugin.getLogger().severe("Error loading ruleset "+id+" (search-area not found)");
+                this.plugin.getLogger().severe("Error loading ruleset " + id + " (search-area not found)");
                 continue;
             }
 
@@ -181,6 +183,8 @@ public class Config {
             final int maxZ = searchAreaNode.node("max-z").getInt();
 
             final @NonNull SearchArea searchArea = new SearchArea(minX, maxX, minZ, maxZ);
+
+            final @NonNull List<QuantumRule> rules = new ArrayList<>();
 
             // TODO find some better way of doing this - configurate might have some mapper function
             for (final ConfigurationNode ruleConfig : value.node("rules").childrenList()) {
@@ -195,40 +199,40 @@ public class Config {
                 QuantumRule rule = ruleRegistry.createFreshRule(ruleType);
 
                 if (rule == null) {
-                    this.plugin.getLogger().severe("Error loading a rule (rule was null, type was probably not registered)");
+                    this.plugin.getLogger().severe("Error loading a rule (rule was null, '" + ruleType + "' was probably not registered)");
                     continue;
                 }
 
                 for (final Map.Entry<Object, ? extends ConfigurationNode> optionEntry : ruleConfig.node("options").childrenMap().entrySet()) {
-                    Object optionKey = entry.getKey();
-                    ConfigurationNode optionValue = entry.getValue();
+                    Object optionKey = optionEntry.getKey();
+                    ConfigurationNode optionValue = optionEntry.getValue();
 
                     if (!(optionKey instanceof String)) {
-                        this.plugin.getLogger().severe("Error loading a ruleset (key was not a string): "+key.toString());
+                        this.plugin.getLogger().severe("Error loading a ruleset (key was not a string): " + key.toString());
                         continue;
                     }
 
                     String optionId = (String) optionKey;
 
+
                     QuantumRuleOption<?> quantumRuleOption = rule.getOption(optionId);
 
+                    System.out.println(quantumRuleOption.getTypeToken());
+                    System.out.println(quantumRuleOption.getTypeToken().getType());
                     try {
-                        quantumRuleOption
-                                .setValue(
-                                        optionValue
-                                                .get(
-                                                        quantumRuleOption
-                                                                .getType()));
+                        quantumRuleOption.setValue(optionValue.get(quantumRuleOption.getTypeToken().getType()));
                     } catch (SerializationException e) {
                         e.printStackTrace();
                     }
-                }
 
-                System.out.println(ruleType);
+                    System.out.println(quantumRuleOption.getValue());
+
+                    rules.add(rule);
+                }
             }
 
             // add the ruleset to the list
-            rulesets.add(new QuantumRuleset(id, worldUuid, spawnTarget, searchArea, new ArrayList<>()));
+            rulesets.add(new QuantumRuleset(id, worldUuid, spawnTarget, searchArea, rules));
         }
 
         for (final QuantumRuleset ruleset : rulesets) {
@@ -244,7 +248,7 @@ public class Config {
         }
         rulesetString.append("]");
 
-        this.plugin.getLogger().info("Loaded "+rulesets.size()+" rulesets: "+rulesetString);
+        this.plugin.getLogger().info("Loaded " + rulesets.size() + " rulesets: " + rulesetString);
     }
 
 }

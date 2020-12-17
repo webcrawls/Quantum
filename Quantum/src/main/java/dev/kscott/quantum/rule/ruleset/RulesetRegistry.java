@@ -1,5 +1,6 @@
 package dev.kscott.quantum.rule.ruleset;
 
+import dev.kscott.quantum.rule.QuantumRule;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.HashMap;
@@ -36,6 +37,10 @@ public class RulesetRegistry {
         }
 
         this.rulesetMap.put(id, ruleset);
+    }
+
+    public QuantumRuleset getRuleset(final @NonNull String id) {
+        return this.rulesetMap.get(id);
     }
 
 }
