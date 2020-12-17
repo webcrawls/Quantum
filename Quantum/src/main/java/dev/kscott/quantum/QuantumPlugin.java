@@ -38,6 +38,6 @@ public final class QuantumPlugin extends JavaPlugin {
     }
 
     private void loadConfig(final @NonNull Injector injector) {
-        final @NonNull Config config = injector.getInstance(Config.class);
+        injector.getInstance(Config.class);
     }
 }
