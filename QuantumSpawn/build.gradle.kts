@@ -1,4 +1,6 @@
 dependencies {
+    implementation(project(":Quantum"))
+
     implementation("org.spongepowered:configurate-hocon:4.0.0")
 
     implementation("net.kyori:adventure-api:4.3.0")
