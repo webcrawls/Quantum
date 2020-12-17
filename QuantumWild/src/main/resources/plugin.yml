@@ -1,4 +1,4 @@
-name: Quantum
+name: QuantumWild
 version: @version@
 main: dev.kscott.quantum.QuantumWildPlugin
 api-version: 1.16
