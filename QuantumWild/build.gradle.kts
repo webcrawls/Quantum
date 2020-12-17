@@ -1,11 +1,11 @@
 dependencies {
-    implementation(project(":Quantum"))
+    compileOnly(project(":Quantum"))
 
-    implementation("org.spongepowered:configurate-hocon:4.0.0")
+    compileOnly("org.spongepowered:configurate-hocon:4.0.0")
 
-    implementation("net.kyori:adventure-api:4.3.0")
-    implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
-    implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
+    compileOnly("net.kyori:adventure-api:4.3.0")
+    compileOnly("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
+    compileOnly("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
 
-    api("cloud.commandframework:cloud-paper:1.2.0")
+    compileOnly("cloud.commandframework:cloud-paper:1.2.0")
 }
