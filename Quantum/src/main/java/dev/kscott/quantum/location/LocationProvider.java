@@ -100,6 +100,8 @@ public class LocationProvider {
                 .asynchronous(state -> {
                     // Get the y value and check async rules
 
+                    state.setValid(true);
+
                     final int y = state.getQuantumRuleset().getYLocator().getValidY(state.getSnapshot(), state.getRelativeX(), state.getRelativeZ());
 
 
@@ -124,6 +126,7 @@ public class LocationProvider {
                 })
                 .synchronous(state -> {
                     for (final SyncQuantumRule rule : state.getQuantumRuleset().getSyncRules()) {
+                        System.out.println(rule.getClass().getName());
                         boolean valid = rule.validate(state.getChunk(), state.getRelativeX(), state.getY(), state.getRelativeZ());
 
                         state.setValid(valid);
