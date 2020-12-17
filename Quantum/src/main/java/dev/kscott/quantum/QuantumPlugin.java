@@ -35,11 +35,6 @@ public final class QuantumPlugin extends JavaPlugin {
         this.getServer().getServicesManager().register(QuantumAPI.class, quantumAPI, this, ServicePriority.High);
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
-    }
-
     private void loadConfig(final @NonNull Injector injector) {
         final @NonNull Config config = injector.getInstance(Config.class);
     }
