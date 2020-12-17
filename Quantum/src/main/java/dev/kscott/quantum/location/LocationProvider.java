@@ -42,7 +42,6 @@ public class LocationProvider {
      * @param quantumRuleset The ruleset to use for this search
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
-    // TODO review this when i wake up
     public @NonNull CompletableFuture<Location> getSpawnLocation(final @NonNull QuantumRuleset quantumRuleset) {
 
         final @NonNull CompletableFuture<Location> cf = new CompletableFuture<>();
