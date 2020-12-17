@@ -1,7 +1,7 @@
 package dev.kscott.quantum.rule;
 
 import dev.kscott.quantum.rule.rules.async.AvoidBlockRule;
-import dev.kscott.quantum.rule.rules.AvoidEntityRule;
+import dev.kscott.quantum.rule.rules.sync.AvoidEntityRule;
 import dev.kscott.quantum.rule.rules.async.OnlyBlockRule;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
