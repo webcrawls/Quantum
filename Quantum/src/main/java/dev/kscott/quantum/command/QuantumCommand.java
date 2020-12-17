@@ -28,6 +28,9 @@ public class QuantumCommand {
      */
     private final @NonNull LocationProvider locationProvider;
 
+    /**
+     * RulesetRegistry reference
+     */
     private final @NonNull RulesetRegistry rulesetRegistry;
 
     /**

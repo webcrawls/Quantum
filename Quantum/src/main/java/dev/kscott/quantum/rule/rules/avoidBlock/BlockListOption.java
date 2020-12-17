@@ -5,7 +5,7 @@ import dev.kscott.quantum.rule.option.QuantumRuleOption;
 public class BlockListOption extends QuantumRuleOption<String[]> {
 
     public BlockListOption() {
-        super("block-types", true);
+        super("block-types");
     }
 
 }

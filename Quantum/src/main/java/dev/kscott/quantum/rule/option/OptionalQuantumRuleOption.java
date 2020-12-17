@@ -2,16 +2,36 @@ package dev.kscott.quantum.rule.option;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * A QuantumRuleOption with an optional value.
+ * If this value isn't defined, it will use {@link OptionalQuantumRuleOption#defaultValue}.
+ * @param <T>
+ */
 public class OptionalQuantumRuleOption<T> extends QuantumRuleOption<T> {
 
+    /**
+     * The default value to return if {@link OptionalQuantumRuleOption#defaultValue} is null.
+     */
     private final T defaultValue;
 
-    public OptionalQuantumRuleOption(final @NonNull String id, final boolean isList, final @NonNull T defaultValue) {
-        super(id, isList);
+    /**
+     * Constructs OptionalQuantumRuleOption
+     * @param id the id of this option
+     * @param defaultValue
+     */
+    public OptionalQuantumRuleOption(final @NonNull String id, final @NonNull T defaultValue) {
+        super(id);
         this.defaultValue = defaultValue;
     }
 
-    // TODO override getValue and return default value if value is null
+    @Override
+    public @NonNull T getValue() {
+        if (this.value == null) {
+            return getDefaultValue();
+        }
+
+        return this.value;
+    }
 
     public T getDefaultValue() {
         return defaultValue;
