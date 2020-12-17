@@ -1,10 +1,13 @@
 package dev.kscott.quantum.rule.ruleset;
 
 import dev.kscott.quantum.location.locator.YLocator;
+import dev.kscott.quantum.rule.AsyncQuantumRule;
 import dev.kscott.quantum.rule.QuantumRule;
+import dev.kscott.quantum.rule.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -83,6 +86,30 @@ public class QuantumRuleset {
      */
     public @NonNull List<QuantumRule> getRules() {
         return rules;
+    }
+
+    public @NonNull List<AsyncQuantumRule> getAsyncRules() {
+        final @NonNull List<AsyncQuantumRule> asyncRules = new ArrayList<>();
+
+        for (final QuantumRule quantumRule : rules) {
+            if (quantumRule instanceof AsyncQuantumRule) {
+                asyncRules.add((AsyncQuantumRule) quantumRule);
+            }
+        }
+
+        return asyncRules;
+    }
+
+    public @NonNull List<SyncQuantumRule> getSyncRules() {
+        final @NonNull List<SyncQuantumRule> syncRules = new ArrayList<>();
+
+        for (final QuantumRule quantumRule : rules) {
+            if (quantumRule instanceof SyncQuantumRule) {
+                syncRules.add((SyncQuantumRule) quantumRule);
+            }
+        }
+
+        return syncRules;
     }
 
     /**

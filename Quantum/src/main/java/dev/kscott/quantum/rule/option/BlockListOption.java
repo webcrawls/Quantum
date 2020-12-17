@@ -1,7 +1,5 @@
 package dev.kscott.quantum.rule.option;
 
-import dev.kscott.quantum.rule.option.QuantumRuleOption;
-
 /**
  * An option that holds a list of block material names
  */

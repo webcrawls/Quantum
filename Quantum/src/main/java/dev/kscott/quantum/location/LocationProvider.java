@@ -1,17 +1,20 @@
 package dev.kscott.quantum.location;
 
-import com.google.inject.Inject;
-import dev.kscott.quantum.rule.QuantumRule;
+import cloud.commandframework.paper.PaperCommandManager;
+import dev.kscott.quantum.rule.AsyncQuantumRule;
+import dev.kscott.quantum.rule.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutionException;
 
 /**
  * LocationProvider, the core of Quantum. Generates spawn points, handles spawn rules, etc
@@ -19,74 +22,129 @@ import java.util.concurrent.Executors;
 public class LocationProvider {
 
     /**
-     * CachedThreadPool executor
-     */
-    private final @NonNull ExecutorService executor;
-
-    /**
      * Random reference
      */
     private final @NonNull Random random;
 
+    private final @NonNull PaperCommandManager<CommandSender> commandManager;
+
     /**
      * Constructs the LocationProvider
      */
-    @Inject
-    public LocationProvider() {
-        this.executor = Executors.newCachedThreadPool();
+    public LocationProvider(final @NonNull PaperCommandManager<CommandSender> commandManager) {
+        this.commandManager = commandManager;
         this.random = new Random();
     }
 
     /**
      * Returns a random spawn location for {@code world}
      *
-     * @param ruleset The ruleset to search this world for
+     * @param quantumRuleset The ruleset to use for this search
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
-    public CompletableFuture<Location> getSpawnLocation(final @NonNull QuantumRuleset ruleset) {
-        final @Nullable World world = Bukkit.getWorld(ruleset.getWorldUuid());
+    // TODO review this when i wake up
+    public @NonNull CompletableFuture<Location> getSpawnLocation(final @NonNull QuantumRuleset quantumRuleset) {
 
+        final @NonNull CompletableFuture<Location> cf = new CompletableFuture<>();
 
-        if (world == null) {
-            throw new RuntimeException("World must not be null! Please ensure your world name was correct in quantum.conf.");
-        }
+        this.commandManager.taskRecipe()
+                .begin(quantumRuleset)
+                .synchronous(ruleset -> {
+                    // Get the world and constuct the QuantumState
+                    final @Nullable World world = Bukkit.getWorld(ruleset.getWorldUuid());
 
-        final @NonNull SearchArea searchArea = ruleset.getSearchArea();
-
-        final int x = random.nextInt((searchArea.getMaxX() - searchArea.getMinX()) + 1) + searchArea.getMinX();
-        final int z = random.nextInt((searchArea.getMaxZ() - searchArea.getMinZ()) + 1) + searchArea.getMinZ();
-
-        final int chunkX = x >> 4;
-        final int chunkZ = z >> 4;
-
-        return world.getChunkAtAsync(chunkX, chunkZ)
-                .thenApply(Chunk::getChunkSnapshot)
-                .thenApplyAsync(snapshot -> {
-                    final int relativeX = x & 0b1111;
-                    final int relativeZ = z & 0b1111;
-
-                    boolean valid = true;
-
-                    final int y = ruleset.getYLocator().getValidY(snapshot, relativeX, relativeZ);
-
-                    if (y == -1) {
-                        valid = false;
+                    if (world == null) {
+                        throw new RuntimeException("World cannot be null!");
                     }
 
-                    if (valid) {
-                        for (QuantumRule rule : ruleset.getRules()) {
-                            if (!rule.validate(snapshot, relativeX, y, relativeZ)) {
-                                valid = false;
-                                break;
-                            }
+                    final @NonNull QuantumLocationState state = new QuantumLocationState();
+
+                    state.setWorld(world);
+                    state.setQuantumRuleset(quantumRuleset);
+
+                    return state;
+                })
+                .asynchronous(state -> {
+                    // Do some random generation
+                    final @NonNull SearchArea searchArea = state.getQuantumRuleset().getSearchArea();
+
+                    final int x = random.nextInt((searchArea.getMaxX() - searchArea.getMinX()) + 1) + searchArea.getMinX();
+                    final int z = random.nextInt((searchArea.getMaxZ() - searchArea.getMinZ()) + 1) + searchArea.getMinZ();
+
+                    state.setX(x);
+                    state.setZ(z);
+
+                    return state;
+                })
+                .synchronous(state -> {
+                    // Get the chunk future and add it to the state
+                    state.setChunkFuture(state.getWorld().getChunkAtAsync(state.getChunkX(), state.getChunkZ()));
+
+                    return state;
+                })
+                .asynchronous(state -> {
+                    // Get the chunk from the future
+                    try {
+                        state.setChunk(state.getChunkFuture().get());
+                    } catch (InterruptedException | ExecutionException e) {
+                        throw new RuntimeException("Error getting cf");
+                    }
+
+                    return state;
+                })
+                .synchronous(state -> {
+                    // get & set the snapshot
+                    state.setSnapshot(state.getChunk().getChunkSnapshot());
+
+                    return state;
+                })
+                .asynchronous(state -> {
+                    // Get the y value and check async rules
+
+                    final int y = state.getQuantumRuleset().getYLocator().getValidY(state.getSnapshot(), state.getRelativeX(), state.getRelativeZ());
+
+
+                    if (y == -1) {
+                        state.setValid(false);
+                        return state;
+                    }
+
+                    state.setY(y);
+
+                    for (final AsyncQuantumRule rule : state.getQuantumRuleset().getAsyncRules()) {
+                        boolean valid = rule.validate(state.getSnapshot(), state.getRelativeX(), y, state.getRelativeZ());
+
+                        state.setValid(valid);
+
+                        if (!valid) {
+                            break;
                         }
                     }
 
-                    if (valid) {
-                        return new Location(world, x, y, z);
-                    } else {
-                        return getSpawnLocation(ruleset).join();
+                    return state;
+                })
+                .synchronous(state -> {
+                    for (final SyncQuantumRule rule : state.getQuantumRuleset().getSyncRules()) {
+                        boolean valid = rule.validate(state.getChunk(), state.getRelativeX(), state.getY(), state.getRelativeZ());
+
+                        state.setValid(valid);
+
+                        if (!valid) {
+                            break;
+                        }
                     }
-                }, executor);
+
+                    return state;
+                })
+                .asynchronous(state -> {
+                    if (state.isValid()) {
+                        cf.complete(new Location(state.getWorld(), state.getX(), state.getY(), state.getZ()));
+                    } else {
+                        cf.complete(getSpawnLocation(state.getQuantumRuleset()).join());
+                    }
+                })
+                .execute();
+
+        return cf;
     }
 }

@@ -1,5 +1,6 @@
 package dev.kscott.quantum.rule.rules.onlyBlock;
 
+import dev.kscott.quantum.rule.AsyncQuantumRule;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.option.BlockListOption;
 import org.bukkit.ChunkSnapshot;
@@ -13,7 +14,7 @@ import java.util.Set;
 /**
  * A rule that invalidates a location if y-1 isn't a specific material
  */
-public class OnlyBlockRule extends QuantumRule {
+public class OnlyBlockRule extends AsyncQuantumRule {
 
     /**
      * Constructs OnlyBlockRule
@@ -31,7 +32,6 @@ public class OnlyBlockRule extends QuantumRule {
      * @param z        z coordinate, relative to chunk (0-15)
      * @return true if valid, false if not
      */
-    @Override
     public boolean validate(@NonNull ChunkSnapshot snapshot, int x, int y, int z) {
         final @NonNull String[] materialIds = this.getOption(BlockListOption.class).getValue();
 

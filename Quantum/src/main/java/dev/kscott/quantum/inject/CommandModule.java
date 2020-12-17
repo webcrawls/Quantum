@@ -4,11 +4,14 @@ import cloud.commandframework.CommandManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
 import cloud.commandframework.paper.PaperCommandManager;
+import cloud.commandframework.tasks.TaskRecipe;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.function.Function;
@@ -23,6 +26,8 @@ public class CommandModule extends AbstractModule {
      */
     private final @NonNull Plugin plugin;
 
+    private @MonotonicNonNull PaperCommandManager<CommandSender> commandManager;
+
     /**
      * Constructs the CommandModule
      *
@@ -30,20 +35,11 @@ public class CommandModule extends AbstractModule {
      */
     public CommandModule(final @NonNull Plugin plugin) {
         this.plugin = plugin;
-    }
 
-    /**
-     * Provides the PaperCommandManager, with async completions if possible.
-     *
-     * @return CommandManager
-     */
-    @Provides
-    @Singleton
-    public final CommandManager<CommandSender> provideCommandManager() {
         try {
             final @NonNull Function<CommandSender, CommandSender> mapper = Function.identity();
 
-            final @NonNull PaperCommandManager<CommandSender> commandManager = new PaperCommandManager<>(
+            commandManager = new PaperCommandManager<>(
                     plugin,
                     AsynchronousCommandExecutionCoordinator.simpleCoordinator(),
                     mapper,
@@ -53,11 +49,26 @@ public class CommandModule extends AbstractModule {
             if (commandManager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
                 commandManager.registerAsynchronousCompletions();
             }
-
-            return commandManager;
         } catch (Exception e) {
             throw new RuntimeException("Failed to initialize the CommandManager");
         }
+    }
+
+    @Provides
+    @Singleton
+    public CommandManager<CommandSender> provideCommandManager() {
+        return this.commandManager;
+    }
+
+    @Provides
+    @Singleton
+    public PaperCommandManager<CommandSender> providePaperCommandManager() {
+        return this.commandManager;
+    }
+
+    @Provides
+    public TaskRecipe provideTaskRecipe() {
+        return this.commandManager.taskRecipe();
     }
 
 }

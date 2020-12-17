@@ -1,8 +1,10 @@
 package dev.kscott.quantum.rule.rules.avoidBlock;
 
+import dev.kscott.quantum.rule.AsyncQuantumRule;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.option.BlockListOption;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
+import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -14,7 +16,7 @@ import java.util.Set;
 /**
  * A rule that invalidates a location if y-1 is a specific material
  */
-public class AvoidBlockRule extends QuantumRule {
+public class AvoidBlockRule extends AsyncQuantumRule {
 
     /**
      * Constructs AvoidBlockRule
@@ -32,8 +34,8 @@ public class AvoidBlockRule extends QuantumRule {
      * @param z        z coordinate, relative to chunk (0-15)
      * @return true if valid, false if not
      */
-    @Override
     public boolean validate(@NonNull ChunkSnapshot snapshot, int x, int y, int z) {
+
         final QuantumRuleOption<String[]> blockListOption = this.getOption(BlockListOption.class);
 
         final Set<Material> materials = new HashSet<>();
