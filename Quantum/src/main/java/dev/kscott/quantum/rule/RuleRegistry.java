@@ -1,5 +1,7 @@
 package dev.kscott.quantum.rule;
 
+import com.destroystokyo.paper.event.block.BeaconEffectEvent;
+import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import dev.kscott.quantum.rule.rules.async.AvoidBlockRule;
 import dev.kscott.quantum.rule.rules.sync.AvoidEntityRule;
 import dev.kscott.quantum.rule.rules.async.OnlyBlockRule;
@@ -8,7 +10,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class RuleRegistry {
@@ -72,6 +76,37 @@ public class RuleRegistry {
         }
 
         return quantumRule;
+    }
+
+    /**
+     * Returns a Collection of all registered QuantumRules
+     * @return QuantumRule Collection
+     */
+    public @NonNull Collection<EffectiveRule> getRules() {
+        final @NonNull Collection<EffectiveRule> effectiveRules = new HashSet<>();
+
+        for (final Map.Entry<String, Class<? extends QuantumRule>> entry : this.ruleMap.entrySet()) {
+            effectiveRules.add(new EffectiveRule(entry.getKey(), entry.getValue()));
+        }
+
+        return effectiveRules;
+    }
+
+    /**
+     * An object which holds a rule's id and class.
+     * Easier to work with.
+     */
+    static class EffectiveRule {
+
+        private final @NonNull String id;
+
+        private final @NonNull Class<? extends QuantumRule> ruleClass;
+
+        private EffectiveRule(final @NonNull String id, final @NonNull Class<? extends QuantumRule>  ruleClass) {
+            this.id = id;
+            this.ruleClass = ruleClass;
+        }
+
     }
 
 }
