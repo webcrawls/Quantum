@@ -1,6 +1,5 @@
 package dev.kscott.quantum.rule.rules.sync;
 
-import dev.kscott.quantum.rule.SyncQuantumRule;
 import dev.kscott.quantum.rule.option.EntityListOption;
 import dev.kscott.quantum.rule.option.RadiusOption;
 import org.bukkit.Chunk;

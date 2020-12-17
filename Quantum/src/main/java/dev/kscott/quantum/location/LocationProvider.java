@@ -1,8 +1,8 @@
 package dev.kscott.quantum.location;
 
 import cloud.commandframework.paper.PaperCommandManager;
-import dev.kscott.quantum.rule.AsyncQuantumRule;
-import dev.kscott.quantum.rule.SyncQuantumRule;
+import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
+import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import org.bukkit.Bukkit;

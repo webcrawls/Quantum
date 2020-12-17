@@ -1,10 +1,7 @@
 package dev.kscott.quantum.rule.rules.async;
 
-import dev.kscott.quantum.rule.AsyncQuantumRule;
-import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.option.BlockListOption;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
-import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;

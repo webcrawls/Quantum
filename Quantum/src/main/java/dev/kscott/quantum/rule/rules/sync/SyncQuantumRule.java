@@ -1,5 +1,6 @@
-package dev.kscott.quantum.rule;
+package dev.kscott.quantum.rule.rules.sync;
 
+import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import org.bukkit.Chunk;
 import org.checkerframework.checker.nullness.qual.NonNull;
