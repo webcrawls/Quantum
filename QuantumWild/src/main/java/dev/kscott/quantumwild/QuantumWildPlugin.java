@@ -2,7 +2,6 @@ package dev.kscott.quantumwild;
 
 import dev.kscott.quantum.api.QuantumAPI;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 public final class QuantumWildPlugin extends JavaPlugin {
@@ -16,9 +15,9 @@ public final class QuantumWildPlugin extends JavaPlugin {
             return;
         }
 
-        final @Nullable QuantumAPI quantumAPI =  this.getServer().getServicesManager().load(QuantumAPI.class);
+        final @Nullable QuantumAPI quantumAPI = this.getServer().getServicesManager().load(QuantumAPI.class);
 
-        if (quantumAPI == null ){
+        if (quantumAPI == null) {
             throw new RuntimeException("Could not load the QuantumAPI! Please contact bluely with this error.");
         }
 
