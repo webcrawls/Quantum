@@ -16,7 +16,6 @@ public final class QuantumPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         final @NonNull Injector injector = Guice.createInjector(
                 new PluginModule(this),
                 new CommandModule(this),
