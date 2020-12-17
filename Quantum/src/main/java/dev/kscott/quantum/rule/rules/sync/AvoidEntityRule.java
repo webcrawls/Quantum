@@ -30,11 +30,11 @@ public class AvoidEntityRule extends SyncQuantumRule {
 
         Collection<LivingEntity> entities = chunk.getBlock(x, y, z).getLocation().getNearbyLivingEntities(radius);
 
-        boolean valid = false;
+        boolean valid = true;
 
         for (final LivingEntity entity : entities) {
             if (types.contains(entity.getType())) {
-                valid = true;
+                valid = false;
             }
         }
 
