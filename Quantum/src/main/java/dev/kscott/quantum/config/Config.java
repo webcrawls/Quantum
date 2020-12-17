@@ -185,7 +185,7 @@ public class Config {
             }
 
             final int minX = searchAreaNode.node("min-x").getInt();
-            final int maxX = searchAreaNode.node("min-x").getInt();
+            final int maxX = searchAreaNode.node("max-x").getInt();
             final int minZ = searchAreaNode.node("min-z").getInt();
             final int maxZ = searchAreaNode.node("max-z").getInt();
 
