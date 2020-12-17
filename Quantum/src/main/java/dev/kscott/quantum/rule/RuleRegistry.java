@@ -98,8 +98,14 @@ public class RuleRegistry {
      */
     static class EffectiveRule {
 
+        /**
+         * The id of the rule
+         */
         private final @NonNull String id;
 
+        /**
+         * The class of the rule
+         */
         private final @NonNull Class<? extends QuantumRule> ruleClass;
 
         private EffectiveRule(final @NonNull String id, final @NonNull Class<? extends QuantumRule>  ruleClass) {
