@@ -71,7 +71,6 @@ public class Config {
         this.rulesetRegistry = rulesetRegistry;
         this.ruleRegistry = ruleRegistry;
 
-
         // Save config to file if it doesn't already exist
         if (!new File(this.plugin.getDataFolder(), "config.conf").exists()) {
             plugin.saveResource("config.conf", false);
