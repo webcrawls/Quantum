@@ -1,4 +1,4 @@
-name: Quantum
+name: QuantumSpawn
 version: @version@
 main: dev.kscott.quantumspawn.QuantumSpawnPlugin
 api-version: 1.16
