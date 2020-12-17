@@ -1,6 +1,7 @@
 package dev.kscott.quantum.rule;
 
 import dev.kscott.quantum.rule.rules.avoidBlock.AvoidBlockRule;
+import dev.kscott.quantum.rule.rules.onlyBlock.OnlyBlockRule;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -22,6 +23,7 @@ public class RuleRegistry {
         this.ruleMap = new HashMap<>();
 
         this.registerRule("avoid-block", AvoidBlockRule.class);
+        this.registerRule("only-block", OnlyBlockRule.class);
     }
 
     /**
