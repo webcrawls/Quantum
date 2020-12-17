@@ -3,6 +3,7 @@ package dev.kscott.quantum.rule;
 import dev.kscott.quantum.rule.rules.async.AvoidBlockRule;
 import dev.kscott.quantum.rule.rules.sync.AvoidEntityRule;
 import dev.kscott.quantum.rule.rules.async.OnlyBlockRule;
+import dev.kscott.quantum.rule.rules.sync.NearbyEntityRule;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -29,6 +30,7 @@ public class RuleRegistry {
 
         // Sync rules
         this.registerRule("avoid-entity", AvoidEntityRule.class);
+        this.registerRule("nearby-entity", NearbyEntityRule.class);
     }
 
     /**
