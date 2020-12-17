@@ -1,4 +1,4 @@
-package dev.kscott.quantum.rule.rules;
+package dev.kscott.quantum.rule.rules.async;
 
 import dev.kscott.quantum.rule.AsyncQuantumRule;
 import dev.kscott.quantum.rule.QuantumRule;
