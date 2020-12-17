@@ -30,9 +30,12 @@ public final class QuantumPlugin extends JavaPlugin {
 
         injector.getInstance(QuantumCommand.class);
 
-        final @NonNull QuantumAPI quantumAPI = injector.getInstance(QuantumAPI.class);
-
-        this.getServer().getServicesManager().register(QuantumAPI.class, quantumAPI, this, ServicePriority.High);
+        this.getServer().getServicesManager().register(
+                QuantumAPI.class,
+                injector.getInstance(QuantumAPI.class),
+                this,
+                ServicePriority.High
+        );
     }
 
     private void loadConfig(final @NonNull Injector injector) {
