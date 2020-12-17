@@ -1,8 +1,10 @@
-package dev.kscott.quantum.rule.rules.onlyBlock;
+package dev.kscott.quantum.rule.rules;
 
 import dev.kscott.quantum.rule.AsyncQuantumRule;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.option.BlockListOption;
+import dev.kscott.quantum.rule.option.QuantumRuleOption;
+import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -12,14 +14,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A rule that invalidates a location if y-1 isn't a specific material
+ * A rule that invalidates a location if y-1 is a specific material
  */
-public class OnlyBlockRule extends AsyncQuantumRule {
+public class AvoidBlockRule extends AsyncQuantumRule {
 
     /**
-     * Constructs OnlyBlockRule
+     * Constructs AvoidBlockRule
      */
-    public OnlyBlockRule() {
+    public AvoidBlockRule() {
         super(new BlockListOption());
     }
 
@@ -33,18 +35,17 @@ public class OnlyBlockRule extends AsyncQuantumRule {
      * @return true if valid, false if not
      */
     public boolean validate(@NonNull ChunkSnapshot snapshot, int x, int y, int z) {
-        final @NonNull String[] materialIds = this.getOption(BlockListOption.class).getValue();
+
+        final QuantumRuleOption<String[]> blockListOption = this.getOption(BlockListOption.class);
 
         final Set<Material> materials = new HashSet<>();
 
-        for (String materialId : materialIds) {
+        for (String materialId : blockListOption.getValue()) {
             materials.add(Material.getMaterial(materialId));
         }
 
         final @NonNull BlockData blockData = snapshot.getBlockData(x, y - 1, z);
 
-        return materials.contains(blockData.getMaterial());
+        return !materials.contains(blockData.getMaterial());
     }
-
-
 }
