@@ -25,6 +25,7 @@ import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.awt.*;
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +71,11 @@ public class Config {
         this.rulesetRegistry = rulesetRegistry;
         this.ruleRegistry = ruleRegistry;
 
+
         // Save config to file if it doesn't already exist
-        plugin.saveResource("config.conf", false);
+        if (!new File(this.plugin.getDataFolder(), "config.conf").exists()) {
+            plugin.saveResource("config.conf", false);
+        }
 
         // Load the config
         this.loadConfig();
