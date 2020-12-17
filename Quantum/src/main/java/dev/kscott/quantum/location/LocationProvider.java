@@ -56,8 +56,8 @@ public class LocationProvider {
 
         final @NonNull SearchArea searchArea = ruleset.getSearchArea();
 
-        final int x = random.nextInt((searchArea.getMaxX() - searchArea.getMinX()) + 1) - searchArea.getMinX();
-        final int z = random.nextInt((searchArea.getMaxZ() - searchArea.getMinZ()) + 1) - searchArea.getMinZ();
+        final int x = random.nextInt((searchArea.getMaxX() - searchArea.getMinX()) + 1) + searchArea.getMinX();
+        final int z = random.nextInt((searchArea.getMaxZ() - searchArea.getMinZ()) + 1) + searchArea.getMinZ();
 
         final int chunkX = x >> 4;
         final int chunkZ = z >> 4;
