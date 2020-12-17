@@ -25,7 +25,6 @@ public final class QuantumPlugin extends JavaPlugin {
                 new ConfigModule()
         );
 
-
         this.loadConfig(injector);
 
         injector.getInstance(QuantumCommand.class);
