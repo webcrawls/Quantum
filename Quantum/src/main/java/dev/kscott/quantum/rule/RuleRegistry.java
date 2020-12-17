@@ -34,12 +34,25 @@ public class RuleRegistry {
         this.ruleMap.put(id, ruleClass);
     }
 
+    /**
+     * Constructs a fresh QuantumRule of the given id
+     * @param id id of QuantumRule
+     * @return A new QuantumRule object
+     */
     public @Nullable QuantumRule createFreshRule(String id) {
         if (!this.ruleMap.containsKey(id)) {
             return null;
         }
 
-        Class<? extends QuantumRule> quantumRuleClass = ruleMap.get(id);
+        return createFreshRule(ruleMap.get(id));
+    }
+
+    /**
+     * Constructs a fresh QuantumRule
+     * @param quantumRuleClass class of QuantumRule
+     * @return a new QuantumRule object
+     */
+    public @Nullable QuantumRule createFreshRule(final @NonNull Class<? extends QuantumRule> quantumRuleClass) {
         QuantumRule quantumRule;
 
         try {
