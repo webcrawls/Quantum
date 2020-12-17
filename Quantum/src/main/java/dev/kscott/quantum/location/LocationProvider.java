@@ -87,25 +87,4 @@ public class LocationProvider {
                     }
                 }, executor);
     }
-
-    /**
-     * Validates the location, and returns a boolean.
-     *
-     * @param snapshot ChunkSnapshot of the location
-     * @param x        X of the location (relative to chunk, 0-15)
-     * @param y        Y of the location (0-255)
-     * @param z        Z of the location (relative to chunk, 0-15)
-     * @return true if location is safe, false if not
-     */
-    private boolean validateLocation(final @NonNull ChunkSnapshot snapshot, final int x, final int y, final int z) {
-        final @NonNull BlockData blockData = snapshot.getBlockData(x, y, z);
-
-        if (blockData.getMaterial() == Material.WATER) {
-            this.plugin.getLogger().info("Invalid location, spawn is water");
-            return false;
-        }
-
-        return true;
-    }
-
 }
