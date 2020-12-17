@@ -17,4 +17,20 @@ public class SearchArea {
         this.maxZ = maxZ;
     }
 
+    public int getMinX() {
+        return minX;
+    }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public int getMinZ() {
+        return minZ;
+    }
+
+    public int getMaxZ() {
+        return maxZ;
+    }
+
 }
