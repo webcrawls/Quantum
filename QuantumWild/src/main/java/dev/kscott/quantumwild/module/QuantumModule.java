@@ -18,7 +18,7 @@ public class QuantumModule extends AbstractModule {
     private final @NonNull QuantumAPI quantumAPI;
 
     public QuantumModule(final @NonNull JavaPlugin plugin) {
-        if (plugin.getServer().getPluginManager().isPluginEnabled("Quantum")) {
+        if (!plugin.getServer().getPluginManager().isPluginEnabled("Quantum")) {
             throw new RuntimeException("Quantum was not found! Please ensure it is present, as QuantumWild requires it to function.");
         }
 
