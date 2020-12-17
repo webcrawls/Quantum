@@ -5,6 +5,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 /**
  * A QuantumRuleOption with an optional value.
  * If this value isn't defined, it will use {@link OptionalQuantumRuleOption#defaultValue}.
+ *
  * @param <T>
  */
 public class OptionalQuantumRuleOption<T> extends QuantumRuleOption<T> {
@@ -16,7 +17,8 @@ public class OptionalQuantumRuleOption<T> extends QuantumRuleOption<T> {
 
     /**
      * Constructs OptionalQuantumRuleOption
-     * @param id the id of this option
+     *
+     * @param id           the id of this option
      * @param defaultValue
      */
     public OptionalQuantumRuleOption(final @NonNull String id, final @NonNull T defaultValue) {

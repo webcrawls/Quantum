@@ -24,7 +24,6 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 import org.spongepowered.configurate.serialize.SerializationException;
 
-import java.awt.*;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;

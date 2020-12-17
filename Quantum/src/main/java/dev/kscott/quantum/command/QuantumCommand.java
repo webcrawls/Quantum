@@ -6,28 +6,18 @@ import cloud.commandframework.Description;
 import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
 import dev.kscott.quantum.config.Config;
-import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * The base /quantum command.
@@ -57,9 +47,9 @@ public class QuantumCommand {
     /**
      * Constructs QuantumCommand
      *
-     * @param commandManager   CommandManager reference
+     * @param commandManager  CommandManager reference
      * @param bukkitAudiences BukkitAudiences reference
-     * @param config Config reference
+     * @param config          Config reference
      * @param rulesetRegistry RulesetRegistry reference
      */
     @Inject
@@ -90,14 +80,14 @@ public class QuantumCommand {
 
         final @NonNull List<QuantumRuleset> rulesets = new ArrayList<>(rulesetRegistry.getRulesets());
 
-        final TextComponent.Builder component =  Component.text()
+        final TextComponent.Builder component = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>There "+(rulesets.size() == 1 ? "is" : "are")+" currently <aqua>"+rulesets.size()+"</aqua> registered ruleset"+(rulesets.size() == 1 ? "" : "s")+": "));
+                .append(MiniMessage.get().parse(" <gray>There " + (rulesets.size() == 1 ? "is" : "are") + " currently <aqua>" + rulesets.size() + "</aqua> registered ruleset" + (rulesets.size() == 1 ? "" : "s") + ": "));
 
         for (int i = 0; i < rulesets.size(); i++) {
-            boolean isLast = i+1 == rulesets.size();
+            boolean isLast = i + 1 == rulesets.size();
             final @NonNull QuantumRuleset ruleset = rulesets.get(i);
-            component.append(MiniMessage.get().parse("<aqua>"+ruleset.getId()+"<aqua>" + (isLast ? "" : ", ")));
+            component.append(MiniMessage.get().parse("<aqua>" + ruleset.getId() + "<aqua>" + (isLast ? "" : ", ")));
         }
 
 

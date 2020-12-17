@@ -1,9 +1,10 @@
 package dev.kscott.quantum.rule.ruleset;
 
-import dev.kscott.quantum.rule.QuantumRule;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The main class that controls access and stores rulesets.
@@ -25,6 +26,7 @@ public class RulesetRegistry {
 
     /**
      * Registers a Ruleset under it's id
+     *
      * @param ruleset Ruleset to register
      * @throws IllegalStateException if a ruleset with the same id is already registered
      */
@@ -32,7 +34,7 @@ public class RulesetRegistry {
         final @NonNull String id = ruleset.getId();
 
         if (rulesetMap.containsKey(id)) {
-            throw new IllegalStateException("Ruleset with the id '"+id+"' is already registered!");
+            throw new IllegalStateException("Ruleset with the id '" + id + "' is already registered!");
         }
 
         this.rulesetMap.put(id, ruleset);
@@ -40,6 +42,7 @@ public class RulesetRegistry {
 
     /**
      * Returns a ruleset
+     *
      * @param id id of the ruleset
      * @return ruleset, may be null if none was registered
      */
@@ -49,6 +52,7 @@ public class RulesetRegistry {
 
     /**
      * Returns all registered rulesets
+     *
      * @return a list of QuantumRuleset
      */
     public Collection<QuantumRuleset> getRulesets() {

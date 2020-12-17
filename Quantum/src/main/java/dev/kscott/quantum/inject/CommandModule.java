@@ -25,6 +25,7 @@ public class CommandModule extends AbstractModule {
 
     /**
      * Constructs the CommandModule
+     *
      * @param plugin Plugin reference
      */
     public CommandModule(final @NonNull Plugin plugin) {
@@ -33,6 +34,7 @@ public class CommandModule extends AbstractModule {
 
     /**
      * Provides the PaperCommandManager, with async completions if possible.
+     *
      * @return CommandManager
      */
     @Provides

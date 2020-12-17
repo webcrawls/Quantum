@@ -26,7 +26,8 @@ public class RuleRegistry {
 
     /**
      * Registers a rule with a given id
-     * @param id id of rule
+     *
+     * @param id        id of rule
      * @param ruleClass the class of the rule to regiser
      */
     public void registerRule(String id, Class<? extends QuantumRule> ruleClass) {

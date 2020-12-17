@@ -1,8 +1,8 @@
 package dev.kscott.quantum.rule.ruleset;
 
+import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import dev.kscott.quantum.rule.ruleset.target.SpawnTarget;
-import dev.kscott.quantum.rule.QuantumRule;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.List;
@@ -51,6 +51,7 @@ public class QuantumRuleset {
 
     /**
      * Returns the UUID of the world attached to this ruleset
+     *
      * @return UUID
      */
     public @NonNull UUID getWorldUuid() {
@@ -59,6 +60,7 @@ public class QuantumRuleset {
 
     /**
      * Returns this ruleset's spawn target
+     *
      * @return SpawnTarget
      */
     public @NonNull SpawnTarget getSpawnTarget() {
@@ -67,6 +69,7 @@ public class QuantumRuleset {
 
     /**
      * Returns this ruleset's search area
+     *
      * @return SearchArea
      */
     public @NonNull SearchArea getSearchArea() {
@@ -75,6 +78,7 @@ public class QuantumRuleset {
 
     /**
      * Return the rules that apply to this ruleset
+     *
      * @return List of QuantumRules (may be empty)
      */
     public @NonNull List<QuantumRule> getRules() {
@@ -83,6 +87,7 @@ public class QuantumRuleset {
 
     /**
      * Returns this ruleset's id
+     *
      * @return id
      */
     public @NonNull String getId() {

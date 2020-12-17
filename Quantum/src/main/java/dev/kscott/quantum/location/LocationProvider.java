@@ -4,9 +4,10 @@ import com.google.inject.Inject;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
-import org.bukkit.*;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -41,6 +42,7 @@ public class LocationProvider {
 
     /**
      * Returns a random spawn location for {@code world}
+     *
      * @param ruleset The ruleset to search this world for
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
