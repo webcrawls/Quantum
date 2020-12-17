@@ -1,16 +1,16 @@
 package dev.kscott.quantum.config;
 
 import com.google.inject.Inject;
+import dev.kscott.quantum.location.yvalidator.HighestPossibleYValidator;
+import dev.kscott.quantum.location.yvalidator.LowestPossibleYValidator;
+import dev.kscott.quantum.location.yvalidator.RangeYValidator;
+import dev.kscott.quantum.location.yvalidator.YValidator;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
-import dev.kscott.quantum.rule.ruleset.target.HighestPossibleSpawnTarget;
-import dev.kscott.quantum.rule.ruleset.target.LowestPossibleSpawnTarget;
-import dev.kscott.quantum.rule.ruleset.target.RangeSpawnTarget;
-import dev.kscott.quantum.rule.ruleset.target.SpawnTarget;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.World;
@@ -146,12 +146,12 @@ public class Config {
                 continue;
             }
 
-            @MonotonicNonNull SpawnTarget spawnTarget;
+            @MonotonicNonNull YValidator spawnTarget;
 
             if (spawnTargetString.equals("highest-possible")) {
-                spawnTarget = new HighestPossibleSpawnTarget();
+                spawnTarget = new HighestPossibleYValidator();
             } else if (spawnTargetString.equals("lowest-possible")) {
-                spawnTarget = new LowestPossibleSpawnTarget();
+                spawnTarget = new LowestPossibleYValidator();
             } else {
                 // Attempt to parse spawn-target range value
                 final @NonNull String[] slices = spawnTargetString.split("-");
@@ -174,7 +174,7 @@ public class Config {
                     continue;
                 }
 
-                spawnTarget = new RangeSpawnTarget(min, max);
+                spawnTarget = new RangeYValidator(min, max);
             }
 
             final @Nullable ConfigurationNode searchAreaNode = value.node("search-area");

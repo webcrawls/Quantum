@@ -4,10 +4,7 @@ import com.google.inject.Inject;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -68,14 +65,20 @@ public class LocationProvider {
                     final int relativeX = x & 0b1111;
                     final int relativeZ = z & 0b1111;
 
-                    final int y = snapshot.getHighestBlockYAt(relativeX, relativeZ);
-
                     boolean valid = true;
 
-                    for (QuantumRule rule : ruleset.getRules()) {
-                        if (!rule.validate(snapshot, relativeX, y, relativeZ)) {
-                            valid = false;
-                            break;
+                    final int y = ruleset.getYValidator().getValidY(snapshot, relativeX, relativeZ);
+
+                    if (y == -1) {
+                        valid = false;
+                    }
+
+                    if (valid) {
+                        for (QuantumRule rule : ruleset.getRules()) {
+                            if (!rule.validate(snapshot, relativeX, y, relativeZ)) {
+                                valid = false;
+                                break;
+                            }
                         }
                     }
 
