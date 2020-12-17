@@ -3,6 +3,9 @@ package dev.kscott.quantum.location.yvalidator;
 import org.bukkit.ChunkSnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * A YValidator that searches between a min Y and a max Y
+ */
 public class RangeYValidator implements YValidator {
 
     /**

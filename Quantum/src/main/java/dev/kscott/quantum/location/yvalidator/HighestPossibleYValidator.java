@@ -3,6 +3,9 @@ package dev.kscott.quantum.location.yvalidator;
 import org.bukkit.ChunkSnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * A YValidator that returns the highest Y
+ */
 public class HighestPossibleYValidator implements YValidator {
 
     /**
