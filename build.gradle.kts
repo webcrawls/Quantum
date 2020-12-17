@@ -46,8 +46,6 @@ subprojects {
 
         compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
 
-        implementation("com.github.stefvanschie.inventoryframework:IF:0.9.0")
-
         implementation("org.spongepowered:configurate-hocon:4.0.0")
 
         implementation("net.kyori:adventure-api:4.3.0")
