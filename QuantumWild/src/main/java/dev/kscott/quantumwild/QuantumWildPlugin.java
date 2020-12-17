@@ -2,6 +2,7 @@ package dev.kscott.quantumwild;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import dev.kscott.quantumwild.command.WildCommand;
 import dev.kscott.quantumwild.module.CommandModule;
 import dev.kscott.quantumwild.module.PluginModule;
 import dev.kscott.quantumwild.module.QuantumModule;
@@ -17,6 +18,8 @@ public final class QuantumWildPlugin extends JavaPlugin {
                 new PluginModule(this),
                 new CommandModule(this)
         );
+
+        injector.getInstance(WildCommand.class);
     }
 
     @Override
