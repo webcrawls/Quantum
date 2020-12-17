@@ -57,27 +57,18 @@ public class LocationProvider {
         final int x = random.nextInt((searchArea.getMaxX() - searchArea.getMinX()) + 1) - searchArea.getMinX();
         final int z = random.nextInt((searchArea.getMaxZ() - searchArea.getMinZ()) + 1) - searchArea.getMinZ();
 
-        System.out.println(Thread.currentThread().getName());
-
-        System.out.println("Testing x" + x + ", " + z);
-
         final int chunkX = x >> 4;
         final int chunkZ = z >> 4;
 
         return world.getChunkAtAsync(chunkX, chunkZ)
                 .thenApply(chunk -> {
-                    System.out.println(Thread.currentThread().getName());
                     return chunk.getChunkSnapshot();
                 })
                 .thenApplyAsync(snapshot -> {
-                    System.out.println(Thread.currentThread().getName());
-
                     final int relativeX = x & 0b1111;
                     final int relativeZ = z & 0b1111;
 
                     final int y = snapshot.getHighestBlockYAt(relativeX, relativeZ);
-
-                    System.out.println("Validating x" + x + ", y" + y + ", z" + z);
 
                     boolean valid = true;
 
@@ -108,8 +99,6 @@ public class LocationProvider {
      */
     private boolean validateLocation(final @NonNull ChunkSnapshot snapshot, final int x, final int y, final int z) {
         final @NonNull BlockData blockData = snapshot.getBlockData(x, y, z);
-
-        System.out.println(blockData.getMaterial().name());
 
         if (blockData.getMaterial() == Material.WATER) {
             this.plugin.getLogger().info("Invalid location, spawn is water");
