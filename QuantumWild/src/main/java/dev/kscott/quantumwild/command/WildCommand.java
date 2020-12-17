@@ -29,17 +29,18 @@ public class WildCommand {
         this.locationProvider = locationProvider;
         this.rulesetRegistry = rulesetRegistry;
         this.plugin = plugin;
+
+        this.setupCommands();
     }
 
     private void setupCommands() {
-        final Command.Builder<CommandSender> builder = this.commandManager.commandBuilder("quantum", "q");
+        final Command.Builder<CommandSender> builder = this.commandManager.commandBuilder("wild", "w");
 
-        this.commandManager.command(builder.literal(
-                "rulesets",
-                Description.of("Get the ids all loaded rulesets")
-                )
-                        .handler(this::handleWild)
-        );
+        this.commandManager.command(builder.handler(this::handleWild));
+
+        this.commandManager.command(builder.literal("test").handler((ctx) -> {
+            ctx.getSender().sendMessage("tester");
+        }));
     }
 
     private void handleWild(final @NonNull CommandContext<CommandSender> context) {
