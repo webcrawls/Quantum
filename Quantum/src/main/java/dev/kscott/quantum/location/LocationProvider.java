@@ -127,7 +127,6 @@ public class LocationProvider {
                 .synchronous(state -> {
                     // Check sync rules
                     for (final SyncQuantumRule rule : state.getQuantumRuleset().getSyncRules()) {
-                        System.out.println(rule.getClass().getName());
                         boolean valid = rule.validate(state.getChunk(), state.getRelativeX(), state.getY(), state.getRelativeZ());
 
                         state.setValid(valid);
