@@ -6,6 +6,9 @@ import cloud.commandframework.Description;
 import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
 import dev.kscott.quantum.config.Config;
+import dev.kscott.quantum.rule.RuleRegistry;
+import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
+import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import net.kyori.adventure.identity.Identity;
@@ -35,6 +38,11 @@ public class QuantumCommand {
     private final @NonNull RulesetRegistry rulesetRegistry;
 
     /**
+     * RuleRegistry reference
+     */
+    private final @NonNull RuleRegistry ruleRegistry;
+
+    /**
      * Config reference
      */
     private final @NonNull Config config;
@@ -53,11 +61,12 @@ public class QuantumCommand {
      * @param rulesetRegistry RulesetRegistry reference
      */
     @Inject
-    public QuantumCommand(final @NonNull BukkitAudiences bukkitAudiences, final @NonNull Config config, final @NonNull CommandManager<CommandSender> commandManager, final @NonNull RulesetRegistry rulesetRegistry) {
+    public QuantumCommand(final @NonNull RuleRegistry ruleRegistry, final @NonNull BukkitAudiences bukkitAudiences, final @NonNull Config config, final @NonNull CommandManager<CommandSender> commandManager, final @NonNull RulesetRegistry rulesetRegistry) {
         this.commandManager = commandManager;
         this.rulesetRegistry = rulesetRegistry;
         this.config = config;
         this.bukkitAudiences = bukkitAudiences;
+        this.ruleRegistry = ruleRegistry;
         setupCommands();
     }
 
@@ -69,12 +78,23 @@ public class QuantumCommand {
 
         this.commandManager.command(builder.literal(
                 "rulesets",
-                Description.of("Get the ids all loaded rulesets")
+                Description.of("Get the ids of all loaded rulesets")
                 )
                         .handler(this::handleRulesets)
         );
+
+        this.commandManager.command(builder.literal(
+                "rules",
+                Description.of("Get the ids all loaded rules")
+                )
+                        .handler(this::handleRules)
+        );
     }
 
+    /**
+     * Handles /quantum rulesets
+     * @param context command context
+     */
     private void handleRulesets(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
 
@@ -90,6 +110,30 @@ public class QuantumCommand {
             component.append(MiniMessage.get().parse("<aqua>" + ruleset.getId() + "<aqua>" + (isLast ? "" : ", ")));
         }
 
+        this.bukkitAudiences.sender(sender).sendMessage(Identity.nil(), component);
+    }
+
+    /**
+     * Handles /quantum rules
+     * @param context command context
+     */
+    private void handleRules(final @NonNull CommandContext<CommandSender> context) {
+        final @NonNull CommandSender sender = context.getSender();
+
+        final @NonNull List<RuleRegistry.EffectiveRule> rules = new ArrayList<>(ruleRegistry.getRules());
+
+        final TextComponent.Builder component = Component.text()
+                .append(this.config.PREFIX)
+                .append(MiniMessage.get().parse(" <gray>There " + (rules.size() == 1 ? "is" : "are") + " currently <aqua>" + rules.size() + "</aqua> registered rules" + (rules.size() == 1 ? "" : "s") + ": "));
+
+        for (int i = 0; i < rules.size(); i++) {
+            boolean isLast = i + 1 == rules.size();
+            final RuleRegistry.EffectiveRule rule = rules.get(i);
+
+            final boolean isAsync = AsyncQuantumRule.class.isAssignableFrom(rule.getRuleClass());
+
+            component.append(MiniMessage.get().parse("<aqua>" + rule.getId() + " <dark_aqua>"+(isAsync ? "async" : "sync")+"</dark_aqua></aqua>" + (isLast ? "" : ", ")));
+        }
 
         this.bukkitAudiences.sender(sender).sendMessage(Identity.nil(), component);
     }
