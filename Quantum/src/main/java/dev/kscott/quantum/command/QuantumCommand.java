@@ -40,19 +40,9 @@ public class QuantumCommand {
     private final @NonNull CommandManager<CommandSender> commandManager;
 
     /**
-     * LocationProvider reference
-     */
-    private final @NonNull LocationProvider locationProvider;
-
-    /**
      * RulesetRegistry reference
      */
     private final @NonNull RulesetRegistry rulesetRegistry;
-
-    /**
-     * JavaPlugin reference
-     */
-    private final @NonNull JavaPlugin plugin;
 
     /**
      * Config reference
@@ -68,14 +58,13 @@ public class QuantumCommand {
      * Constructs QuantumCommand
      *
      * @param commandManager   CommandManager reference
-     * @param locationProvider LocationProvider reference
-     * @param plugin           JavaPlugin reference
+     * @param bukkitAudiences BukkitAudiences reference
+     * @param config Config reference
+     * @param rulesetRegistry RulesetRegistry reference
      */
     @Inject
-    public QuantumCommand(final @NonNull BukkitAudiences bukkitAudiences, final @NonNull Config config, final @NonNull JavaPlugin plugin, final @NonNull CommandManager<CommandSender> commandManager, final @NonNull RulesetRegistry rulesetRegistry, final @NonNull LocationProvider locationProvider) {
+    public QuantumCommand(final @NonNull BukkitAudiences bukkitAudiences, final @NonNull Config config, final @NonNull CommandManager<CommandSender> commandManager, final @NonNull RulesetRegistry rulesetRegistry) {
         this.commandManager = commandManager;
-        this.plugin = plugin;
-        this.locationProvider = locationProvider;
         this.rulesetRegistry = rulesetRegistry;
         this.config = config;
         this.bukkitAudiences = bukkitAudiences;
@@ -103,7 +92,7 @@ public class QuantumCommand {
 
         final TextComponent.Builder component =  Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>There are currently <aqua>"+rulesets.size()+"</aqua> registered ruleset"+(rulesets.size() == 1 ? "" : "s")+": "));
+                .append(MiniMessage.get().parse(" <gray>There "+(rulesets.size() == 1 ? "is" : "are")+" currently <aqua>"+rulesets.size()+"</aqua> registered ruleset"+(rulesets.size() == 1 ? "" : "s")+": "));
 
         for (int i = 0; i < rulesets.size(); i++) {
             boolean isLast = i+1 == rulesets.size();
