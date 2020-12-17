@@ -125,6 +125,7 @@ public class LocationProvider {
                     return state;
                 })
                 .synchronous(state -> {
+                    // Check sync rules
                     for (final SyncQuantumRule rule : state.getQuantumRuleset().getSyncRules()) {
                         System.out.println(rule.getClass().getName());
                         boolean valid = rule.validate(state.getChunk(), state.getRelativeX(), state.getY(), state.getRelativeZ());
@@ -139,6 +140,7 @@ public class LocationProvider {
                     return state;
                 })
                 .asynchronous(state -> {
+                    // Complete the cf, either with the new location, or the results of a recursive getSpawnLocation call
                     if (state.isValid()) {
                         cf.complete(new Location(state.getWorld(), state.getX(), state.getY(), state.getZ()));
                     } else {
