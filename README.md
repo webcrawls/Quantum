@@ -1,25 +1,24 @@
 # Quantum
 
-Quantum is a modern RTP & /wild plugin for 1.16+. It sports a broad feature-set, an in-depth configuration, and expandability via a developer API.
+Quantum is a random location generator for 1.16+. It provides an exhaustive API to allow plugins and users to define their own custom location generation algorithms.
+
+As Quantum is intended to be used as an API, there are no user-facing features implemented. Instead of bundlng the logic for the various first-party modules, Quantum is split up into Quantum (the API), QuantumWild and QuantumSpawn. Here's some more information about these modules.
+
+## QuantumWild
+
+QuantumWild is a /wild plugin utilizing the Quantum API. QuantumWild is still in development, but you can read more [here](#).
+
+## QuantumSpawn
+
+QuantumSpawn is a random spawn plugin utilizing the Quantum API. QuantumSpawn is still in development, but you can read more [here](#).
 
 ## Features
+
+_NOTE: Read the wiki for an introduction to Quantum, it's features, and the API._
 
 Quantum has two main features: RTP, and /wild. Here's a break down of Quantum's main selling points.
 
 - [x] **Supports 1.16+**
-- [ ] **Random teleportation**
-    - [ ] **Random spawn point on death and first join.** Both are configurable - you can disable random spawn points on first join, enable random spawn points on death, and vice-versa.
-- [ ] **/wild**
-    - [ ] **Configurable cooldowns.** Cooldowns are controlled via permission nodes - i.e. `quantum.wild.cooldown.10` would result in a /wild cooldown of 10 seconds for users with said permission.
-- [ ] **Custom spawn location rules**
-    - [ ] **Quantum's spawn location algorithm is completely customizable.** You can use custom rules to decide whether a location will be marked as valid.
-        - [ ] Supports WorldGuard regions out-of-the-box.
-        - [ ] Supports FactionsUUID claims out-of-the-box.
-- [ ] **Efficiency**
-    - [ ] All chunk access is called using async methods. Quantum will never load chunks on the main thread.
-    - [ ] Quantum has an optional spawn caching system, where valid spawnpoints will be saved for later use (instead of searching on the fly). Locations are still validated, so players won't be thrown in lava pools even if this feature is enabled.
-- [ ] **Developer API**
-    - [ ] **Quantum's developer API is very powerful.** Using it, you can query for random spawn points, define your own custom location validators, and more. For example, you can disable all user-facing features and use Quantum as the backbone for your minigame's spawnpoints.
     
 ## Credits
 
