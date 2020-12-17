@@ -215,13 +215,18 @@ public class Config {
                     ConfigurationNode optionValue = optionEntry.getValue();
 
                     if (!(optionKey instanceof String)) {
-                        this.plugin.getLogger().severe("Error loading a ruleset (key was not a string): " + key.toString());
+                        this.plugin.getLogger().severe("Error loading a rule (key was not a string): " + key.toString());
                         continue;
                     }
 
                     String optionId = (String) optionKey;
 
                     QuantumRuleOption<?> quantumRuleOption = rule.getOption(optionId);
+
+                    if (quantumRuleOption == null) {
+                        this.plugin.getLogger().severe("Error loading a rule: could not find QuantumRuleOption for "+optionId);
+                        continue;
+                    }
 
                     try {
                         quantumRuleOption.setValue(optionValue.get(quantumRuleOption.getTypeToken().getType()));
