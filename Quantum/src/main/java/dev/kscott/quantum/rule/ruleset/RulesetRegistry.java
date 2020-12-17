@@ -39,6 +39,11 @@ public class RulesetRegistry {
         this.rulesetMap.put(id, ruleset);
     }
 
+    /**
+     * Returns a ruleset
+     * @param id id of the ruleset
+     * @return ruleset, may be null if none was registered
+     */
     public QuantumRuleset getRuleset(final @NonNull String id) {
         return this.rulesetMap.get(id);
     }

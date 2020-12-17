@@ -49,22 +49,42 @@ public class QuantumRuleset {
         this.id = id;
     }
 
+    /**
+     * Returns the UUID of the world attached to this ruleset
+     * @return UUID
+     */
     public @NonNull UUID getWorldUuid() {
         return worldUuid;
     }
 
+    /**
+     * Returns this ruleset's spawn target
+     * @return SpawnTarget
+     */
     public @NonNull SpawnTarget getSpawnTarget() {
         return spawnTarget;
     }
 
+    /**
+     * Returns this ruleset's search area
+     * @return SearchArea
+     */
     public @NonNull SearchArea getSearchArea() {
         return searchArea;
     }
 
+    /**
+     * Return the rules that apply to this ruleset
+     * @return List of QuantumRules (may be empty)
+     */
     public @NonNull List<QuantumRule> getRules() {
         return rules;
     }
 
+    /**
+     * Returns this ruleset's id
+     * @return id
+     */
     public @NonNull String getId() {
         return id;
     }
