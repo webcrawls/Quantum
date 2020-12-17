@@ -18,7 +18,7 @@ public class LocationModule extends AbstractModule {
     @Singleton
     @Provides
     public @NonNull LocationProvider provideLocationProvider() {
-        return new LocationProvider(this.plugin);
+        return new LocationProvider();
     }
 
 }
