@@ -3,6 +3,7 @@ package dev.kscott.quantum.location;
 import com.google.inject.Inject;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
+import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,12 +47,15 @@ public class LocationProvider {
     public CompletableFuture<Location> getSpawnLocation(final @NonNull QuantumRuleset ruleset) {
         final @Nullable World world = Bukkit.getWorld(ruleset.getWorldUuid());
 
+
         if (world == null) {
             throw new RuntimeException("World must not be null! Please ensure your world name was correct in quantum.conf.");
         }
 
-        final int x = random.nextInt(10000) - 500;
-        final int z = random.nextInt(10000 - 500);
+        final @NonNull SearchArea searchArea = ruleset.getSearchArea();
+
+        final int x = random.nextInt((searchArea.getMaxX() - searchArea.getMinX()) + 1) - searchArea.getMinX();
+        final int z = random.nextInt((searchArea.getMaxZ() - searchArea.getMinZ()) + 1) - searchArea.getMinZ();
 
         System.out.println(Thread.currentThread().getName());
 
