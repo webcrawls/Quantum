@@ -5,6 +5,5 @@ dependencies {
     implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
     implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
 
-    api("com.google.inject:guice:4.2.3")
     api("cloud.commandframework:cloud-paper:1.2.0")
 }

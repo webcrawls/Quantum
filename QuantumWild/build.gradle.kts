@@ -8,4 +8,5 @@ dependencies {
     compileOnly("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
 
     compileOnly("cloud.commandframework:cloud-paper:1.2.0")
+
 }

@@ -44,6 +44,8 @@ subprojects {
         compileOnlyApi("org.checkerframework:checker-qual:3.5.0")
         compileOnlyApi("com.google.guava:guava:21.0")
         compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
+
+        implementation("com.google.inject:guice:5.0.0-BETA-1")
     }
 
     tasks {
