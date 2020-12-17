@@ -3,3 +3,5 @@ version: @version@
 main: dev.kscott.quantumwild.QuantumWildPlugin
 api-version: 1.16
 description: A comprehensive /wild plugin using the Quantum API.
+depend:
+  - Quantum
