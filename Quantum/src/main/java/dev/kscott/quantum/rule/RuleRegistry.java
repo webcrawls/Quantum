@@ -108,9 +108,30 @@ public class RuleRegistry {
          */
         private final @NonNull Class<? extends QuantumRule> ruleClass;
 
+        /**
+         * Constructs the EffectiveRule
+         * @param id id of rule
+         * @param ruleClass class of rule
+         */
         private EffectiveRule(final @NonNull String id, final @NonNull Class<? extends QuantumRule>  ruleClass) {
             this.id = id;
             this.ruleClass = ruleClass;
+        }
+
+        /**
+         * Returns the rule's id
+         * @return String id
+         */
+        public @NonNull String getId() {
+            return id;
+        }
+
+        /**
+         * Returns the rule's class
+         * @return rule Class
+         */
+        public Class<? extends QuantumRule> getRuleClass() {
+            return ruleClass;
         }
 
     }
