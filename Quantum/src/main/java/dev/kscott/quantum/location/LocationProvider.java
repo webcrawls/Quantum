@@ -21,11 +21,6 @@ import java.util.concurrent.Executors;
 public class LocationProvider {
 
     /**
-     * JavaPlugin reference
-     */
-    private final @NonNull JavaPlugin plugin;
-
-    /**
      * CachedThreadPool executor
      */
     private final @NonNull ExecutorService executor;
@@ -33,8 +28,7 @@ public class LocationProvider {
     private final @NonNull Random random;
 
     @Inject
-    public LocationProvider(final @NonNull JavaPlugin plugin) {
-        this.plugin = plugin;
+    public LocationProvider() {
         this.executor = Executors.newCachedThreadPool();
         this.random = new Random();
     }
