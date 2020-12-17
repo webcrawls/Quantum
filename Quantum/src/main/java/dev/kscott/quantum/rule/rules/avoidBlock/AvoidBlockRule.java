@@ -34,16 +34,12 @@ public class AvoidBlockRule extends QuantumRule {
      */
     @Override
     public boolean validate(@NonNull ChunkSnapshot snapshot, int x, int y, int z) {
-        System.out.println("test");
         final QuantumRuleOption<String[]> blockListOption = this.getOption(BlockListOption.class);
-
-        System.out.println(Arrays.toString(blockListOption.getValue()));
 
         final Set<Material> materials = new HashSet<>();
 
         for (String materialId : blockListOption.getValue()) {
             materials.add(Material.getMaterial(materialId));
-            System.out.println(Material.getMaterial(materialId));
         }
 
         final @NonNull BlockData blockData = snapshot.getBlockData(x, y-1, z);
