@@ -25,6 +25,9 @@ public class LocationProvider {
      */
     private final @NonNull ExecutorService executor;
 
+    /**
+     * Random reference
+     */
     private final @NonNull Random random;
 
     @Inject
