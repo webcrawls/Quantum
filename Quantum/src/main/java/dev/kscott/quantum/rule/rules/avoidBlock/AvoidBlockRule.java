@@ -1,6 +1,7 @@
 package dev.kscott.quantum.rule.rules.avoidBlock;
 
 import dev.kscott.quantum.rule.QuantumRule;
+import dev.kscott.quantum.rule.option.BlockListOption;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;

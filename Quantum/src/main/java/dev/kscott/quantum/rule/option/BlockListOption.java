@@ -1,4 +1,4 @@
-package dev.kscott.quantum.rule.rules.avoidBlock;
+package dev.kscott.quantum.rule.option;
 
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
 
