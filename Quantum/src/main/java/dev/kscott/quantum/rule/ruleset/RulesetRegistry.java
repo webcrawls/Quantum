@@ -3,8 +3,7 @@ package dev.kscott.quantum.rule.ruleset;
 import dev.kscott.quantum.rule.QuantumRule;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * The main class that controls access and stores rulesets.
@@ -46,6 +45,14 @@ public class RulesetRegistry {
      */
     public QuantumRuleset getRuleset(final @NonNull String id) {
         return this.rulesetMap.get(id);
+    }
+
+    /**
+     * Returns all registered rulesets
+     * @return a list of QuantumRuleset
+     */
+    public Collection<QuantumRuleset> getRulesets() {
+        return this.rulesetMap.values();
     }
 
 }
