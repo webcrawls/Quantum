@@ -96,7 +96,7 @@ public class RuleRegistry {
      * An object which holds a rule's id and class.
      * Easier to work with.
      */
-    static class EffectiveRule {
+    public static class EffectiveRule {
 
         /**
          * The id of the rule
