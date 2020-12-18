@@ -24,14 +24,14 @@ QuantumWild is still in development, but you can read more [here](#).
 
 _NOTE: Read the [wiki](../../wiki) for an introduction to Quantum's features and the API._
 
-Here's a break down of Quantum's main selling points.
+Here's a break down of Quantum's main selling points:
 
 - [x] **Supports 1.16+**
     
 ## Credits
 
-Thanks to Kyori for the adventure text library.
+Thanks to [Kyori](https://github.com/KyoriPowered) for the adventure text library.
 
-Thanks to Incendo for the cloud commands library.
+Thanks to [Incendo](https://github.com/Incendo) for the cloud commands library.
 
-Thanks to Paper for existing.
+Thanks to [Paper](https://papermc.io) for existing.
