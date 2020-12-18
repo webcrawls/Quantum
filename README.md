@@ -2,15 +2,23 @@
 
 Quantum is a random location generator for 1.16+. It provides an exhaustive API to allow plugins and users to define their own custom location generation algorithms.
 
-As Quantum is intended to be used as an API, there are no user-facing features implemented. Instead of bundlng the logic for the various first-party modules, Quantum is split up into Quantum (the API), QuantumWild and QuantumSpawn. Here's some more information about these modules.
+As Quantum is intended to be used as an API, there are no user-facing features implemented. Instead of bundlng the logic for the various first-party modules, Quantum is currently split up into three modules: QuantumAPI, QuantumWild, and QuantumSpawn.
 
-## QuantumWild
-
-QuantumWild is a /wild plugin utilizing the Quantum API. QuantumWild is still in development, but you can read more [here](#).
+## QuantumAPI
+- An API for plugins
+- Provides configuration for users to modify rulesets
 
 ## QuantumSpawn
+- Requires QuamtumAPI
+- Uses rulesets to enable random spawning mechanics
 
-QuantumSpawn is a random spawn plugin utilizing the Quantum API. QuantumSpawn is still in development, but you can read more [here](#).
+QuantumSpawn is still in development, but you can read more [here](#).
+
+## QuantumWild
+- Requires QuamtumAPI
+- Provides /wild commands with configurable cooldown & per-world options
+
+QuantumWild is still in development, but you can read more [here](#).
 
 ## Features
 
