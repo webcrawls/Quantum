@@ -3,7 +3,7 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":Quantum"))
+    implementation(project(":QuantumAPI"))
 
     implementation("org.spongepowered:configurate-hocon:4.0.0")
 
