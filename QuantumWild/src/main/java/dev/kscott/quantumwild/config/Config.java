@@ -53,7 +53,6 @@ public class Config {
      *
      * @param plugin          JavaPlugin reference
      */
-    @Inject
     public Config(final @NonNull RulesetRegistry rulesetRegistry, final @NonNull JavaPlugin plugin) {
         this.plugin = plugin;
         this.rulesetRegistry = rulesetRegistry;
