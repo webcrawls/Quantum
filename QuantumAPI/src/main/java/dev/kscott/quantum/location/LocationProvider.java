@@ -91,7 +91,7 @@ public class LocationProvider {
         this.commandManager.taskRecipe()
                 .begin(quantumRuleset)
                 .synchronous(ruleset -> {
-                    // Get the world and constuct the QuantumState
+                    // Get the world and construct the QuantumState
                     final @Nullable World world = Bukkit.getWorld(ruleset.getWorldUuid());
 
                     if (world == null) {
