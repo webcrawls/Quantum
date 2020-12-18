@@ -73,9 +73,16 @@ public class Config {
 
         // Load the config
         this.loadConfig();
-
-        // Load configuration values
         this.loadConfigurationValues();
+    }
+
+    /**
+     * Returns a registered QuantumRuleset that is associated to a /wild world
+     * @param world World
+     * @return associated QuantumRuleset
+     */
+    public @Nullable QuantumRuleset getRuleset(final @NonNull World world) {
+        return this.worldRulesetMap.get(world.getUID());
     }
 
     /**
