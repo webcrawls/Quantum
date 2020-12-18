@@ -8,6 +8,7 @@ import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
@@ -15,7 +16,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  */
 public class QuantumModule extends AbstractModule {
 
-    private final @NonNull QuantumAPI quantumAPI;
+    private final @MonotonicNonNull QuantumAPI quantumAPI;
 
     public QuantumModule(final @NonNull JavaPlugin plugin) {
         if (!plugin.getServer().getPluginManager().isPluginEnabled("QuantumAPI")) {
