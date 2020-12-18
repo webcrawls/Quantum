@@ -1,6 +1,6 @@
 # Quantum
 
-Quantum is a random location generator for 1.16+. It provides an exhaustive API to allow plugins and users to define their own custom location generation algorithms.
+Quantum is a random location generator plugin for Minecraft servers running 1.16+. It provides an exhaustive API to allow plugins and users to define their own custom location generation algorithms.
 
 As Quantum is intended to be used as an API, there are no user-facing features implemented. Instead of bundlng the logic for the various first-party modules, Quantum is currently split up into three modules: QuantumAPI, QuantumWild, and QuantumSpawn.
 
