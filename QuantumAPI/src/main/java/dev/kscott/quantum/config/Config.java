@@ -109,6 +109,7 @@ public class Config {
         } catch (ConfigurateException e) {
             throw new RuntimeException("Failed to load the configuration.", e);
         }
+        this.plugin.getLogger().info("Finished loading config.conf!");
     }
 
     /**
