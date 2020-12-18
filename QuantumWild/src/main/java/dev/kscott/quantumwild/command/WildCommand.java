@@ -117,32 +117,30 @@ public class WildCommand {
         }
 
         this.locationProvider.getSpawnLocation(ruleset)
-                .thenAccept(quantumLocation -> {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            if (quantumLocation.getLocation() == null) {
-                                audiences.sender(sender).sendMessage(lang.c("wild.failed_spawn_location"));
-                                return;
-                            }
-
-                            final @NonNull Location location = quantumLocation.getLocation();
-
-                            audiences.sender(sender).sendMessage(
-                                    lang.c(
-                                            "wild.tp_success",
-                                            Map.of(
-                                                    "{x}", Double.toString(location.getBlockX()),
-                                                    "{y}", Double.toString(location.getBlockY()),
-                                                    "{z}", Double.toString(location.getBlockZ())
-                                            )
-                                    )
-                            );
-
-                            player.teleportAsync(location);
+                .thenAccept(quantumLocation -> new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        if (quantumLocation.getLocation() == null) {
+                            audiences.sender(sender).sendMessage(lang.c("wild.failed_spawn_location"));
+                            return;
                         }
-                    }.runTask(plugin);
-                });
+
+                        final @NonNull Location location = quantumLocation.getLocation();
+
+                        audiences.sender(sender).sendMessage(
+                                lang.c(
+                                        "wild.tp_success",
+                                        Map.of(
+                                                "{x}", Double.toString(location.getBlockX()),
+                                                "{y}", Double.toString(location.getBlockY()),
+                                                "{z}", Double.toString(location.getBlockZ())
+                                        )
+                                )
+                        );
+
+                        player.teleportAsync(location);
+                    }
+                }.runTask(plugin));
     }
 
 
