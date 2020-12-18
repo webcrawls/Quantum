@@ -13,6 +13,7 @@ import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -26,10 +27,7 @@ import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Stores the Quantum configuration and handles the loading and registration of rulesets
@@ -41,10 +39,14 @@ public class Config {
      */
     private final @NonNull JavaPlugin plugin;
 
+    private final @NonNull Map<UUID, QuantumRuleset> worldRulesetMap;
+
     /**
      * The root quantum.conf config node
      */
     private @MonotonicNonNull CommentedConfigurationNode root;
+
+    private final @NonNull RulesetRegistry rulesetRegistry;
 
     /**
      * Constructs the config, loads it, and loads rulesets.
@@ -52,24 +54,28 @@ public class Config {
      * @param plugin          JavaPlugin reference
      */
     @Inject
-    public Config(final @NonNull JavaPlugin plugin) {
+    public Config(final @NonNull RulesetRegistry rulesetRegistry, final @NonNull JavaPlugin plugin) {
         this.plugin = plugin;
+        this.rulesetRegistry = rulesetRegistry;
 
         // Save config to file if it doesn't already exist
         if (!new File(this.plugin.getDataFolder(), "config.conf").exists()) {
             plugin.saveResource("config.conf", false);
         }
 
+        this.worldRulesetMap = new HashMap<>();
+
         // Load the config
         this.loadConfig();
 
+        // Load configuration values
+        this.loadConfigurationValues();
     }
 
     /**
      * Loads the config into the {@link this.root} node
      */
     private void loadConfig() {
-        this.plugin.getLogger().info("Loading config.conf...");
         final HoconConfigurationLoader loader = HoconConfigurationLoader.builder()
                 .path(Paths.get(plugin.getDataFolder().getAbsolutePath(), "config.conf"))
                 .build();
@@ -78,6 +84,48 @@ public class Config {
             root = loader.load();
         } catch (ConfigurateException e) {
             throw new RuntimeException("Failed to load the configuration.", e);
+        }
+    }
+
+    /**
+     * Loads QuantumWild's configuration values
+     */
+    private void loadConfigurationValues() {
+        this.worldRulesetMap.clear();
+
+        for (final Map.Entry<Object, ? extends ConfigurationNode> entry :  root.node("rulesets").childrenMap().entrySet()) {
+            final @NonNull Object key = entry.getKey();
+
+            if (!(key instanceof String)) {
+                this.plugin.getLogger().severe("Error loading world ruleset map.");
+                continue;
+            }
+
+            final @NonNull String worldName = (String) key;
+            final @Nullable World world = Bukkit.getWorld(worldName);
+
+            if (world == null) {
+                this.plugin.getLogger().severe("Error loading ruleset map: world was null. Are you sure you spelled '"+worldName+"' correctly?");
+                continue;
+            }
+
+            final @NonNull ConfigurationNode value = entry.getValue();
+
+            final @Nullable String rulesetId = value.getString();
+
+            if (rulesetId == null) {
+                this.plugin.getLogger().severe("Error loading ruleset map: ruleset id was null.");
+                continue;
+            }
+
+            final @Nullable QuantumRuleset ruleset = this.rulesetRegistry.getRuleset(rulesetId);
+
+            if (ruleset == null) {
+                this.plugin.getLogger().severe("Error loading ruleset map: RulesetRegistry returned null. Are you sure you spelled '"+rulesetId+"' correctly?");
+                continue;
+            }
+
+            this.worldRulesetMap.put(world.getUID(), ruleset);
         }
     }
 }
