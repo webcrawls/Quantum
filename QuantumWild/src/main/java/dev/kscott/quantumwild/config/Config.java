@@ -1,18 +1,7 @@
 package dev.kscott.quantumwild.config;
 
-import com.google.inject.Inject;
-import dev.kscott.quantum.location.locator.HighestPossibleYLocator;
-import dev.kscott.quantum.location.locator.LowestPossibleYLocator;
-import dev.kscott.quantum.location.locator.RangeYLocator;
-import dev.kscott.quantum.location.locator.YLocator;
-import dev.kscott.quantum.rule.QuantumRule;
-import dev.kscott.quantum.rule.RuleRegistry;
-import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
-import dev.kscott.quantum.rule.ruleset.search.SearchArea;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,11 +12,12 @@ import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
-import org.spongepowered.configurate.serialize.SerializationException;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Stores the Quantum configuration and handles the loading and registration of rulesets
@@ -78,6 +68,7 @@ public class Config {
 
     /**
      * Returns a registered QuantumRuleset that is associated to a /wild world
+     *
      * @param world World
      * @return associated QuantumRuleset
      */
@@ -106,7 +97,7 @@ public class Config {
     private void loadConfigurationValues() {
         this.worldRulesetMap.clear();
 
-        for (final Map.Entry<Object, ? extends ConfigurationNode> entry :  root.node("worlds").childrenMap().entrySet()) {
+        for (final Map.Entry<Object, ? extends ConfigurationNode> entry : root.node("worlds").childrenMap().entrySet()) {
             final @NonNull Object key = entry.getKey();
 
             if (!(key instanceof String)) {
@@ -118,7 +109,7 @@ public class Config {
             final @Nullable World world = Bukkit.getWorld(worldName);
 
             if (world == null) {
-                this.plugin.getLogger().severe("Error loading ruleset map: world was null. Are you sure you spelled '"+worldName+"' correctly?");
+                this.plugin.getLogger().severe("Error loading ruleset map: world was null. Are you sure you spelled '" + worldName + "' correctly?");
                 continue;
             }
 
@@ -134,7 +125,7 @@ public class Config {
             final @Nullable QuantumRuleset ruleset = this.rulesetRegistry.getRuleset(rulesetId);
 
             if (ruleset == null) {
-                this.plugin.getLogger().severe("Error loading ruleset map: RulesetRegistry returned null. Are you sure you spelled '"+rulesetId+"' correctly?");
+                this.plugin.getLogger().severe("Error loading ruleset map: RulesetRegistry returned null. Are you sure you spelled '" + rulesetId + "' correctly?");
                 continue;
             }
 
