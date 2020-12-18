@@ -8,15 +8,22 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import dev.kscott.quantum.location.LocationProvider;
+import dev.kscott.quantum.location.QuantumTimer;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 public class LocationModule extends AbstractModule {
     @Singleton
     @Provides
+    public @NonNull QuantumTimer provideQuantumTimer() {
+        return new QuantumTimer();
+    }
+
+    @Singleton
+    @Provides
     @Inject
-    public @NonNull LocationProvider provideLocationProvider(final @NonNull PaperCommandManager<CommandSender> commandManager) {
-        return new LocationProvider(commandManager);
+    public @NonNull LocationProvider provideLocationProvider(final @NonNull QuantumTimer timer, final @NonNull PaperCommandManager<CommandSender> commandManager) {
+        return new LocationProvider(timer, commandManager);
     }
 
 }

@@ -28,21 +28,35 @@ public class LocationProvider {
 
     private final @NonNull PaperCommandManager<CommandSender> commandManager;
 
+    private final @NonNull QuantumTimer timer;
+
     /**
      * Constructs the LocationProvider
      */
-    public LocationProvider(final @NonNull PaperCommandManager<CommandSender> commandManager) {
+    public LocationProvider(final @NonNull QuantumTimer timer, final @NonNull PaperCommandManager<CommandSender> commandManager) {
         this.commandManager = commandManager;
         this.random = new Random();
+        this.timer = timer;
+    }
+
+    /**
+     * Returns a random spawn location for {@code world}
+     *
+     * @param ruleset The ruleset to use for this search
+     * @return A CompletableFuture<Location>. Will complete when a valid location is found.
+     */
+    public @NonNull CompletableFuture<Location> getSpawnLocation(final @NonNull QuantumRuleset ruleset) {
+        return this.getSpawnLocation(System.currentTimeMillis(), ruleset);
     }
 
     /**
      * Returns a random spawn location for {@code world}
      *
      * @param quantumRuleset The ruleset to use for this search
+     * @param start When this search was started
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
-    public @NonNull CompletableFuture<Location> getSpawnLocation(final @NonNull QuantumRuleset quantumRuleset) {
+    private @NonNull CompletableFuture<Location> getSpawnLocation(final long start, final @NonNull QuantumRuleset quantumRuleset) {
 
         final @NonNull CompletableFuture<Location> cf = new CompletableFuture<>();
 
@@ -142,8 +156,9 @@ public class LocationProvider {
                     // Complete the cf, either with the new location, or the results of a recursive getSpawnLocation call
                     if (state.isValid()) {
                         cf.complete(new Location(state.getWorld(), state.getX(), state.getY(), state.getZ()));
+                        this.timer.addTime(System.currentTimeMillis() - start);
                     } else {
-                        cf.complete(getSpawnLocation(state.getQuantumRuleset()).join());
+                        cf.complete(getSpawnLocation(start, state.getQuantumRuleset()).join());
                     }
                 })
                 .execute();
