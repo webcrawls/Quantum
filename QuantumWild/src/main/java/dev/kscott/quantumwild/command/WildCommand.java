@@ -140,7 +140,7 @@ public class WildCommand {
 
                             audiences.sender(sender).sendMessage(
                                     lang.c(
-                                            "wild.success",
+                                            "wild.tp_success",
                                             Map.of(
                                                     "{x}", Double.toString(location.getBlockX()),
                                                     "{y}", Double.toString(location.getBlockY()),
