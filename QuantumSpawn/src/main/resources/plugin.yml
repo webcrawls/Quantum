@@ -3,3 +3,5 @@ version: @version@
 main: dev.kscott.quantumspawn.QuantumSpawnPlugin
 api-version: 1.16
 description: A comprehensive random spawning plugin using the Quantum API.
+depend:
+  - QuantumAPI
