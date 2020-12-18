@@ -6,11 +6,12 @@ import cloud.commandframework.Description;
 import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
 import dev.kscott.quantum.config.Config;
+import dev.kscott.quantum.location.QuantumTimer;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
-import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
+import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.identity.Identity;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
@@ -52,6 +53,8 @@ public class QuantumCommand {
      */
     private final @NonNull BukkitAudiences bukkitAudiences;
 
+    private final @NonNull QuantumTimer timer;
+
     /**
      * Constructs QuantumCommand
      *
@@ -61,12 +64,13 @@ public class QuantumCommand {
      * @param rulesetRegistry RulesetRegistry reference
      */
     @Inject
-    public QuantumCommand(final @NonNull RuleRegistry ruleRegistry, final @NonNull BukkitAudiences bukkitAudiences, final @NonNull Config config, final @NonNull CommandManager<CommandSender> commandManager, final @NonNull RulesetRegistry rulesetRegistry) {
+    public QuantumCommand(final @NonNull QuantumTimer timer, final @NonNull RuleRegistry ruleRegistry, final @NonNull BukkitAudiences bukkitAudiences, final @NonNull Config config, final @NonNull CommandManager<CommandSender> commandManager, final @NonNull RulesetRegistry rulesetRegistry) {
         this.commandManager = commandManager;
         this.rulesetRegistry = rulesetRegistry;
         this.config = config;
         this.bukkitAudiences = bukkitAudiences;
         this.ruleRegistry = ruleRegistry;
+        this.timer = timer;
         setupCommands();
     }
 
@@ -89,10 +93,18 @@ public class QuantumCommand {
                 )
                         .handler(this::handleRules)
         );
+
+        this.commandManager.command(builder.literal(
+                "stats",
+                Description.of("See Quantum's performance")
+                )
+                        .handler(this::handleStats)
+        );
     }
 
     /**
      * Handles /quantum rulesets
+     *
      * @param context command context
      */
     private void handleRulesets(final @NonNull CommandContext<CommandSender> context) {
@@ -115,6 +127,7 @@ public class QuantumCommand {
 
     /**
      * Handles /quantum rules
+     *
      * @param context command context
      */
     private void handleRules(final @NonNull CommandContext<CommandSender> context) {
@@ -132,10 +145,42 @@ public class QuantumCommand {
 
             final boolean isAsync = AsyncQuantumRule.class.isAssignableFrom(rule.getRuleClass());
 
-            component.append(MiniMessage.get().parse("<aqua>" + rule.getId() + " <dark_aqua>"+(isAsync ? "async" : "sync")+"</dark_aqua></aqua>" + (isLast ? "" : ", ")));
+            component.append(MiniMessage.get().parse("<aqua>" + rule.getId() + " <dark_aqua>" + (isAsync ? "async" : "sync") + "</dark_aqua></aqua>" + (isLast ? "" : ", ")));
         }
 
         this.bukkitAudiences.sender(sender).sendMessage(Identity.nil(), component);
+    }
+
+    private void handleStats(final @NonNull CommandContext<CommandSender> context) {
+        final @NonNull CommandSender sender = context.getSender();
+
+        final @NonNull Audience audience = this.bukkitAudiences.sender(sender);
+
+        int searches = this.timer.getTotalSearches();
+
+        if (searches == 0) {
+            final TextComponent.Builder component = Component.text()
+                    .append(this.config.PREFIX)
+                    .append(MiniMessage.get().parse(" <gray>Quantum has not generated any locations yet."));
+
+            audience.sendMessage(component);
+            return;
+        }
+
+
+        final TextComponent.Builder searchesComponent = Component.text()
+                .append(this.config.PREFIX)
+                .append(MiniMessage.get().parse(" <gray>Quantum has generated <aqua>"+searches+" location"+(searches == 1 ? "" : "s")+"</aqua>."));
+        audience.sendMessage(searchesComponent);
+
+        final long time = this.timer.getAverageTime();
+
+        final long seconds = time / 1000;
+
+        final TextComponent.Builder timeComponent = Component.text()
+                .append(this.config.PREFIX)
+                .append(MiniMessage.get().parse(" <gray>On average, Quantum has spent <aqua>"+seconds+" seconds</aqua> searching for locations."));
+        audience.sendMessage(timeComponent);
     }
 
 }
