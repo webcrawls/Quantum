@@ -12,7 +12,7 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * The module that interacts with the QuantumAPI
+ * The module that interacts with (and exposes) the QuantumAPI
  */
 public class QuantumModule extends AbstractModule {
 
