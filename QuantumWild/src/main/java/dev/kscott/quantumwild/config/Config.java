@@ -115,7 +115,7 @@ public class Config {
 
             final @NonNull ConfigurationNode value = entry.getValue();
 
-            final @Nullable String rulesetId = value.getString();
+            final @Nullable String rulesetId = value.node("ruleset").getString();
 
             if (rulesetId == null) {
                 this.plugin.getLogger().severe("Error loading ruleset map: ruleset id was null.");
