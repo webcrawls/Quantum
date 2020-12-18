@@ -6,11 +6,9 @@ import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
 import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
-import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.config.Lang;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
@@ -38,11 +36,6 @@ public class WildCommand {
     private final @NonNull LocationProvider locationProvider;
 
     /**
-     * RulesetRegistry reference
-     */
-    private final @NonNull RulesetRegistry rulesetRegistry;
-
-    /**
      * JavaPlugin reference
      */
     private final @NonNull JavaPlugin plugin;
@@ -68,7 +61,6 @@ public class WildCommand {
      * @param lang             {@link this#lang}
      * @param audiences        {@link this#audiences}
      * @param config           {@link this#config}
-     * @param rulesetRegistry  {@link this#rulesetRegistry}
      * @param locationProvider {@link this#locationProvider}
      * @param commandManager   {@link this#commandManager}
      * @param plugin           {@link this#plugin}
@@ -78,7 +70,6 @@ public class WildCommand {
             final @NonNull Lang lang,
             final @NonNull BukkitAudiences audiences,
             final @NonNull Config config,
-            final @NonNull RulesetRegistry rulesetRegistry,
             final @NonNull LocationProvider locationProvider,
             final @NonNull CommandManager<CommandSender> commandManager,
             final @NonNull JavaPlugin plugin
@@ -86,7 +77,6 @@ public class WildCommand {
         this.lang = lang;
         this.audiences = audiences;
         this.config = config;
-        this.rulesetRegistry = rulesetRegistry;
         this.locationProvider = locationProvider;
         this.commandManager = commandManager;
         this.plugin = plugin;
