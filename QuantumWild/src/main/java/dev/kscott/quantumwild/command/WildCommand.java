@@ -121,10 +121,11 @@ public class WildCommand {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (location == null) {
+                            if (location.getLocation() == null) {
                                 audiences.sender(sender).sendMessage(MiniMessage.get().parse("<red>Quantum was unable to locate a spawn for you.</red>"));
                                 return;
                             }
+
                             player.teleportAsync(location.getLocation());
                         }
                     }.runTask(plugin);
