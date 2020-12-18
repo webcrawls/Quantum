@@ -56,7 +56,7 @@ public class RulesetRegistry {
      *
      * @return a list of QuantumRuleset
      */
-    public Collection<QuantumRuleset> getRulesets() {
+    public @NonNull Collection<QuantumRuleset> getRulesets() {
         return this.rulesetMap.values();
     }
 
