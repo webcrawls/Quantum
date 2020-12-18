@@ -8,8 +8,10 @@ import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import dev.kscott.quantumwild.config.Config;
+import dev.kscott.quantumwild.config.Lang;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,7 +20,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.lang.management.MemoryNotificationInfo;
+import java.util.Map;
 
 /**
  * Handles /wild commands & subcommands
@@ -51,6 +53,11 @@ public class WildCommand {
     private final @NonNull Config config;
 
     /**
+     * Lang reference
+     */
+    private final @NonNull Lang lang;
+
+    /**
      * BukkitAudiences reference
      */
     private final @NonNull BukkitAudiences audiences;
@@ -58,6 +65,7 @@ public class WildCommand {
     /**
      * Constructs WildCommand
      *
+     * @param lang             {@link this#lang}
      * @param audiences        {@link this#audiences}
      * @param config           {@link this#config}
      * @param rulesetRegistry  {@link this#rulesetRegistry}
@@ -67,6 +75,7 @@ public class WildCommand {
      */
     @Inject
     public WildCommand(
+            final @NonNull Lang lang,
             final @NonNull BukkitAudiences audiences,
             final @NonNull Config config,
             final @NonNull RulesetRegistry rulesetRegistry,
@@ -74,6 +83,7 @@ public class WildCommand {
             final @NonNull CommandManager<CommandSender> commandManager,
             final @NonNull JavaPlugin plugin
     ) {
+        this.lang = lang;
         this.audiences = audiences;
         this.config = config;
         this.rulesetRegistry = rulesetRegistry;
@@ -112,21 +122,34 @@ public class WildCommand {
         final @Nullable QuantumRuleset ruleset = this.config.getRuleset(world);
 
         if (ruleset == null) {
-            this.audiences.sender(sender).sendMessage(MiniMessage.get().parse("<red>You can not use /wild in this world.</red>"));
+            this.audiences.sender(sender).sendMessage(lang.c("wild.invalid_world"));
             return;
         }
 
         this.locationProvider.getSpawnLocation(ruleset)
-                .thenAccept(location -> {
+                .thenAccept(quantumLocation -> {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            if (location.getLocation() == null) {
+                            if (quantumLocation.getLocation() == null) {
                                 audiences.sender(sender).sendMessage(MiniMessage.get().parse("<red>Quantum was unable to locate a spawn for you.</red>"));
                                 return;
                             }
 
-                            player.teleportAsync(location.getLocation());
+                            final @NonNull Location location = quantumLocation.getLocation();
+
+                            audiences.sender(sender).sendMessage(
+                                    lang.c(
+                                            "wild.success",
+                                            Map.of(
+                                                    "{x}", Double.toString(location.getBlockX()),
+                                                    "{y}", Double.toString(location.getBlockY()),
+                                                    "{z}", Double.toString(location.getBlockZ())
+                                            )
+                                    )
+                            );
+
+                            player.teleportAsync(location);
                         }
                     }.runTask(plugin);
                 });
