@@ -39,6 +39,9 @@ public class Config {
      */
     private final @NonNull JavaPlugin plugin;
 
+    /**
+     * A map that stores a world's UUID and their associated ruleset
+     */
     private final @NonNull Map<UUID, QuantumRuleset> worldRulesetMap;
 
     /**
@@ -46,12 +49,16 @@ public class Config {
      */
     private @MonotonicNonNull CommentedConfigurationNode root;
 
+    /**
+     * RulesetRegistry reference
+     */
     private final @NonNull RulesetRegistry rulesetRegistry;
 
     /**
      * Constructs the config, loads it, and loads rulesets.
      *
-     * @param plugin          JavaPlugin reference
+     * @param plugin          {@link this#plugin}
+     * @param rulesetRegistry {@link this#rulesetRegistry}
      */
     public Config(final @NonNull RulesetRegistry rulesetRegistry, final @NonNull JavaPlugin plugin) {
         this.plugin = plugin;
