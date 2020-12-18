@@ -36,6 +36,10 @@ import java.util.UUID;
  */
 public class Config {
 
+    /**
+     * The component to prefix all Quantum messages with.
+     * TODO: Move this to a separate lang object
+     */
     public final Component PREFIX = MiniMessage.get().parse("<gray>[<color:#5bde9f>Quantum</color:#5bde9f>]<gray>");
 
     /**
@@ -59,10 +63,16 @@ public class Config {
     private @MonotonicNonNull CommentedConfigurationNode root;
 
     /**
+     * This value tells Quantum when to stop searching for a spawn and to error out.
+     */
+    private int maxRetries;
+
+    /**
      * Constructs the config, loads it, and loads rulesets.
      *
-     * @param plugin          JavaPlugin reference
-     * @param rulesetRegistry RulesetRegistry reference
+     * @param plugin          {@link this#plugin}
+     * @param rulesetRegistry {@link this#rulesetRegistry}
+     * @param ruleRegistry    {@link this#ruleRegistry}
      */
     @Inject
     public Config(final @NonNull JavaPlugin plugin, final @NonNull RulesetRegistry rulesetRegistry, final @NonNull RuleRegistry ruleRegistry) {
@@ -80,6 +90,9 @@ public class Config {
 
         // Load the rulesets (and register them with the provided RulesetRegistry)
         this.loadRulesets();
+
+        // Load Quantum configuration values
+        this.loadConfigValues();
     }
 
     /**
@@ -224,7 +237,7 @@ public class Config {
                     QuantumRuleOption<?> quantumRuleOption = rule.getOption(optionId);
 
                     if (quantumRuleOption == null) {
-                        this.plugin.getLogger().severe("Error loading a rule: could not find QuantumRuleOption for "+optionId);
+                        this.plugin.getLogger().severe("Error loading a rule: could not find QuantumRuleOption for " + optionId);
                         continue;
                     }
 
@@ -258,4 +271,17 @@ public class Config {
         this.plugin.getLogger().info("Loaded " + rulesets.size() + " rulesets: " + rulesetString);
     }
 
+    /**
+     * Loads Quantum configuration values
+     */
+    private void loadConfigValues() {
+        this.maxRetries = this.root.node("quantum").node("max-retries").getInt(50);
+    }
+
+    /**
+     * @return {@link this#maxRetries}
+     */
+    public int getMaxRetries() {
+        return maxRetries;
+    }
 }

@@ -1,6 +1,7 @@
 package dev.kscott.quantum.location;
 
 import cloud.commandframework.paper.PaperCommandManager;
+import dev.kscott.quantum.config.Config;
 import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
@@ -26,39 +27,66 @@ public class LocationProvider {
      */
     private final @NonNull Random random;
 
+    /**
+     * PaperCommandManager reference
+     */
     private final @NonNull PaperCommandManager<CommandSender> commandManager;
 
+    /**
+     * QuantumTimer reference
+     */
     private final @NonNull QuantumTimer timer;
 
     /**
-     * Constructs the LocationProvider
+     * Config reference
      */
-    public LocationProvider(final @NonNull QuantumTimer timer, final @NonNull PaperCommandManager<CommandSender> commandManager) {
+    private final @NonNull Config config;
+
+
+    /**
+     * Constructs the LocationProvider
+     *
+     * @param config         {@link this#config}
+     * @param timer          {@link this#timer}
+     * @param commandManager {@link this#commandManager}
+     */
+    public LocationProvider(
+            final @NonNull Config config,
+            final @NonNull QuantumTimer timer,
+            final @NonNull PaperCommandManager<CommandSender> commandManager
+    ) {
         this.commandManager = commandManager;
         this.random = new Random();
         this.timer = timer;
+        this.config = config;
     }
 
     /**
      * Returns a random spawn location for {@code world}
      *
      * @param ruleset The ruleset to use for this search
-     * @return A CompletableFuture<Location>. Will complete when a valid location is found.
+     * @return A CompletableFuture<QuantumLocation>. Will complete when a valid location is found (or max retries is hit).
+     * If max retries is hit, {@link QuantumLocation#getLocation()} will return {@code null} and {@link QuantumLocation#isSuccess()} will return {@code false}.
      */
-    public @NonNull CompletableFuture<Location> getSpawnLocation(final @NonNull QuantumRuleset ruleset) {
-        return this.getSpawnLocation(System.currentTimeMillis(), ruleset);
+    public @NonNull CompletableFuture<QuantumLocation> getSpawnLocation(final @NonNull QuantumRuleset ruleset) {
+        return this.getSpawnLocation(0, System.currentTimeMillis(), ruleset);
     }
 
     /**
      * Returns a random spawn location for {@code world}
      *
      * @param quantumRuleset The ruleset to use for this search
-     * @param start When this search was started
+     * @param start          When this search was started
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
-    private @NonNull CompletableFuture<Location> getSpawnLocation(final long start, final @NonNull QuantumRuleset quantumRuleset) {
+    private @NonNull CompletableFuture<QuantumLocation> getSpawnLocation(final int tries, final long start, final @NonNull QuantumRuleset quantumRuleset) {
 
-        final @NonNull CompletableFuture<Location> cf = new CompletableFuture<>();
+        final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
+
+        if (this.config.getMaxRetries() <= tries) {
+            cf.complete(new QuantumLocation(0, false, null, quantumRuleset));
+            return cf;
+        }
 
         this.commandManager.taskRecipe()
                 .begin(quantumRuleset)
@@ -155,10 +183,18 @@ public class LocationProvider {
                 .asynchronous(state -> {
                     // Complete the cf, either with the new location, or the results of a recursive getSpawnLocation call
                     if (state.isValid()) {
-                        cf.complete(new Location(state.getWorld(), state.getX(), state.getY(), state.getZ()));
-                        this.timer.addTime(System.currentTimeMillis() - start);
+                        final long searchTime = System.currentTimeMillis() - start;
+
+                        cf.complete(new QuantumLocation(
+                                searchTime,
+                                true,
+                                new Location(state.getWorld(), state.getX(), state.getY(), state.getZ()),
+                                state.getQuantumRuleset()
+                        ));
+
+                        this.timer.addTime(searchTime);
                     } else {
-                        cf.complete(getSpawnLocation(start, state.getQuantumRuleset()).join());
+                        cf.complete(getSpawnLocation(tries+1, start, state.getQuantumRuleset()).join());
                     }
                 })
                 .execute();

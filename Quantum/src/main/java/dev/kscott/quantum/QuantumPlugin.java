@@ -19,9 +19,9 @@ public final class QuantumPlugin extends JavaPlugin {
         final @NonNull Injector injector = Guice.createInjector(
                 new PluginModule(this),
                 new CommandModule(this),
-                new LocationModule(),
                 new RuleModule(),
-                new ConfigModule()
+                new ConfigModule(),
+                new LocationModule()
         );
 
         this.loadConfig(injector);
