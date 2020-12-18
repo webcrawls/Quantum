@@ -138,7 +138,7 @@ public class WildCommand {
                                 )
                         );
 
-                        player.teleportAsync(location);
+                        player.teleportAsync(location.toCenterLocation());
                     }
                 }.runTask(plugin));
     }
