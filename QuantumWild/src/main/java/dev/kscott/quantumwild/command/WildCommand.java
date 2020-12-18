@@ -132,7 +132,7 @@ public class WildCommand {
                         @Override
                         public void run() {
                             if (quantumLocation.getLocation() == null) {
-                                audiences.sender(sender).sendMessage(MiniMessage.get().parse("<red>Quantum was unable to locate a spawn for you.</red>"));
+                                audiences.sender(sender).sendMessage(lang.c("wild.failed_spawn_location"));
                                 return;
                             }
 
