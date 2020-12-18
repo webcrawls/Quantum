@@ -106,7 +106,7 @@ public class Config {
     private void loadConfigurationValues() {
         this.worldRulesetMap.clear();
 
-        for (final Map.Entry<Object, ? extends ConfigurationNode> entry :  root.node("rulesets").childrenMap().entrySet()) {
+        for (final Map.Entry<Object, ? extends ConfigurationNode> entry :  root.node("worlds").childrenMap().entrySet()) {
             final @NonNull Object key = entry.getKey();
 
             if (!(key instanceof String)) {
