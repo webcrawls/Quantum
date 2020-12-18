@@ -22,9 +22,9 @@ QuantumWild is still in development, but you can read more [here](#).
 
 ## Features
 
-_NOTE: Read the wiki for an introduction to Quantum, it's features, and the API._
+_NOTE: Read the [wiki](../../wiki) for an introduction to Quantum's features and the API._
 
-Quantum has two main features: RTP, and /wild. Here's a break down of Quantum's main selling points.
+Here's a break down of Quantum's main selling points.
 
 - [x] **Supports 1.16+**
     
