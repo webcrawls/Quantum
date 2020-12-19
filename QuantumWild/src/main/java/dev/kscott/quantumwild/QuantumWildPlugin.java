@@ -17,7 +17,7 @@ public final class QuantumWildPlugin extends JavaPlugin {
                 new PluginModule(this),
                 new CommandModule(this),
                 new ConfigModule(),
-                new LuckPermsModule(),
+                new IntegrationsModule(),
                 new WildModule()
         );
 

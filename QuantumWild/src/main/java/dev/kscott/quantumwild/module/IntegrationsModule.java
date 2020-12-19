@@ -10,7 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-public class LuckPermsModule extends AbstractModule {
+public class IntegrationsModule extends AbstractModule {
 
     @Provides
     @Singleton
