@@ -33,21 +33,6 @@ public class WildCommand {
     private final @NonNull CommandManager<CommandSender> commandManager;
 
     /**
-     * LocationProvider reference
-     */
-    private final @NonNull LocationProvider locationProvider;
-
-    /**
-     * JavaPlugin reference
-     */
-    private final @NonNull JavaPlugin plugin;
-
-    /**
-     * Config reference
-     */
-    private final @NonNull Config config;
-
-    /**
      * Lang reference
      */
     private final @NonNull Lang lang;
@@ -67,28 +52,19 @@ public class WildCommand {
      *
      * @param lang             {@link this#lang}
      * @param audiences        {@link this#audiences}
-     * @param config           {@link this#config}
-     * @param locationProvider {@link this#locationProvider}
      * @param commandManager   {@link this#commandManager}
-     * @param plugin           {@link this#plugin}
      * @param wildManager      {@link this#wildManager}
      */
     @Inject
     public WildCommand(
             final @NonNull Lang lang,
             final @NonNull BukkitAudiences audiences,
-            final @NonNull Config config,
-            final @NonNull LocationProvider locationProvider,
             final @NonNull CommandManager<CommandSender> commandManager,
-            final @NonNull JavaPlugin plugin,
             final @NonNull WildManager wildManager
     ) {
         this.lang = lang;
         this.audiences = audiences;
-        this.config = config;
-        this.locationProvider = locationProvider;
         this.commandManager = commandManager;
-        this.plugin = plugin;
         this.wildManager = wildManager;
 
         this.setupCommands();
@@ -111,80 +87,12 @@ public class WildCommand {
     private void handleWild(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
 
-        if (!(sender instanceof Player)) {
-            return;
+        if (sender instanceof Player) {
+            this.wildManager.wildTeleportPlayer((Player) sender);
+        } else {
+            audiences.sender(sender).sendMessage(lang.c("no_console"));
         }
 
-        final @NonNull Player player = (Player) sender;
-
-        final @NonNull World world = player.getWorld();
-
-        final @Nullable QuantumRuleset ruleset = this.config.getRuleset(world);
-
-        if (ruleset == null) {
-            this.audiences.sender(sender).sendMessage(lang.c("invalid_world"));
-            return;
-        }
-
-        if (!this.wildManager.canUseWild(player)) {
-            final long cooldown = this.wildManager.getCurrentCooldown(player) - System.currentTimeMillis();
-
-            long hours = TimeUnit.MILLISECONDS.toHours(cooldown);
-            long minutes = TimeUnit.MILLISECONDS.toMinutes(cooldown) % TimeUnit.HOURS.toMinutes(1);
-            long seconds = TimeUnit.MILLISECONDS.toSeconds(cooldown) % TimeUnit.MINUTES.toSeconds(1);
-
-            final @NonNull StringBuilder timeBuilder = new StringBuilder();
-
-            if (hours != 0) {
-                timeBuilder.append(hours).append("h");
-            }
-
-            if (minutes != 0) {
-                timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(minutes).append("m");
-            }
-
-            if (seconds != 0) {
-                timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(seconds).append("s");
-            }
-
-            this.audiences.sender(sender).sendMessage(
-                    lang.c("cooldown", Map.of(
-                            "{time}", timeBuilder.toString()
-                    ))
-            );
-            return;
-        }
-
-        this.locationProvider.getSpawnLocation(ruleset)
-                .thenAccept(quantumLocation -> new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        if (quantumLocation.getLocation() == null) {
-                            audiences.sender(sender).sendMessage(lang.c("failed_spawn_location"));
-                            return;
-                        }
-
-                        final @NonNull Location location = quantumLocation.getLocation();
-
-                        player.teleportAsync(location.toCenterLocation())
-                                .thenAccept(success -> {
-                                    if (success) {
-                                        wildManager.applyWildCooldown(player);
-                                        audiences.sender(sender).sendMessage(
-                                                lang.c(
-                                                        "tp_success",
-                                                        Map.of(
-                                                                "{x}", Integer.toString(location.getBlockX()),
-                                                                "{y}", Integer.toString(location.getBlockY()),
-                                                                "{z}", Integer.toString(location.getBlockZ())
-                                                        )
-                                                )
-                                        );
-                                    }
-                                });
-
-                    }
-                }.runTask(plugin));
     }
 
 

@@ -1,16 +1,26 @@
 package dev.kscott.quantumwild.wild;
 
+import com.earth2me.essentials.Essentials;
+import dev.kscott.quantum.location.LocationProvider;
+import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantumwild.config.Config;
+import dev.kscott.quantumwild.config.Lang;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides methods used by player-led interactions with the
@@ -33,15 +43,48 @@ public class WildManager {
      */
     private final @NonNull Config config;
 
+    private final @Nullable Essentials essentials;
+
     /**
-     * Constucts WildManager
+     * JavaPlugin reference
+     */
+    private final @NonNull JavaPlugin plugin;
+
+    /**
+     * BukkitAudiences reference
+     */
+    private final @NonNull BukkitAudiences audiences;
+
+    /**
+     * Lang reference
+     */
+    private final @NonNull Lang lang;
+
+
+    private final @NonNull LocationProvider locationProvider;
+
+    /**
+     * Constructs WildManager
      *
      * @param config    {@link this#config}
      * @param luckPerms {@link this#luckPerms}
      */
-    public WildManager(final @NonNull Config config, final @Nullable LuckPerms luckPerms) {
+    public WildManager(
+            final @NonNull LuckPerms luckPerms,
+            final @NonNull Essentials essentials,
+            final @NonNull Lang lang,
+            final @NonNull BukkitAudiences audiences,
+            final @NonNull Config config,
+            final @NonNull LocationProvider locationProvider,
+            final @NonNull JavaPlugin plugin
+    ) {
         this.luckPerms = luckPerms;
         this.config = config;
+        this.lang = lang;
+        this.audiences = audiences;
+        this.locationProvider = locationProvider;
+        this.plugin = plugin;
+        this.essentials = essentials;
 
         this.cooldownMap = new HashMap<>();
     }
@@ -118,5 +161,82 @@ public class WildManager {
         final long now = System.currentTimeMillis();
 
         return now >= getCurrentCooldown(player);
+    }
+
+    public @NonNull CompletableFuture<Boolean> wildTeleportPlayer(final @NonNull Player player) {
+        final @NonNull CompletableFuture<Boolean> cf = new CompletableFuture<>();
+
+        final @NonNull World world = player.getWorld();
+
+        final @Nullable QuantumRuleset ruleset = this.config.getRuleset(world);
+
+        if (ruleset == null) {
+            this.audiences.sender(player).sendMessage(lang.c("invalid_world"));
+            cf.complete(false);
+            return cf;
+        }
+
+        if (canUseWild(player)) {
+            this.locationProvider.getSpawnLocation(ruleset)
+                    .thenAccept(quantumLocation -> new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (quantumLocation.getLocation() == null) {
+                                audiences.sender(player).sendMessage(lang.c("failed_spawn_location"));
+                                return;
+                            }
+
+                            final @NonNull Location location = quantumLocation.getLocation();
+
+                            player.teleportAsync(location.toCenterLocation())
+                                    .thenAccept(success -> {
+                                        cf.complete(success);
+                                        if (success) {
+                                            applyWildCooldown(player);
+                                            audiences.sender(player).sendMessage(
+                                                    lang.c(
+                                                            "tp_success",
+                                                            Map.of(
+                                                                    "{x}", Integer.toString(location.getBlockX()),
+                                                                    "{y}", Integer.toString(location.getBlockY()),
+                                                                    "{z}", Integer.toString(location.getBlockZ())
+                                                            )
+                                                    )
+                                            );
+                                        }
+                                    });
+
+                        }
+                    }.runTask(plugin));
+        } else {
+            final long cooldown = getCurrentCooldown(player) - System.currentTimeMillis();
+
+            long hours = TimeUnit.MILLISECONDS.toHours(cooldown);
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(cooldown) % TimeUnit.HOURS.toMinutes(1);
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(cooldown) % TimeUnit.MINUTES.toSeconds(1);
+
+            final @NonNull StringBuilder timeBuilder = new StringBuilder();
+
+            if (hours != 0) {
+                timeBuilder.append(hours).append("h");
+            }
+
+            if (minutes != 0) {
+                timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(minutes).append("m");
+            }
+
+            if (seconds != 0) {
+                timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(seconds).append("s");
+            }
+
+            this.audiences.sender(player).sendMessage(
+                    lang.c("cooldown", Map.of(
+                            "{time}", timeBuilder.toString()
+                    ))
+            );
+            cf.complete(false);
+        }
+
+        return cf;
     }
 }
