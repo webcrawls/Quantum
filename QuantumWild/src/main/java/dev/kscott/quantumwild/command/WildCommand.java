@@ -125,6 +125,13 @@ public class WildCommand {
             return;
         }
 
+        boolean canUseWild = System.currentTimeMillis() >= this.wildManager.getCurrentCooldown(player);
+
+        if (!canUseWild) {
+            this.audiences.sender(sender).sendMessage(lang.c("wild.invalid_world"));
+            return;
+        }
+
         this.locationProvider.getSpawnLocation(ruleset)
                 .thenAccept(quantumLocation -> new BukkitRunnable() {
                     @Override
