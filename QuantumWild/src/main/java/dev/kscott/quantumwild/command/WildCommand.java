@@ -20,6 +20,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Handles /wild commands & subcommands
@@ -126,7 +127,31 @@ public class WildCommand {
         }
 
         if (!this.wildManager.canUseWild(player)) {
-            this.audiences.sender(sender).sendMessage(lang.c("cooldown"));
+            final long cooldown = this.wildManager.getCurrentCooldown(player) - System.currentTimeMillis();
+
+            long hours = TimeUnit.MILLISECONDS.toHours(cooldown);
+            long minutes = TimeUnit.MILLISECONDS.toMinutes(cooldown) % TimeUnit.HOURS.toMinutes(1);
+            long seconds = TimeUnit.MILLISECONDS.toSeconds(cooldown) % TimeUnit.MINUTES.toSeconds(1);
+
+            final @NonNull StringBuilder timeBuilder = new StringBuilder();
+
+            if (hours != 0) {
+                timeBuilder.append(hours).append("h");
+            }
+
+            if (minutes != 0) {
+                timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(minutes).append("m");
+            }
+
+            if (seconds != 0) {
+                timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(seconds).append("s");
+            }
+
+            this.audiences.sender(sender).sendMessage(
+                    lang.c("cooldown", Map.of(
+                            "{time}", timeBuilder.toString()
+                    ))
+            );
             return;
         }
 
