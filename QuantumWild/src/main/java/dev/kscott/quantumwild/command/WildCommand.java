@@ -145,18 +145,12 @@ public class WildCommand {
 
                         wildManager.getCooldownToApply(player);
 
-                        audiences.sender(sender).sendMessage(
-                                lang.c(
-                                        "wild.tp_success",
-                                        Map.of(
-                                                "{x}", Double.toString(location.getBlockX()),
-                                                "{y}", Double.toString(location.getBlockY()),
-                                                "{z}", Double.toString(location.getBlockZ())
-                                        )
-                                )
-                        );
+                        player.teleportAsync(location.toCenterLocation()).thenAccept(success -> {
+                            if (success) {
+                                wildManager.applyWildCooldown(player);
+                            }
+                        });
 
-                        player.teleportAsync(location.toCenterLocation());
                     }
                 }.runTask(plugin));
     }
