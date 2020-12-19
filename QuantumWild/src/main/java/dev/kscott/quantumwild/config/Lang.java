@@ -66,7 +66,7 @@ public class Lang {
      * @return Component
      */
     public @NonNull Component c(final @NonNull String key, final @NonNull Map<String, String> replacements) {
-        @Nullable String value = root.node(key.split("\\.")).getString();
+        @Nullable String value = root.node((Object) key.split("\\.")).getString();
 
         if (value == null) {
             this.plugin.getLogger().severe("Tried to load lang key '" + key + "', but it didn't exist.");
