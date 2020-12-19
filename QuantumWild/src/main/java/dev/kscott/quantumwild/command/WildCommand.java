@@ -8,6 +8,7 @@ import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.config.Lang;
+import dev.kscott.quantumwild.wild.WildManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -51,6 +52,11 @@ public class WildCommand {
     private final @NonNull Lang lang;
 
     /**
+     * WildManager reference
+     */
+    private final @NonNull WildManager wildManager;
+
+    /**
      * BukkitAudiences reference
      */
     private final @NonNull BukkitAudiences audiences;
@@ -64,6 +70,7 @@ public class WildCommand {
      * @param locationProvider {@link this#locationProvider}
      * @param commandManager   {@link this#commandManager}
      * @param plugin           {@link this#plugin}
+     * @param wildManager {@link this#wildManager}
      */
     @Inject
     public WildCommand(
@@ -72,14 +79,16 @@ public class WildCommand {
             final @NonNull Config config,
             final @NonNull LocationProvider locationProvider,
             final @NonNull CommandManager<CommandSender> commandManager,
-            final @NonNull JavaPlugin plugin
-    ) {
+            final @NonNull JavaPlugin plugin,
+            final @NonNull WildManager wildManager
+            ) {
         this.lang = lang;
         this.audiences = audiences;
         this.config = config;
         this.locationProvider = locationProvider;
         this.commandManager = commandManager;
         this.plugin = plugin;
+        this.wildManager = wildManager;
 
         this.setupCommands();
     }
@@ -126,6 +135,8 @@ public class WildCommand {
                         }
 
                         final @NonNull Location location = quantumLocation.getLocation();
+
+                        wildManager.getCooldownToApply(player);
 
                         audiences.sender(sender).sendMessage(
                                 lang.c(

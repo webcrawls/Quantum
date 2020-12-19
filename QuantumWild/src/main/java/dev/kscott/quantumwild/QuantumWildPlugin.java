@@ -5,7 +5,6 @@ import com.google.inject.Injector;
 import dev.kscott.quantumwild.command.WildCommand;
 import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.module.*;
-import dev.kscott.quantumwild.wild.WildManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -18,8 +17,9 @@ public final class QuantumWildPlugin extends JavaPlugin {
                 new PluginModule(this),
                 new CommandModule(this),
                 new ConfigModule(),
+                new LuckPermsModule(),
                 new WildModule()
-        );
+                );
 
         injector.getInstance(Config.class);
 

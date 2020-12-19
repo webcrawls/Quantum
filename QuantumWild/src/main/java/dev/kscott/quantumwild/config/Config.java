@@ -44,6 +44,11 @@ public class Config {
      */
     private final @NonNull RulesetRegistry rulesetRegistry;
 
+    // Config values
+    private int FALLBACK_COOLDOWN;
+
+    private boolean PER_WORLD_COOLDOWN_ENABLED;
+
     /**
      * Constructs the config, loads it, and loads rulesets.
      *
@@ -95,6 +100,9 @@ public class Config {
      * Loads QuantumWild's configuration values
      */
     private void loadConfigurationValues() {
+        this.PER_WORLD_COOLDOWN_ENABLED = this.root.node("cooldown").node("per-world-cooldown").getBoolean(false);
+        this.FALLBACK_COOLDOWN = this.root.node("cooldown").node("cooldown-fallback-value").getInt(300);
+
         this.worldRulesetMap.clear();
 
         for (final Map.Entry<Object, ? extends ConfigurationNode> entry : root.node("worlds").childrenMap().entrySet()) {
@@ -131,5 +139,13 @@ public class Config {
 
             this.worldRulesetMap.put(world.getUID(), ruleset);
         }
+    }
+
+    public boolean isPerWorldCooldownEnabled() {
+        return PER_WORLD_COOLDOWN_ENABLED;
+    }
+
+    public int getFallbackCooldown() {
+        return FALLBACK_COOLDOWN;
     }
 }

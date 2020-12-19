@@ -1,7 +1,7 @@
 repositories {
     mavenLocal()
     maven {
-        url = "https://jitpack.io"
+        url = uri("https://jitpack.io")
     }
 }
 
@@ -16,6 +16,7 @@ dependencies {
 
     compileOnly("cloud.commandframework:cloud-paper:1.3.0-SNAPSHOT")
 
+    compileOnly("net.luckperms:api:5.2")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
 
 }
