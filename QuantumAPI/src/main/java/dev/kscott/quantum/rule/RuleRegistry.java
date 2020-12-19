@@ -1,10 +1,8 @@
 package dev.kscott.quantum.rule;
 
-import com.destroystokyo.paper.event.block.BeaconEffectEvent;
-import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import dev.kscott.quantum.rule.rules.async.AvoidBlockRule;
-import dev.kscott.quantum.rule.rules.sync.AvoidEntityRule;
 import dev.kscott.quantum.rule.rules.async.OnlyBlockRule;
+import dev.kscott.quantum.rule.rules.sync.AvoidEntityRule;
 import dev.kscott.quantum.rule.rules.sync.NearbyEntityRule;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -49,6 +47,7 @@ public class RuleRegistry {
 
     /**
      * Constructs a fresh QuantumRule of the given id
+     *
      * @param id id of QuantumRule
      * @return A new QuantumRule object
      */
@@ -62,6 +61,7 @@ public class RuleRegistry {
 
     /**
      * Constructs a fresh QuantumRule
+     *
      * @param quantumRuleClass class of QuantumRule
      * @return a new QuantumRule object
      */
@@ -80,6 +80,7 @@ public class RuleRegistry {
 
     /**
      * Returns a Collection of all registered QuantumRules
+     *
      * @return QuantumRule Collection
      */
     public @NonNull Collection<EffectiveRule> getRules() {
@@ -110,16 +111,18 @@ public class RuleRegistry {
 
         /**
          * Constructs the EffectiveRule
-         * @param id id of rule
+         *
+         * @param id        id of rule
          * @param ruleClass class of rule
          */
-        private EffectiveRule(final @NonNull String id, final @NonNull Class<? extends QuantumRule>  ruleClass) {
+        private EffectiveRule(final @NonNull String id, final @NonNull Class<? extends QuantumRule> ruleClass) {
             this.id = id;
             this.ruleClass = ruleClass;
         }
 
         /**
          * Returns the rule's id
+         *
          * @return String id
          */
         public @NonNull String getId() {
@@ -128,6 +131,7 @@ public class RuleRegistry {
 
         /**
          * Returns the rule's class
+         *
          * @return rule Class
          */
         public Class<? extends QuantumRule> getRuleClass() {

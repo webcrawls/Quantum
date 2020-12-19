@@ -19,7 +19,7 @@ public final class QuantumWildPlugin extends JavaPlugin {
                 new ConfigModule(),
                 new LuckPermsModule(),
                 new WildModule()
-                );
+        );
 
         injector.getInstance(Config.class);
 

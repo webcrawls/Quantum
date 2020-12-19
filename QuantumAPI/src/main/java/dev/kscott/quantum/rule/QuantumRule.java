@@ -1,7 +1,6 @@
 package dev.kscott.quantum.rule;
 
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
-import org.bukkit.ChunkSnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -21,6 +20,7 @@ public abstract class QuantumRule {
 
     /**
      * Constructs QuantumRule
+     *
      * @param options the rules options
      */
     public QuantumRule(final @NonNull QuantumRuleOption<?>... options) {
@@ -34,6 +34,7 @@ public abstract class QuantumRule {
 
     /**
      * Returns an option with a specified id
+     *
      * @param id the id of the option
      * @return QuantumRuleOption
      */
@@ -43,8 +44,9 @@ public abstract class QuantumRule {
 
     /**
      * Returns an option with the class
+     *
      * @param quantumRuleOptionClass class to get option for
-     * @param <T> the option's type
+     * @param <T>                    the option's type
      * @return QuantumRuleOption
      */
     public <T> QuantumRuleOption<T> getOption(Class<? extends QuantumRuleOption<T>> quantumRuleOptionClass) {

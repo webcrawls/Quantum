@@ -9,7 +9,6 @@ import org.spongepowered.configurate.ConfigurateException;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -65,7 +64,7 @@ public class Lang {
      * Gets the MiniMessage value at {@code key} and returns a parsed Component
      * All keys in the {@code replacements} param will be replaced with their value.
      *
-     * @param key path to value
+     * @param key          path to value
      * @param replacements a map where the key is a placeholder, and the value is what to replace that placeholder with
      * @return Component
      */

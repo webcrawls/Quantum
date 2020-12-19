@@ -1,8 +1,8 @@
 package dev.kscott.quantum.rule.ruleset;
 
 import dev.kscott.quantum.location.locator.YLocator;
-import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.QuantumRule;
+import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import org.checkerframework.checker.nullness.qual.NonNull;

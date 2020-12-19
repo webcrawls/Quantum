@@ -97,6 +97,7 @@ public class WildManager {
     /**
      * Applies /wild cooldown to a Player, using the value from
      * {@link this#getCooldownToApply(Player)}
+     *
      * @param player Player to apply cooldown for
      */
     public void applyWildCooldown(final @NonNull Player player) {
@@ -109,6 +110,7 @@ public class WildManager {
 
     /**
      * Checks if the Player's cooldown has expired
+     *
      * @param player Player
      * @return true they can
      */

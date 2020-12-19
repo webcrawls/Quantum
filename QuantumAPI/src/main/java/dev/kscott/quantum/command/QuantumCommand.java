@@ -170,7 +170,7 @@ public class QuantumCommand {
 
         final TextComponent.Builder searchesComponent = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>Quantum has generated <aqua>"+searches+" location"+(searches == 1 ? "" : "s")+"</aqua>."));
+                .append(MiniMessage.get().parse(" <gray>Quantum has generated <aqua>" + searches + " location" + (searches == 1 ? "" : "s") + "</aqua>."));
         audience.sendMessage(searchesComponent);
 
         final long time = this.timer.getAverageTime();
@@ -179,7 +179,7 @@ public class QuantumCommand {
 
         final TextComponent.Builder timeComponent = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>On average, Quantum has spent <aqua>"+seconds+" seconds</aqua> searching for locations."));
+                .append(MiniMessage.get().parse(" <gray>On average, Quantum has spent <aqua>" + seconds + " seconds</aqua> searching for locations."));
         audience.sendMessage(timeComponent);
     }
 

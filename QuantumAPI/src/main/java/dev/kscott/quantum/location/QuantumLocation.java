@@ -1,6 +1,5 @@
 package dev.kscott.quantum.location;
 
-import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import org.bukkit.Location;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -35,9 +34,10 @@ public class QuantumLocation {
 
     /**
      * The QuantumLocation ctor
+     *
      * @param duration {@link this#duration}
      * @param location {@link this#location}
-     * @param ruleset {@link this#ruleset}
+     * @param ruleset  {@link this#ruleset}
      */
     public QuantumLocation(
             final long duration,

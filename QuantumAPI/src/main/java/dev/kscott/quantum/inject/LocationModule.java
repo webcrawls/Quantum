@@ -1,8 +1,6 @@
 package dev.kscott.quantum.inject;
 
-import cloud.commandframework.CommandManager;
 import cloud.commandframework.paper.PaperCommandManager;
-import cloud.commandframework.tasks.TaskRecipe;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;

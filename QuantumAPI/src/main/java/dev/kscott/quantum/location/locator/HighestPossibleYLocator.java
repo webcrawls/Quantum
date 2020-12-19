@@ -10,9 +10,10 @@ public class HighestPossibleYLocator implements YLocator {
 
     /**
      * Checks against the snapshot's heightmap to get the highest Y value
+     *
      * @param snapshot The snapshot of the chunk to look for
-     * @param x the X coordinate (relative to chunk, 0-15)
-     * @param z the Z coordinate (relative to chunk, 0-15)
+     * @param x        the X coordinate (relative to chunk, 0-15)
+     * @param z        the Z coordinate (relative to chunk, 0-15)
      * @return The highest valid Y value
      */
     @Override

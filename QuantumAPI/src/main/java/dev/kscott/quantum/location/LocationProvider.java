@@ -194,7 +194,7 @@ public class LocationProvider {
 
                         this.timer.addTime(searchTime);
                     } else {
-                        cf.complete(getSpawnLocation(tries+1, start, state.getQuantumRuleset()).join());
+                        cf.complete(getSpawnLocation(tries + 1, start, state.getQuantumRuleset()).join());
                     }
                 })
                 .execute();
