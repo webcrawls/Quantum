@@ -149,9 +149,9 @@ public class WildCommand {
                                                 lang.c(
                                                         "tp_success",
                                                         Map.of(
-                                                                "{x}", Double.toString(location.getBlockX()),
-                                                                "{y}", Double.toString(location.getBlockY()),
-                                                                "{z}", Double.toString(location.getBlockZ())
+                                                                "{x}", Integer.toString(location.getBlockX()),
+                                                                "{y}", Integer.toString(location.getBlockY()),
+                                                                "{z}", Integer.toString(location.getBlockZ())
                                                         )
                                                 )
                                         );
