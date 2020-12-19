@@ -26,6 +26,10 @@ public class IntegrationsModule extends AbstractModule {
     @Singleton
     @Inject
     public @Nullable LuckPerms providePermissionApi(final @NonNull JavaPlugin plugin) {
+        if (!plugin.getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
+            return null;
+        }
+
         final @Nullable RegisteredServiceProvider<LuckPerms> rsp = plugin.getServer().getServicesManager().getRegistration(LuckPerms.class);
 
         if (rsp == null) {
@@ -45,6 +49,10 @@ public class IntegrationsModule extends AbstractModule {
     @Singleton
     @Inject
     public @Nullable Essentials provideEssentialsApi(final @NonNull JavaPlugin plugin) {
+        if (!plugin.getServer().getPluginManager().isPluginEnabled("Essentials")) {
+            return null;
+        }
+
         final @Nullable RegisteredServiceProvider<Essentials> rsp = plugin.getServer().getServicesManager().getRegistration(Essentials.class);
 
         if (rsp == null) {
