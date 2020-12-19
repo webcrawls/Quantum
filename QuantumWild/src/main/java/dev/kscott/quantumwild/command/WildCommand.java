@@ -70,7 +70,7 @@ public class WildCommand {
      * @param locationProvider {@link this#locationProvider}
      * @param commandManager   {@link this#commandManager}
      * @param plugin           {@link this#plugin}
-     * @param wildManager {@link this#wildManager}
+     * @param wildManager      {@link this#wildManager}
      */
     @Inject
     public WildCommand(
@@ -81,7 +81,7 @@ public class WildCommand {
             final @NonNull CommandManager<CommandSender> commandManager,
             final @NonNull JavaPlugin plugin,
             final @NonNull WildManager wildManager
-            ) {
+    ) {
         this.lang = lang;
         this.audiences = audiences;
         this.config = config;
@@ -143,21 +143,22 @@ public class WildCommand {
 
                         final @NonNull Location location = quantumLocation.getLocation();
 
-                        player.teleportAsync(location.toCenterLocation()).thenAccept(success -> {
-                            if (success) {
-                                wildManager.applyWildCooldown(player);
-                                audiences.sender(sender).sendMessage(
-                                        lang.c(
-                                                "wild.tp_success",
-                                                Map.of(
-                                                        "{x}", Double.toString(location.getBlockX()),
-                                                        "{y}", Double.toString(location.getBlockY()),
-                                                        "{z}", Double.toString(location.getBlockZ())
+                        player.teleportAsync(location.toCenterLocation())
+                                .thenAccept(success -> {
+                                    if (success) {
+                                        wildManager.applyWildCooldown(player);
+                                        audiences.sender(sender).sendMessage(
+                                                lang.c(
+                                                        "wild.tp_success",
+                                                        Map.of(
+                                                                "{x}", Double.toString(location.getBlockX()),
+                                                                "{y}", Double.toString(location.getBlockY()),
+                                                                "{z}", Double.toString(location.getBlockZ())
+                                                        )
                                                 )
-                                        )
-                                );
-                            }
-                        });
+                                        );
+                                    }
+                                });
 
                     }
                 }.runTask(plugin));
