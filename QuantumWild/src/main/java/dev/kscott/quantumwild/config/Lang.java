@@ -10,6 +10,8 @@ import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.hocon.HoconConfigurationLoader;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public class Lang {
         this.plugin = plugin;
 
         // Save config to file if it doesn't already exist
-        if (!new File(this.plugin.getDataFolder(), "lang.conf").exists()) {
+        if (!Files.exists(Path.of(this.plugin.getDataFolder().getAbsolutePath(), "lang.conf"))) {
             plugin.saveResource("lang.conf", false);
         }
 
