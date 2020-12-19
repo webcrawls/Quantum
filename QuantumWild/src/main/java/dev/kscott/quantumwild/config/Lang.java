@@ -20,7 +20,7 @@ public class Lang {
      */
     private final @NonNull JavaPlugin plugin;
 
-    private final @NonNull ConfigurationNode root;
+    private @NonNull ConfigurationNode root;
 
     /**
      * Constructs the lang.
@@ -42,7 +42,9 @@ public class Lang {
         try {
             root = loader.load();
         } catch (ConfigurateException e) {
-            throw new RuntimeException("Failed to load the langfile.", e);
+            this.plugin.getLogger().severe("There was an error loading the lang: "+e.getMessage());
+            this.plugin.getLogger().severe("QuantumWild will continue loading, but you should really fix this.");
+            root = loader.createNode();
         }
     }
 
