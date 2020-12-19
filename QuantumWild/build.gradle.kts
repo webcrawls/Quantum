@@ -1,5 +1,10 @@
 repositories {
     mavenLocal()
+
+    maven {
+        name = "EssentialsX"
+        url = uri("https://repo.essentialsx.net/releases/")
+    }
 }
 
 dependencies {
@@ -15,4 +20,5 @@ dependencies {
 
     compileOnly("net.luckperms:api:5.2")
 
+    compileOnly("net.ess3:EssentialsX:2.18.2")
 }
