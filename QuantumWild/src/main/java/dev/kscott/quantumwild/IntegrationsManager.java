@@ -1,7 +1,6 @@
 package dev.kscott.quantumwild;
 
 import com.earth2me.essentials.Essentials;
-import dev.kscott.quantumwild.module.IntegrationsModule;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
