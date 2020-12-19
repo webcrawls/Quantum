@@ -143,8 +143,6 @@ public class WildCommand {
 
                         final @NonNull Location location = quantumLocation.getLocation();
 
-                        wildManager.getCooldownToApply(player);
-
                         player.teleportAsync(location.toCenterLocation()).thenAccept(success -> {
                             if (success) {
                                 wildManager.applyWildCooldown(player);
