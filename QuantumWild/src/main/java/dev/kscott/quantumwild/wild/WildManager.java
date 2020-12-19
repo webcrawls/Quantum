@@ -191,6 +191,12 @@ public class WildManager {
         return now >= getCurrentCooldown(player);
     }
 
+    /**
+     * Teleports a player, sends messages, errors, etc.
+     *
+     * @param player Player to teleport
+     * @return A CompletableFuture<Boolean>, where the boolean is true if it was a successful teleport, or false if it failed (i.e. cooldown, invalid world, etc)
+     */
     public @NonNull CompletableFuture<Boolean> wildTeleportPlayer(final @NonNull Player player) {
         final @NonNull CompletableFuture<Boolean> cf = new CompletableFuture<>();
 
