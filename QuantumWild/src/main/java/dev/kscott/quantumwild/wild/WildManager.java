@@ -100,10 +100,21 @@ public class WildManager {
      * @param player Player to apply cooldown for
      */
     public void applyWildCooldown(final @NonNull Player player) {
-        long ms = getCooldownToApply(player) * 1000L;
+        final long ms = getCooldownToApply(player) * 1000L;
 
-        long timestamp = System.currentTimeMillis() + ms;
+        final long timestamp = System.currentTimeMillis() + ms;
 
         this.cooldownMap.put(player.getUniqueId(), timestamp);
+    }
+
+    /**
+     * Checks if the Player's cooldown has expired
+     * @param player Player
+     * @return true they can
+     */
+    public boolean canUseWild(final @NonNull Player player) {
+        final long now = System.currentTimeMillis();
+
+        return now >= this.cooldownMap.get(player.getUniqueId());
     }
 }

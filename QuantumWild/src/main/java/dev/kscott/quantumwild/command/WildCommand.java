@@ -125,9 +125,7 @@ public class WildCommand {
             return;
         }
 
-        boolean canUseWild = System.currentTimeMillis() >= this.wildManager.getCurrentCooldown(player);
-
-        if (!canUseWild) {
+        if (!this.wildManager.canUseWild(player)) {
             this.audiences.sender(sender).sendMessage(lang.c("cooldown"));
             return;
         }
