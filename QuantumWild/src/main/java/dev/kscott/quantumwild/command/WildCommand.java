@@ -121,14 +121,14 @@ public class WildCommand {
         final @Nullable QuantumRuleset ruleset = this.config.getRuleset(world);
 
         if (ruleset == null) {
-            this.audiences.sender(sender).sendMessage(lang.c("wild.invalid_world"));
+            this.audiences.sender(sender).sendMessage(lang.c("invalid_world"));
             return;
         }
 
         boolean canUseWild = System.currentTimeMillis() >= this.wildManager.getCurrentCooldown(player);
 
         if (!canUseWild) {
-            this.audiences.sender(sender).sendMessage(lang.c("wild.invalid_world"));
+            this.audiences.sender(sender).sendMessage(lang.c("cooldown"));
             return;
         }
 
@@ -137,7 +137,7 @@ public class WildCommand {
                     @Override
                     public void run() {
                         if (quantumLocation.getLocation() == null) {
-                            audiences.sender(sender).sendMessage(lang.c("wild.failed_spawn_location"));
+                            audiences.sender(sender).sendMessage(lang.c("failed_spawn_location"));
                             return;
                         }
 
@@ -149,7 +149,7 @@ public class WildCommand {
                                         wildManager.applyWildCooldown(player);
                                         audiences.sender(sender).sendMessage(
                                                 lang.c(
-                                                        "wild.tp_success",
+                                                        "tp_success",
                                                         Map.of(
                                                                 "{x}", Double.toString(location.getBlockX()),
                                                                 "{y}", Double.toString(location.getBlockY()),
