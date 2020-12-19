@@ -18,16 +18,32 @@ import java.util.UUID;
  */
 public class WildManager {
 
+    /**
+     * A map where the key is a Player's UUID, and the value is when the player can use /wild again (in ms)
+     */
     private final @NonNull Map<@NonNull UUID, @NonNull Long> cooldownMap;
 
+    /**
+     * LuckPerms reference
+     */
     private final @Nullable LuckPerms luckPerms;
 
+    /**
+     * Config reference
+     */
     private final @NonNull Config config;
 
+    /**
+     * Constucts WildManager
+     *
+     * @param config    {@link this#config}
+     * @param luckPerms {@link this#luckPerms}
+     */
     public WildManager(final @NonNull Config config, final @Nullable LuckPerms luckPerms) {
-        this.cooldownMap = new HashMap<>();
         this.luckPerms = luckPerms;
         this.config = config;
+
+        this.cooldownMap = new HashMap<>();
     }
 
     /**
@@ -59,7 +75,7 @@ public class WildManager {
             return Integer.parseInt(cooldownValue);
         }
 
-        final @Nullable String cooldownValue = meta.getMetaValue(("quantum.wild.cooldown"));
+        final @Nullable String cooldownValue = meta.getMetaValue("quantum.wild.cooldown");
 
         if (cooldownValue == null) {
             return 0;
@@ -68,10 +84,26 @@ public class WildManager {
         return Integer.parseInt(cooldownValue);
     }
 
+    /**
+     * Returns when a player's cooldown will be up (in ms)
+     *
+     * @param player Player to check
+     * @return the timestamp of when their cooldown will be up, in ms will return 0 if there is no cooldown applied
+     */
     public long getCurrentCooldown(final @NonNull Player player) {
-        return 0;
+        return this.cooldownMap.getOrDefault(player.getUniqueId(), 0L);
     }
 
-    public void setCooldown(final @NonNull Player player) {
+    /**
+     * Applies /wild cooldown to a Player, using the value from
+     * {@link this#getCooldownToApply(Player)}
+     * @param player Player to apply cooldown for
+     */
+    public void applyWildCooldown(final @NonNull Player player) {
+        long ms = getCooldownToApply(player) * 1000L;
+
+        long timestamp = System.currentTimeMillis() + ms;
+
+        this.cooldownMap.put(player.getUniqueId(), timestamp);
     }
 }
