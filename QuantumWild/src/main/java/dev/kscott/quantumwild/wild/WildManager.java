@@ -115,6 +115,6 @@ public class WildManager {
     public boolean canUseWild(final @NonNull Player player) {
         final long now = System.currentTimeMillis();
 
-        return now >= this.cooldownMap.getOrDefault(player.getUniqueId(), 0L);
+        return now >= getCurrentCooldown(player);
     }
 }
