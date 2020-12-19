@@ -42,7 +42,8 @@ public class Lang {
         try {
             root = loader.load();
         } catch (ConfigurateException e) {
-            this.plugin.getLogger().severe("There was an error loading the lang: "+e.getMessage());
+            this.plugin.getLogger().severe("There was an error loading the lang:");
+            e.printStackTrace();
             this.plugin.getLogger().severe("QuantumWild will continue loading, but you should really fix this.");
             root = loader.createNode();
         }
