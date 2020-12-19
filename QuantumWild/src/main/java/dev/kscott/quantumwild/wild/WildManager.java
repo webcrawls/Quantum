@@ -1,12 +1,11 @@
 package dev.kscott.quantumwild.wild;
 
-import com.earth2me.essentials.Essentials;
 import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
+import dev.kscott.quantumwild.IntegrationsManager;
 import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.config.Lang;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.luckperms.api.LuckPerms;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -33,17 +32,18 @@ public class WildManager {
      */
     private final @NonNull Map<@NonNull UUID, @NonNull Long> cooldownMap;
 
+
     /**
-     * LuckPerms reference
+     * A map where the key is a Player's UUID, and the value is a map where the key is a world's UUID, and the value is when the player can use /wild again
      */
-    private final @Nullable LuckPerms luckPerms;
+    private final @NonNull Map<@NonNull UUID, @NonNull Map<@NonNull UUID, @NonNull Long>> perWorldCooldownMap;
 
     /**
      * Config reference
      */
     private final @NonNull Config config;
 
-    private final @Nullable Essentials essentials;
+    private final @NonNull IntegrationsManager integrationsManager;
 
     /**
      * JavaPlugin reference
@@ -66,27 +66,30 @@ public class WildManager {
     /**
      * Constructs WildManager
      *
-     * @param config    {@link this#config}
-     * @param luckPerms {@link this#luckPerms}
+     * @param config              {@link this#config}
+     * @param integrationsManager {@link this#integrationsManager}
+     * @param locationProvider    {@link this#locationProvider}
+     * @param audiences           {@link this#audiences}
+     * @param lang                {@link this#lang}
+     * @param plugin              {@link this#plugin}
      */
     public WildManager(
-            final @NonNull LuckPerms luckPerms,
-            final @NonNull Essentials essentials,
+            final @NonNull IntegrationsManager integrationsManager,
             final @NonNull Lang lang,
             final @NonNull BukkitAudiences audiences,
             final @NonNull Config config,
             final @NonNull LocationProvider locationProvider,
             final @NonNull JavaPlugin plugin
     ) {
-        this.luckPerms = luckPerms;
         this.config = config;
         this.lang = lang;
         this.audiences = audiences;
         this.locationProvider = locationProvider;
         this.plugin = plugin;
-        this.essentials = essentials;
+        this.integrationsManager = integrationsManager;
 
         this.cooldownMap = new HashMap<>();
+        this.perWorldCooldownMap = new HashMap<>();
     }
 
     /**
@@ -98,11 +101,11 @@ public class WildManager {
      * @return amount of cooldown, in seconds
      */
     public int getCooldownToApply(final @NonNull Player player) {
-        if (this.luckPerms == null) {
+        if (!this.integrationsManager.isLuckPermsEnabled()) {
             return this.config.getFallbackCooldown();
         }
 
-        final @NonNull CachedMetaData meta = this.luckPerms.getUserManager().getUser(player.getUniqueId())
+        final @NonNull CachedMetaData meta = this.integrationsManager.getLuckPerms().getUserManager().getUser(player.getUniqueId())
                 .getCachedData()
                 .getMetaData();
 
@@ -134,7 +137,21 @@ public class WildManager {
      * @return the timestamp of when their cooldown will be up, in ms will return 0 if there is no cooldown applied
      */
     public long getCurrentCooldown(final @NonNull Player player) {
-        return this.cooldownMap.getOrDefault(player.getUniqueId(), 0L);
+        if (this.config.isPerWorldCooldownEnabled()) {
+            final @NonNull UUID playerUuid = player.getUniqueId();
+            final @NonNull UUID worldUuid = player.getWorld().getUID();
+
+            final @Nullable Map<UUID, Long> worldCooldownMap = this.perWorldCooldownMap.get(playerUuid);
+
+            if (worldCooldownMap == null) {
+                return 0L;
+            }
+
+            return worldCooldownMap.getOrDefault(worldUuid, 0L);
+        } else {
+            return this.cooldownMap.getOrDefault(player.getUniqueId(), 0L);
+        }
+
     }
 
     /**
@@ -148,7 +165,18 @@ public class WildManager {
 
         final long timestamp = System.currentTimeMillis() + ms;
 
-        this.cooldownMap.put(player.getUniqueId(), timestamp);
+        if (this.config.isPerWorldCooldownEnabled()) {
+            if (!this.perWorldCooldownMap.containsKey(player.getUniqueId())) {
+                this.perWorldCooldownMap.put(player.getUniqueId(), new HashMap<>());
+            }
+
+            final @NonNull Map<UUID, Long> map = this.perWorldCooldownMap.get(player.getUniqueId());
+
+            map.put(player.getWorld().getUID(), timestamp);
+        } else {
+            this.cooldownMap.put(player.getUniqueId(), timestamp);
+        }
+
     }
 
     /**

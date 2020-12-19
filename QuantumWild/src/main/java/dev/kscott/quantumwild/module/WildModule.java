@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import dev.kscott.quantum.location.LocationProvider;
+import dev.kscott.quantumwild.IntegrationsManager;
 import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.config.Lang;
 import dev.kscott.quantumwild.wild.WildManager;
@@ -20,15 +21,14 @@ public class WildModule extends AbstractModule {
     @Singleton
     @Inject
     public WildManager provideWildeManager(
-            final @NonNull Essentials essentials,
+            final @NonNull IntegrationsManager integrationsManager,
             final @NonNull Lang lang,
             final @NonNull BukkitAudiences audiences,
             final @NonNull Config config,
             final @NonNull LocationProvider locationProvider,
-            final @NonNull JavaPlugin plugin,
-            final @NonNull LuckPerms luckPerms
+            final @NonNull JavaPlugin plugin
     ) {
-        return new WildManager(luckPerms, essentials, lang, audiences, config, locationProvider, plugin);
+        return new WildManager(integrationsManager, lang, audiences, config, locationProvider, plugin);
     }
 
 }

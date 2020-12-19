@@ -5,6 +5,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import dev.kscott.quantumwild.IntegrationsManager;
 import net.luckperms.api.LuckPerms;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,7 +18,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class IntegrationsModule extends AbstractModule {
 
     /**
-     * Provides the LuckPerms API
+     * Provides the IntegrationsManager
      *
      * @param plugin JavaPlugin instance
      * @return LuckPerms, may be null
@@ -25,42 +26,8 @@ public class IntegrationsModule extends AbstractModule {
     @Provides
     @Singleton
     @Inject
-    public @Nullable LuckPerms providePermissionApi(final @NonNull JavaPlugin plugin) {
-        if (!plugin.getServer().getPluginManager().isPluginEnabled("LuckPerms")) {
-            return null;
-        }
-
-        final @Nullable RegisteredServiceProvider<LuckPerms> rsp = plugin.getServer().getServicesManager().getRegistration(LuckPerms.class);
-
-        if (rsp == null) {
-            plugin.getLogger().warning("Features that depend on the LuckPerms API will not function correctly.");
-            return null;
-        }
-
-        return rsp.getProvider();
-    }
-
-    /**
-     * Provides the EssentialsX API
-     * @param plugin javaplugin
-     * @return Essentials, may be null
-     */
-    @Provides
-    @Singleton
-    @Inject
-    public @Nullable Essentials provideEssentialsApi(final @NonNull JavaPlugin plugin) {
-        if (!plugin.getServer().getPluginManager().isPluginEnabled("Essentials")) {
-            return null;
-        }
-
-        final @Nullable RegisteredServiceProvider<Essentials> rsp = plugin.getServer().getServicesManager().getRegistration(Essentials.class);
-
-        if (rsp == null) {
-            plugin.getLogger().warning("Features that depend on the EssentialsX API will not function correctly.");
-            return null;
-        }
-
-        return rsp.getProvider();
+    public @Nullable IntegrationsManager providePermissionApi(final @NonNull JavaPlugin plugin) {
+        return new IntegrationsManager(plugin);
     }
 
 }
