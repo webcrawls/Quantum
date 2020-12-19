@@ -11,8 +11,17 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+/**
+ * Provides integrations with various third-party plugin APIs.
+ */
 public class IntegrationsModule extends AbstractModule {
 
+    /**
+     * Provides the LuckPerms API
+     *
+     * @param plugin JavaPlugin instance
+     * @return LuckPerms, may be null
+     */
     @Provides
     @Singleton
     @Inject
@@ -27,6 +36,11 @@ public class IntegrationsModule extends AbstractModule {
         return rsp.getProvider();
     }
 
+    /**
+     * Provides the EssentialsX API
+     * @param plugin javaplugin
+     * @return Essentials, may be null
+     */
     @Provides
     @Singleton
     @Inject
