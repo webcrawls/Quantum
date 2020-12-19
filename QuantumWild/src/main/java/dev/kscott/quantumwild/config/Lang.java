@@ -22,7 +22,7 @@ public class Lang {
      */
     private final @NonNull JavaPlugin plugin;
 
-    private @NonNull ConfigurationNode root;
+    private @Nullable ConfigurationNode root;
 
     /**
      * Constructs the lang.
@@ -47,7 +47,6 @@ public class Lang {
             this.plugin.getLogger().severe("There was an error loading the lang:");
             e.printStackTrace();
             this.plugin.getLogger().severe("QuantumWild will continue loading, but you should really fix this.");
-            root = loader.createNode();
         }
     }
 
@@ -71,7 +70,13 @@ public class Lang {
      * @return Component
      */
     public @NonNull Component c(final @NonNull String key, final @NonNull Map<String, String> replacements) {
-        @Nullable String value = root.node((Object) key.split("\\.")).getString();
+        @Nullable String value;
+
+        if (root != null) {
+            value = root.node(key.split("\\.")).getString();
+        } else {
+            value = "<red>ERR</red>";
+        }
 
         if (value == null) {
             this.plugin.getLogger().severe("Tried to load lang key '" + key + "', but it didn't exist.");
