@@ -4,10 +4,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import dev.kscott.quantumwild.command.WildCommand;
 import dev.kscott.quantumwild.config.Config;
-import dev.kscott.quantumwild.module.CommandModule;
-import dev.kscott.quantumwild.module.ConfigModule;
-import dev.kscott.quantumwild.module.PluginModule;
-import dev.kscott.quantumwild.module.QuantumModule;
+import dev.kscott.quantumwild.module.*;
+import dev.kscott.quantumwild.wild.WildManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -19,7 +17,8 @@ public final class QuantumWildPlugin extends JavaPlugin {
                 new QuantumModule(this),
                 new PluginModule(this),
                 new CommandModule(this),
-                new ConfigModule()
+                new ConfigModule(),
+                new WildModule()
         );
 
         injector.getInstance(Config.class);
