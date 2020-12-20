@@ -1,6 +1,5 @@
 package dev.kscott.quantumwild.wild;
 
-import com.earth2me.essentials.Trade;
 import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantumwild.IntegrationsManager;
@@ -16,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.slf4j.spi.LocationAwareLogger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -215,6 +215,7 @@ public class WildManager {
         if (canUseWild(player)) {
 
             if (this.config.isWarmupEnabled()) {
+                audiences.sender(player).sendMessage(lang.c("warmup"));
                 new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -244,11 +245,7 @@ public class WildManager {
                                     audiences.sender(player).sendMessage(
                                             lang.c(
                                                     "tp-success",
-                                                    Map.of(
-                                                            "{x}", Integer.toString(location.getBlockX()),
-                                                            "{y}", Integer.toString(location.getBlockY()),
-                                                            "{z}", Integer.toString(location.getBlockZ())
-                                                    )
+                                                    locationToPlaceholderMap(location)
                                             )
                                     );
                                 }
@@ -272,11 +269,7 @@ public class WildManager {
                                             audiences.sender(player).sendMessage(
                                                     lang.c(
                                                             "tp-success",
-                                                            Map.of(
-                                                                    "{x}", Integer.toString(location.getBlockX()),
-                                                                    "{y}", Integer.toString(location.getBlockY()),
-                                                                    "{z}", Integer.toString(location.getBlockZ())
-                                                            )
+                                                            locationToPlaceholderMap(location)
                                                     )
                                             );
                                         }
@@ -286,32 +279,45 @@ public class WildManager {
         } else {
             final long cooldown = getCurrentCooldown(player) - System.currentTimeMillis();
 
-            long hours = TimeUnit.MILLISECONDS.toHours(cooldown);
-            long minutes = TimeUnit.MILLISECONDS.toMinutes(cooldown) % TimeUnit.HOURS.toMinutes(1);
-            long seconds = TimeUnit.MILLISECONDS.toSeconds(cooldown) % TimeUnit.MINUTES.toSeconds(1);
-
-            final @NonNull StringBuilder timeBuilder = new StringBuilder();
-
-            if (hours != 0) {
-                timeBuilder.append(hours).append("h");
-            }
-
-            if (minutes != 0) {
-                timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(minutes).append("m");
-            }
-
-            if (seconds != 0) {
-                timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(seconds).append("s");
-            }
-
             this.audiences.sender(player).sendMessage(
                     lang.c("cooldown", Map.of(
-                            "{time}", timeBuilder.toString()
-                    ))
+                            "{time}", msToHms(cooldown)
+                            )
+                    )
             );
             cf.complete(false);
         }
 
         return cf;
+    }
+
+    private @NonNull String msToHms(final long ms) {
+        long hours = TimeUnit.MILLISECONDS.toHours(ms);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % TimeUnit.HOURS.toMinutes(1);
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(ms) % TimeUnit.MINUTES.toSeconds(1);
+
+        final @NonNull StringBuilder timeBuilder = new StringBuilder();
+
+        if (hours != 0) {
+            timeBuilder.append(hours).append("h");
+        }
+
+        if (minutes != 0) {
+            timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(minutes).append("m");
+        }
+
+        if (seconds != 0) {
+            timeBuilder.append(timeBuilder.length() == 0 ? "" : " ").append(seconds).append("s");
+        }
+
+        return timeBuilder.toString();
+    }
+
+    private @NonNull Map<String, String> locationToPlaceholderMap(final @NonNull Location location) {
+        return Map.of(
+                "{x}", Integer.toString(location.getBlockX()),
+                "{y}", Integer.toString(location.getBlockY()),
+                "{z}", Integer.toString(location.getBlockZ())
+        );
     }
 }
