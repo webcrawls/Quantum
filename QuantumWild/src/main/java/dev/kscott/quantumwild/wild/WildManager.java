@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -206,16 +207,26 @@ public class WildManager {
         final @Nullable QuantumRuleset ruleset = this.config.getRuleset(world);
 
         if (ruleset == null) {
-            this.audiences.sender(player).sendMessage(lang.c("invalid_world"));
+            this.audiences.sender(player).sendMessage(lang.c("invalid-world"));
             cf.complete(false);
             return cf;
         }
 
         if (canUseWild(player)) {
+
+            if (this.config.isWarmupEnabled()) {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+
+                    }
+                };
+            }
+
             this.locationProvider.getSpawnLocation(ruleset)
                     .thenAccept(quantumLocation -> {
                         if (quantumLocation.getLocation() == null) {
-                            audiences.sender(player).sendMessage(lang.c("failed_spawn_location"));
+                            audiences.sender(player).sendMessage(lang.c("failed-spawn-location"));
                             return;
                         }
 
@@ -232,7 +243,7 @@ public class WildManager {
                                     applyWildCooldown(player);
                                     audiences.sender(player).sendMessage(
                                             lang.c(
-                                                    "tp_success",
+                                                    "tp-success",
                                                     Map.of(
                                                             "{x}", Integer.toString(location.getBlockX()),
                                                             "{y}", Integer.toString(location.getBlockY()),
@@ -260,7 +271,7 @@ public class WildManager {
                                             applyWildCooldown(player);
                                             audiences.sender(player).sendMessage(
                                                     lang.c(
-                                                            "tp_success",
+                                                            "tp-success",
                                                             Map.of(
                                                                     "{x}", Integer.toString(location.getBlockX()),
                                                                     "{y}", Integer.toString(location.getBlockY()),
