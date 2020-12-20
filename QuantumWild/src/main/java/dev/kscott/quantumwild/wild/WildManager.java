@@ -234,7 +234,6 @@ public class WildManager {
                         }
 
                         if (seconds <= 0) {
-                            System.out.println("teleporting");
                             locationCf.thenAccept(quantumLocation -> {
                                 if (quantumLocation.getLocation() == null) {
                                     audiences.sender(player).sendMessage(lang.c("failed-spawn-location"));
