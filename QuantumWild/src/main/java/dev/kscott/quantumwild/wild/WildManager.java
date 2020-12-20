@@ -250,11 +250,6 @@ public class WildManager {
                                 }
                             });
 
-                            essCf.exceptionally(err -> {
-                                err.printStackTrace();
-                                return null;
-                            });
-
                             integrationsManager.getEssentials().getUser(player)
                                     .getAsyncTeleport()
                                     .teleport(location.toCenterLocation(), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
