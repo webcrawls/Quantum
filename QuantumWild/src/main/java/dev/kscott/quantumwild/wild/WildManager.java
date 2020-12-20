@@ -262,6 +262,13 @@ public class WildManager {
         return cf;
     }
 
+    /**
+     * Converts milliseconds to "Xh Xm Xs" format
+     * May also return "Xm Xs" or "Xs" if applicable
+     *
+     * @param ms milliseconds, as a long
+     * @return formatted String
+     */
     private @NonNull String msToHms(final long ms) {
         long hours = TimeUnit.MILLISECONDS.toHours(ms);
         long minutes = TimeUnit.MILLISECONDS.toMinutes(ms) % TimeUnit.HOURS.toMinutes(1);
@@ -284,6 +291,12 @@ public class WildManager {
         return timeBuilder.toString();
     }
 
+    /**
+     * Returns a Map, used for formatting placeholders
+     *
+     * @param location Location
+     * @return A map
+     */
     private @NonNull Map<String, String> locationToPlaceholderMap(final @NonNull Location location) {
         return Map.of(
                 "{x}", Integer.toString(location.getBlockX()),
