@@ -4,23 +4,12 @@ import cloud.commandframework.Command;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
-import dev.kscott.quantum.location.LocationProvider;
-import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
-import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.config.Lang;
 import dev.kscott.quantumwild.wild.WildManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Handles /wild commands & subcommands
@@ -50,10 +39,10 @@ public class WildCommand {
     /**
      * Constructs WildCommand
      *
-     * @param lang             {@link this#lang}
-     * @param audiences        {@link this#audiences}
-     * @param commandManager   {@link this#commandManager}
-     * @param wildManager      {@link this#wildManager}
+     * @param lang           {@link this#lang}
+     * @param audiences      {@link this#audiences}
+     * @param commandManager {@link this#commandManager}
+     * @param wildManager    {@link this#wildManager}
      */
     @Inject
     public WildCommand(
