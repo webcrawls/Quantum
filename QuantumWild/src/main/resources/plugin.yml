@@ -14,7 +14,3 @@ permissions:
   quantum.wild.use:
     default: op
     description: access to /wild
-
-commands:
-  /wild:
-    description: receive a random teleport
