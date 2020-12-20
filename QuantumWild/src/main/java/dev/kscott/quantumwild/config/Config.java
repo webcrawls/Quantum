@@ -109,6 +109,8 @@ public class Config {
         this.PER_WORLD_COOLDOWN_ENABLED = this.root.node("wild").node("cooldown").node("per-world-cooldown").getBoolean(false);
         this.FALLBACK_COOLDOWN = this.root.node("wild").node("cooldown").node("cooldown-fallback-value").getInt(300);
         this.IS_ESSENTIALS_TP_INTEGRATION_ENABLED = this.root.node("wild").node("teleportation").node("essentialsx-integration").getBoolean(false);
+        this.IS_WARMUP_ENABLED = this.root.node("wild").node("teleportation").node("warmup").node("enabled").getBoolean(false);
+        this.WARMUP_TIME = this.root.node("wild").node("teleportation").node("warmup").node("warmup-time").getInt(5);
 
         this.worldRulesetMap.clear();
 
@@ -158,5 +160,13 @@ public class Config {
 
     public boolean isEssentialsIntegrationEnabled() {
         return IS_ESSENTIALS_TP_INTEGRATION_ENABLED;
+    }
+
+    public boolean isWarmupEnabled() {
+        return IS_WARMUP_ENABLED;
+    }
+
+    public int getWarmupTime() {
+        return WARMUP_TIME;
     }
 }
