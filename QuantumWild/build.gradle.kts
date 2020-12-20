@@ -27,7 +27,5 @@ dependencies {
 
     compileOnly("net.essentialsx:EssentialsX:2.19.0-SNAPSHOT")
 
-
-
     implementation("org.bstats:bstats-bukkit:1.8")
 }
