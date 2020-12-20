@@ -6,6 +6,7 @@ import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantumwild.IntegrationsManager;
 import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.config.Lang;
+import io.papermc.lib.PaperLib;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.Location;
@@ -342,7 +343,7 @@ public class WildManager {
                                 .teleport(location.toCenterLocation(), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
 
                     } else {
-                        player.teleportAsync(location.toCenterLocation())
+                        PaperLib.teleportAsync(player, location.toCenterLocation())
                                 .thenAccept(success -> {
                                     if (success) {
                                         applyWildCooldown(player);
