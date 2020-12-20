@@ -228,8 +228,6 @@ public class WildManager {
                             essCf.thenAccept(success -> {
                                 cf.complete(success);
 
-                                System.out.println("completed");
-
                                 if (success) {
                                     applyWildCooldown(player);
                                     audiences.sender(player).sendMessage(
