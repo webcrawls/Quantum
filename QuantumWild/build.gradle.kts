@@ -27,7 +27,6 @@ dependencies {
 
     compileOnly("net.essentialsx:EssentialsX:2.19.0-SNAPSHOT")
 
-    compile("io.papermc:paperlib:1.0.6")
 
 
     implementation("org.bstats:bstats-bukkit:1.8")
