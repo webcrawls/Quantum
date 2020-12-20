@@ -217,12 +217,11 @@ public class WildManager {
 
         if (canUseWild(player)) {
             if (this.config.isWarmupEnabled()) {
-                this.audiences.sender(player).sendMessage(lang.c("warmup"));
+                this.audiences.sender(player).sendMessage(lang.c("warmup", Map.of("{time}", msToHms(this.config.getWarmupTime() * 1000L))));
                 this.playersWarmingUp.add(player.getUniqueId());
+
                 new BukkitRunnable() {
-
                     final int warmupTime = config.getWarmupTime();
-
                     int seconds = warmupTime;
 
                     @Override
