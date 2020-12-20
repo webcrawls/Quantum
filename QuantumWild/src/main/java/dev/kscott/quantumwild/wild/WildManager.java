@@ -1,5 +1,6 @@
 package dev.kscott.quantumwild.wild;
 
+import com.earth2me.essentials.Trade;
 import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantumwild.IntegrationsManager;
@@ -10,8 +11,8 @@ import net.luckperms.api.cacheddata.CachedMetaData;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -198,7 +199,7 @@ public class WildManager {
      * @return A CompletableFuture<Boolean>, where the boolean is true if it was a successful teleport, or false if it failed (i.e. cooldown, invalid world, etc)
      */
     public @NonNull CompletableFuture<Boolean> wildTeleportPlayer(final @NonNull Player player) {
-        final @NonNull CompletableFuture<Boolean> cf = new CompletableFuture<>();
+        @NonNull CompletableFuture<Boolean> cf = new CompletableFuture<>();
 
         final @NonNull World world = player.getWorld();
 
@@ -212,16 +213,48 @@ public class WildManager {
 
         if (canUseWild(player)) {
             this.locationProvider.getSpawnLocation(ruleset)
-                    .thenAccept(quantumLocation -> new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            if (quantumLocation.getLocation() == null) {
-                                audiences.sender(player).sendMessage(lang.c("failed_spawn_location"));
-                                return;
-                            }
+                    .thenAccept(quantumLocation -> {
+                        if (quantumLocation.getLocation() == null) {
+                            audiences.sender(player).sendMessage(lang.c("failed_spawn_location"));
+                            return;
+                        }
 
-                            final @NonNull Location location = quantumLocation.getLocation();
+                        final @NonNull Location location = quantumLocation.getLocation();
 
+                        if (config.isEssentialsIntegrationEnabled() && integrationsManager.isEssentialsEnabled()) {
+                            final @NonNull CompletableFuture<Boolean> essCf = new CompletableFuture<>();
+
+
+                            essCf.thenAccept(success -> {
+                                cf.complete(success);
+
+                                System.out.println("completed");
+
+                                if (success) {
+                                    applyWildCooldown(player);
+                                    audiences.sender(player).sendMessage(
+                                            lang.c(
+                                                    "tp_success",
+                                                    Map.of(
+                                                            "{x}", Integer.toString(location.getBlockX()),
+                                                            "{y}", Integer.toString(location.getBlockY()),
+                                                            "{z}", Integer.toString(location.getBlockZ())
+                                                    )
+                                            )
+                                    );
+                                }
+                            });
+
+                            essCf.exceptionally(err -> {
+                                err.printStackTrace();
+                                return null;
+                            });
+
+                            integrationsManager.getEssentials().getUser(player)
+                                    .getAsyncTeleport()
+                                    .teleport(location.toCenterLocation(), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
+
+                        } else {
                             player.teleportAsync(location.toCenterLocation())
                                     .thenAccept(success -> {
                                         cf.complete(success);
@@ -239,9 +272,8 @@ public class WildManager {
                                             );
                                         }
                                     });
-
                         }
-                    }.runTask(plugin));
+                    });
         } else {
             final long cooldown = getCurrentCooldown(player) - System.currentTimeMillis();
 

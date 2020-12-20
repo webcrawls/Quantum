@@ -3,7 +3,12 @@ repositories {
 
     maven {
         name = "EssentialsX"
-        url = uri("https://repo.essentialsx.net/releases/")
+        url = uri("https://repo.essentialsx.net/snapshots/")
+    }
+
+    maven {
+        name = "bStats"
+        url = uri("https://repo.codemc.org/repository/maven-public")
     }
 }
 
@@ -20,5 +25,7 @@ dependencies {
 
     compileOnly("net.luckperms:api:5.2")
 
-    compileOnly("net.ess3:EssentialsX:2.18.2")
+    compileOnly("net.essentialsx:EssentialsX:2.19.0-SNAPSHOT")
+
+    implementation("org.bstats:bstats-bukkit:1.8")
 }

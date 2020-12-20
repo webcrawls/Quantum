@@ -23,21 +23,14 @@ public class IntegrationsManager {
 
             if (rsp == null) {
                 plugin.getLogger().warning("Features that depend on the LuckPerms API will not function correctly.");
-                return;
+            } else {
+                luckPerms = rsp.getProvider();
             }
 
-            luckPerms = rsp.getProvider();
         }
 
         if (isEssentialsEnabled()) {
-            final @Nullable RegisteredServiceProvider<Essentials> rsp = plugin.getServer().getServicesManager().getRegistration(Essentials.class);
-
-            if (rsp == null) {
-                plugin.getLogger().warning("Features that depend on the Essentials API will not function correctly.");
-                return;
-            }
-
-            essentials = rsp.getProvider();
+            essentials = (Essentials) plugin.getServer().getPluginManager().getPlugin("Essentials");
         }
     }
 
@@ -50,10 +43,10 @@ public class IntegrationsManager {
     }
 
     public boolean isEssentialsEnabled() {
-        return plugin.getServer().getPluginManager().isPluginEnabled("Essentials");
+        return plugin.getServer().getPluginManager().getPlugin("Essentials") != null;
     }
 
     public boolean isLuckPermsEnabled() {
-        return plugin.getServer().getPluginManager().isPluginEnabled("LuckPerms");
+        return plugin.getServer().getPluginManager().getPlugin("LuckPerms") != null;
     }
 }

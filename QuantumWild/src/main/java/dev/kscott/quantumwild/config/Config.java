@@ -49,6 +49,12 @@ public class Config {
 
     private boolean PER_WORLD_COOLDOWN_ENABLED;
 
+    private boolean IS_ESSENTIALS_TP_INTEGRATION_ENABLED;
+
+    private boolean IS_WARMUP_ENABLED;
+
+    private int WARMUP_TIME;
+
     /**
      * Constructs the config, loads it, and loads rulesets.
      *
@@ -100,8 +106,9 @@ public class Config {
      * Loads QuantumWild's configuration values
      */
     private void loadConfigurationValues() {
-        this.PER_WORLD_COOLDOWN_ENABLED = this.root.node("cooldown").node("per-world-cooldown").getBoolean(false);
-        this.FALLBACK_COOLDOWN = this.root.node("cooldown").node("cooldown-fallback-value").getInt(300);
+        this.PER_WORLD_COOLDOWN_ENABLED = this.root.node("wild").node("cooldown").node("per-world-cooldown").getBoolean(false);
+        this.FALLBACK_COOLDOWN = this.root.node("wild").node("cooldown").node("cooldown-fallback-value").getInt(300);
+        this.IS_ESSENTIALS_TP_INTEGRATION_ENABLED = this.root.node("wild").node("teleportation").node("essentialsx-integration").getBoolean(false);
 
         this.worldRulesetMap.clear();
 
@@ -147,5 +154,9 @@ public class Config {
 
     public int getFallbackCooldown() {
         return FALLBACK_COOLDOWN;
+    }
+
+    public boolean isEssentialsIntegrationEnabled() {
+        return IS_ESSENTIALS_TP_INTEGRATION_ENABLED;
     }
 }
