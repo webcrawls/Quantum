@@ -310,39 +310,22 @@ public class WildManager {
             final @NonNull Player player
     ) {
         cf.thenAccept(quantumLocation -> {
-            if (quantumLocation.getLocation() == null) {
-                audiences.sender(player).sendMessage(lang.c("failed-spawn-location"));
-                return;
-            }
-
-            final @NonNull Location location = quantumLocation.getLocation();
-
-            if (config.isEssentialsIntegrationEnabled() && integrationsManager.isEssentialsEnabled()) {
-                final @NonNull CompletableFuture<Boolean> essCf = new CompletableFuture<>();
-
-
-                essCf.thenAccept(success -> {
-                    successCf.complete(success);
-
-                    if (success) {
-                        applyWildCooldown(player);
-                        audiences.sender(player).sendMessage(
-                                lang.c(
-                                        "tp-success",
-                                        locationToPlaceholderMap(location)
-                                )
-                        );
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    if (quantumLocation.getLocation() == null) {
+                        audiences.sender(player).sendMessage(lang.c("failed-spawn-location"));
+                        return;
                     }
-                });
 
-                integrationsManager.getEssentials().getUser(player)
-                        .getAsyncTeleport()
-                        .teleport(location.toCenterLocation(), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
+                    final @NonNull Location location = quantumLocation.getLocation();
 
-            } else {
-                player.teleportAsync(location.toCenterLocation())
-                        .thenAccept(success -> {
+                    if (config.isEssentialsIntegrationEnabled() && integrationsManager.isEssentialsEnabled()) {
+                        final @NonNull CompletableFuture<Boolean> essCf = new CompletableFuture<>();
+
+                        essCf.thenAccept(success -> {
                             successCf.complete(success);
+
                             if (success) {
                                 applyWildCooldown(player);
                                 audiences.sender(player).sendMessage(
@@ -353,7 +336,35 @@ public class WildManager {
                                 );
                             }
                         });
-            }
+
+                        integrationsManager.getEssentials().getUser(player)
+                                .getAsyncTeleport()
+                                .teleport(location.toCenterLocation(), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
+
+                    } else {
+                        player.teleportAsync(location.toCenterLocation())
+                                .thenAccept(success -> {
+                                    if (success) {
+                                        applyWildCooldown(player);
+                                        audiences.sender(player).sendMessage(
+                                                lang.c(
+                                                        "tp-success",
+                                                        locationToPlaceholderMap(location)
+                                                )
+                                        );
+                                    } else {
+                                        audiences.sender(player).sendMessage(
+                                                lang.c(
+                                                        "failed-spawn-location",
+                                                        locationToPlaceholderMap(location)
+                                                )
+                                        );
+                                    }
+                                    successCf.complete(success);
+                                });
+                    }
+                }
+            }.runTask(plugin);
         });
     }
 
