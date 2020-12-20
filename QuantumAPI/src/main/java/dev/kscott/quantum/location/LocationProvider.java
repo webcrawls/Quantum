@@ -6,6 +6,7 @@ import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
+import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -119,7 +120,7 @@ public class LocationProvider {
                 })
                 .synchronous(state -> {
                     // Get the chunk future and add it to the state
-                    state.setChunkFuture(state.getWorld().getChunkAtAsync(state.getChunkX(), state.getChunkZ()));
+                    state.setChunkFuture(PaperLib.getChunkAtAsync(state.getWorld(), state.getChunkX(), state.getChunkZ()));
 
                     return state;
                 })
