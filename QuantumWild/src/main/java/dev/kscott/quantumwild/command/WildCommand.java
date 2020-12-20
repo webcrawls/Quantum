@@ -65,7 +65,7 @@ public class WildCommand {
     private void setupCommands() {
         final Command.Builder<CommandSender> builder = this.commandManager.commandBuilder("wild", "w");
 
-        this.commandManager.command(builder.handler(this::handleWild));
+        this.commandManager.command(builder.handler(this::handleWild).permission("quantum.wild.use"));
     }
 
     /**
