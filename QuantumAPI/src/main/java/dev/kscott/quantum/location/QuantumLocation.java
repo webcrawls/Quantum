@@ -11,6 +11,20 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class QuantumLocation {
 
     /**
+     * Clones {@code location} and returns the clone with all values set to 0.5
+     *
+     * @param location Location to center
+     * @return Centered location
+     */
+    public static @NonNull Location toCenterLocation(final @NonNull Location location) {
+        Location centerLoc = location.clone();
+        centerLoc.setX(location.getBlockX() + 0.5);
+        centerLoc.setY(location.getBlockY() + 0.5);
+        centerLoc.setZ(location.getBlockZ() + 0.5);
+        return centerLoc;
+    }
+
+    /**
      * The amount of time (in milliseconds) it took to generate this location.
      */
     private final long duration;
