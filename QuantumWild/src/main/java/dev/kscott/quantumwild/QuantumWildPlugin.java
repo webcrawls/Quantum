@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import dev.kscott.quantumwild.command.WildCommand;
 import dev.kscott.quantumwild.config.Config;
+import dev.kscott.quantumwild.listeners.PlayerMovementListener;
 import dev.kscott.quantumwild.module.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -24,6 +25,8 @@ public final class QuantumWildPlugin extends JavaPlugin {
         injector.getInstance(Config.class);
 
         injector.getInstance(WildCommand.class);
+
+        this.getServer().getPluginManager().registerEvents(injector.getInstance(PlayerMovementListener.class), this);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package dev.kscott.quantumwild.wild;
 
 import dev.kscott.quantum.location.LocationProvider;
+import dev.kscott.quantum.location.QuantumLocation;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantumwild.IntegrationsManager;
 import dev.kscott.quantumwild.config.Config;
@@ -16,9 +17,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -38,6 +37,8 @@ public class WildManager {
      * A map where the key is a Player's UUID, and the value is a map where the key is a world's UUID, and the value is when the player can use /wild again
      */
     private final @NonNull Map<@NonNull UUID, @NonNull Map<@NonNull UUID, @NonNull Long>> perWorldCooldownMap;
+
+    private final @NonNull Set<UUID> playersWarmingUp;
 
     /**
      * Config reference
@@ -91,6 +92,7 @@ public class WildManager {
 
         this.cooldownMap = new HashMap<>();
         this.perWorldCooldownMap = new HashMap<>();
+        this.playersWarmingUp = new HashSet<>();
     }
 
     /**
@@ -211,53 +213,43 @@ public class WildManager {
             return cf;
         }
 
-        if (canUseWild(player)) {
+        final @NonNull CompletableFuture<QuantumLocation> locationCf = this.locationProvider.getSpawnLocation(ruleset);
 
+        if (canUseWild(player)) {
             if (this.config.isWarmupEnabled()) {
                 this.audiences.sender(player).sendMessage(lang.c("warmup"));
+                this.playersWarmingUp.add(player.getUniqueId());
                 new BukkitRunnable() {
+
+                    final int warmupTime = config.getWarmupTime();
+
+                    int seconds = warmupTime;
+
                     @Override
                     public void run() {
-
-                    }
-                };
-            }
-
-            this.locationProvider.getSpawnLocation(ruleset)
-                    .thenAccept(quantumLocation -> {
-                        if (quantumLocation.getLocation() == null) {
-                            audiences.sender(player).sendMessage(lang.c("failed-spawn-location"));
+                        if (!playersWarmingUp.contains(player.getUniqueId())) {
+                            audiences.sender(player).sendMessage(lang.c("warmup-cancelled"));
+                            cancel();
                             return;
                         }
 
-                        final @NonNull Location location = quantumLocation.getLocation();
-
-                        if (config.isEssentialsIntegrationEnabled() && integrationsManager.isEssentialsEnabled()) {
-                            final @NonNull CompletableFuture<Boolean> essCf = new CompletableFuture<>();
-
-
-                            essCf.thenAccept(success -> {
-                                cf.complete(success);
-
-                                if (success) {
-                                    applyWildCooldown(player);
-                                    audiences.sender(player).sendMessage(
-                                            lang.c(
-                                                    "tp-success",
-                                                    locationToPlaceholderMap(location)
-                                            )
-                                    );
+                        if (seconds <= 0) {
+                            System.out.println("teleporting");
+                            locationCf.thenAccept(quantumLocation -> {
+                                if (quantumLocation.getLocation() == null) {
+                                    audiences.sender(player).sendMessage(lang.c("failed-spawn-location"));
+                                    return;
                                 }
-                            });
 
-                            integrationsManager.getEssentials().getUser(player)
-                                    .getAsyncTeleport()
-                                    .teleport(location.toCenterLocation(), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
+                                final @NonNull Location location = quantumLocation.getLocation();
 
-                        } else {
-                            player.teleportAsync(location.toCenterLocation())
-                                    .thenAccept(success -> {
+                                if (config.isEssentialsIntegrationEnabled() && integrationsManager.isEssentialsEnabled()) {
+                                    final @NonNull CompletableFuture<Boolean> essCf = new CompletableFuture<>();
+
+
+                                    essCf.thenAccept(success -> {
                                         cf.complete(success);
+
                                         if (success) {
                                             applyWildCooldown(player);
                                             audiences.sender(player).sendMessage(
@@ -268,8 +260,84 @@ public class WildManager {
                                             );
                                         }
                                     });
+
+                                    integrationsManager.getEssentials().getUser(player)
+                                            .getAsyncTeleport()
+                                            .teleport(location.toCenterLocation(), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
+
+                                } else {
+                                    player.teleportAsync(location.toCenterLocation())
+                                            .thenAccept(success -> {
+                                                cf.complete(success);
+                                                if (success) {
+                                                    applyWildCooldown(player);
+                                                    audiences.sender(player).sendMessage(
+                                                            lang.c(
+                                                                    "tp-success",
+                                                                    locationToPlaceholderMap(location)
+                                                            )
+                                                    );
+                                                }
+                                            });
+                                }
+                            });
+                            cancel();
+                            playersWarmingUp.remove(player.getUniqueId());
+                            return;
+                        }
+
+                        seconds--;
+                    }
+                }.runTaskTimer(plugin, 0, 20);
+            }
+
+            locationCf.thenAccept(quantumLocation -> {
+                if (quantumLocation.getLocation() == null) {
+                    audiences.sender(player).sendMessage(lang.c("failed-spawn-location"));
+                    return;
+                }
+
+                final @NonNull Location location = quantumLocation.getLocation();
+
+                if (config.isEssentialsIntegrationEnabled() && integrationsManager.isEssentialsEnabled()) {
+                    final @NonNull CompletableFuture<Boolean> essCf = new CompletableFuture<>();
+
+
+                    essCf.thenAccept(success -> {
+                        cf.complete(success);
+
+                        if (success) {
+                            applyWildCooldown(player);
+                            audiences.sender(player).sendMessage(
+                                    lang.c(
+                                            "tp-success",
+                                            locationToPlaceholderMap(location)
+                                    )
+                            );
                         }
                     });
+
+                    integrationsManager.getEssentials().getUser(player)
+                            .getAsyncTeleport()
+                            .teleport(location.toCenterLocation(), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
+
+                } else {
+                    player.teleportAsync(location.toCenterLocation())
+                            .thenAccept(success -> {
+                                cf.complete(success);
+                                if (success) {
+                                    applyWildCooldown(player);
+                                    audiences.sender(player).sendMessage(
+                                            lang.c(
+                                                    "tp-success",
+                                                    locationToPlaceholderMap(location)
+                                            )
+                                    );
+                                }
+                            });
+                }
+            });
+
         } else {
             final long cooldown = getCurrentCooldown(player) - System.currentTimeMillis();
 
@@ -313,5 +381,13 @@ public class WildManager {
                 "{y}", Integer.toString(location.getBlockY()),
                 "{z}", Integer.toString(location.getBlockZ())
         );
+    }
+
+    /**
+     * Invalidates a player's warmup, effectively cancelling it
+     * @param player Player
+     */
+    public void invalidateWarmup(final @NonNull Player player) {
+        this.playersWarmingUp.remove(player.getUniqueId());
     }
 }
