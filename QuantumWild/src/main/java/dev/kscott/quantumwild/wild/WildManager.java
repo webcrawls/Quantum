@@ -15,7 +15,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
-import org.slf4j.spi.LocationAwareLogger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -215,7 +214,7 @@ public class WildManager {
         if (canUseWild(player)) {
 
             if (this.config.isWarmupEnabled()) {
-                audiences.sender(player).sendMessage(lang.c("warmup"));
+                this.audiences.sender(player).sendMessage(lang.c("warmup"));
                 new BukkitRunnable() {
                     @Override
                     public void run() {
