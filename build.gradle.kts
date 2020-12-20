@@ -90,7 +90,10 @@ subprojects {
                     "cloud.commandframework",
                     "net.kyori.adventure",
                     "net.kyori.examination",
-                    "com.github.stefvanschie.inventoryframework"
+                    "com.github.stefvanschie.inventoryframework",
+                    "io.paper.paperlib",
+                    "net.essentialsx",
+                    "net.luckperms"
             )
 
             archiveFileName.set(project.name + ".jar")
