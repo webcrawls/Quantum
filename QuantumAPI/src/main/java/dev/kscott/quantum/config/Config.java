@@ -249,6 +249,8 @@ public class Config {
                     }
 
                     rules.add(rule);
+
+                    rule.postCreation();
                 }
             }
 

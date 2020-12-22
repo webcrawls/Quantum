@@ -27,7 +27,7 @@ public class OnlyBiomeRule extends AsyncQuantumRule {
      * Parses BiomeListOption into {@link OnlyBiomeRule#biomes}
      */
     @Override
-    protected void postCreation() {
+    public void postCreation() {
         final @NonNull String[] biomeIds = this.getOption(BiomeListOption.class).getValue();
 
         biomes = new HashSet<>();

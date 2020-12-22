@@ -24,7 +24,6 @@ public abstract class QuantumRule {
      * @param options the rules options
      */
     public QuantumRule(final @NonNull QuantumRuleOption<?>... options) {
-
         optionMap = new HashMap<>();
 
         for (QuantumRuleOption<?> option : options) {
@@ -36,7 +35,7 @@ public abstract class QuantumRule {
      * Called after the rule is created ({@link RuleRegistry#createFreshRule(Class)}.
      * This method should be used to parse options.
      */
-    protected void postCreation() {}
+    public void postCreation() {}
 
     /**
      * Returns an option with a specified id
