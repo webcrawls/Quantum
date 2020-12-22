@@ -7,6 +7,7 @@ import dev.kscott.quantum.api.QuantumAPI;
 import dev.kscott.quantum.command.QuantumCommand;
 import dev.kscott.quantum.config.Config;
 import dev.kscott.quantum.inject.*;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -34,6 +35,8 @@ public final class QuantumAPIPlugin extends JavaPlugin {
                 this,
                 ServicePriority.High
         );
+
+        new Metrics(this, 9725);
     }
 
     private void loadConfig(final @NonNull Injector injector) {
