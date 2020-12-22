@@ -1,6 +1,7 @@
 package dev.kscott.quantum.rule;
 
 import dev.kscott.quantum.rule.rules.async.AvoidBlockRule;
+import dev.kscott.quantum.rule.rules.async.OnlyBiomeRule;
 import dev.kscott.quantum.rule.rules.async.OnlyBlockRule;
 import dev.kscott.quantum.rule.rules.sync.AvoidEntityRule;
 import dev.kscott.quantum.rule.rules.sync.NearbyEntityRule;
@@ -29,6 +30,7 @@ public class RuleRegistry {
         // Async rules
         this.registerRule("avoid-block", AvoidBlockRule.class);
         this.registerRule("only-block", OnlyBlockRule.class);
+        this.registerRule("only-biome", OnlyBiomeRule.class);
 
         // Sync rules
         this.registerRule("avoid-entity", AvoidEntityRule.class);
