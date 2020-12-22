@@ -47,6 +47,8 @@ subprojects {
         compile("io.papermc:paperlib:1.0.6")
 
         implementation("com.google.inject:guice:5.0.0-BETA-1")
+
+        implementation("org.bstats:bstats-bukkit:1.8")
     }
 
     tasks {
@@ -91,7 +93,8 @@ subprojects {
                     "net.kyori.adventure",
                     "net.kyori.examination",
                     "com.github.stefvanschie.inventoryframework",
-                    "io.paper.paperlib"
+                    "io.paper.paperlib",
+                    "org.bstats"
             )
 
             archiveFileName.set(project.name + ".jar")
