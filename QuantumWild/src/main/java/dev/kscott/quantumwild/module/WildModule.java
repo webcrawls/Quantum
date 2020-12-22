@@ -1,6 +1,5 @@
 package dev.kscott.quantumwild.module;
 
-import com.earth2me.essentials.Essentials;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
@@ -11,7 +10,6 @@ import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.config.Lang;
 import dev.kscott.quantumwild.wild.WildManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
-import net.luckperms.api.LuckPerms;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
