@@ -6,6 +6,7 @@ import dev.kscott.quantumwild.command.WildCommand;
 import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.listeners.PlayerMovementListener;
 import dev.kscott.quantumwild.module.*;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -27,6 +28,8 @@ public final class QuantumWildPlugin extends JavaPlugin {
         injector.getInstance(WildCommand.class);
 
         this.getServer().getPluginManager().registerEvents(injector.getInstance(PlayerMovementListener.class), this);
+
+        new Metrics(this, 9726);
     }
 
     @Override
