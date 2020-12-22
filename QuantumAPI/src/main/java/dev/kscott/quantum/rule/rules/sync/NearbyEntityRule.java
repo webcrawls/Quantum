@@ -5,32 +5,42 @@ import dev.kscott.quantum.rule.option.RadiusOption;
 import org.bukkit.Chunk;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 public class NearbyEntityRule extends SyncQuantumRule {
+
+    private @MonotonicNonNull Set<EntityType> entityTypes;
+
+    private int radius;
 
     public NearbyEntityRule() {
         super(new EntityListOption(), new RadiusOption());
     }
 
     @Override
-    public boolean validate(@NonNull Chunk chunk, int x, int y, int z) {
-        final @NonNull String[] entityTypes = this.getOption(EntityListOption.class).getValue();
-        final int radius = this.getOption(RadiusOption.class).getValue();
+    public void postCreation() {
+        final @NonNull String[] entityTypeIds = this.getOption(EntityListOption.class).getValue();
 
-        Collection<EntityType> types = new HashSet<>();
+        entityTypes = new HashSet<>();
 
-        for (String entityType : entityTypes) {
-            types.add(EntityType.valueOf(entityType));
+        for (final @NonNull String entityType : entityTypeIds) {
+            entityTypes.add(EntityType.valueOf(entityType));
         }
 
-        Collection<LivingEntity> entities = chunk.getBlock(x, y, z).getLocation().getNearbyLivingEntities(radius);
+        radius = this.getOption(RadiusOption.class).getValue();
+    }
+
+    @Override
+    public boolean validate(@NonNull Chunk chunk, int x, int y, int z) {
+        final @NonNull Collection<LivingEntity> entities = chunk.getBlock(x, y, z).getLocation().getNearbyLivingEntities(radius);
 
         for (final LivingEntity entity : entities) {
-            if (types.contains(entity.getType())) {
+            if (entityTypes.contains(entity.getType())) {
                 return true;
             }
         }
