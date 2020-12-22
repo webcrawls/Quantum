@@ -15,7 +15,7 @@ As Quantum is intended to be used as an API, there are no user-facing features i
 QuantumSpawn is still in development, but you can read more [here](#).
 
 ## QuantumWild
-- Requires QuamtumAPI
+- Requires QuantumAPI
 - Provides /wild commands with configurable cooldown & per-world options
 
 QuantumWild is still in development, but you can read more [here](#).
