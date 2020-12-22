@@ -91,9 +91,7 @@ subprojects {
                     "net.kyori.adventure",
                     "net.kyori.examination",
                     "com.github.stefvanschie.inventoryframework",
-                    "io.paper.paperlib",
-                    "net.essentialsx",
-                    "net.luckperms"
+                    "io.paper.paperlib"
             )
 
             archiveFileName.set(project.name + ".jar")
