@@ -5,11 +5,6 @@ repositories {
         name = "EssentialsX"
         url = uri("https://repo.essentialsx.net/snapshots/")
     }
-
-    maven {
-        name = "bStats"
-        url = uri("https://repo.codemc.org/repository/maven-public")
-    }
 }
 
 dependencies {

@@ -38,6 +38,10 @@ subprojects {
             name = "sonatype"
             url = uri("https://oss.sonatype.org/content/groups/public/")
         }
+        maven {
+            name = "bStats"
+            url = uri("https://repo.codemc.org/repository/maven-public")
+        }
     }
 
     dependencies {
