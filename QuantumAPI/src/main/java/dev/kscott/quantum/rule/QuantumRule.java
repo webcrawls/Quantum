@@ -33,10 +33,10 @@ public abstract class QuantumRule {
     }
 
     /**
-     * Called after the rule is registered.
-     * This method is mostly used to parse options.
+     * Called after the rule is created ({@link RuleRegistry#createFreshRule(Class)}.
+     * This method is should be used to parse options.
      */
-    protected void postRegistration() {
+    protected void postCreation() {
         // to be overridden
     }
 

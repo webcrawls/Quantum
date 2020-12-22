@@ -77,6 +77,8 @@ public class RuleRegistry {
             return null;
         }
 
+        quantumRule.postCreation();
+
         return quantumRule;
     }
 
