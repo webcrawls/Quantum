@@ -5,6 +5,7 @@ import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.HashSet;
@@ -16,10 +17,29 @@ import java.util.Set;
 public class AvoidBlockRule extends AsyncQuantumRule {
 
     /**
+     * Stores list of Material to avoid
+     */
+    private @MonotonicNonNull Set<Material> materials;
+
+    /**
      * Constructs AvoidBlockRule
      */
     public AvoidBlockRule() {
         super(new BlockListOption());
+    }
+
+    /**
+     * Loads Materials into {@link this#materials}
+     */
+    @Override
+    public void postCreation() {
+        final QuantumRuleOption<String[]> blockListOption = this.getOption(BlockListOption.class);
+
+        materials = new HashSet<>();
+
+        for (String materialId : blockListOption.getValue()) {
+            materials.add(Material.getMaterial(materialId));
+        }
     }
 
     /**
@@ -32,15 +52,6 @@ public class AvoidBlockRule extends AsyncQuantumRule {
      * @return true if valid, false if not
      */
     public boolean validate(@NonNull ChunkSnapshot snapshot, int x, int y, int z) {
-
-        final QuantumRuleOption<String[]> blockListOption = this.getOption(BlockListOption.class);
-
-        final Set<Material> materials = new HashSet<>();
-
-        for (String materialId : blockListOption.getValue()) {
-            materials.add(Material.getMaterial(materialId));
-        }
-
         final @NonNull BlockData blockData = snapshot.getBlockData(x, y - 1, z);
 
         return !materials.contains(blockData.getMaterial());

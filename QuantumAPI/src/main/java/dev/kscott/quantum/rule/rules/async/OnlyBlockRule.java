@@ -4,6 +4,7 @@ import dev.kscott.quantum.rule.option.BlockListOption;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.HashSet;
@@ -15,10 +16,26 @@ import java.util.Set;
 public class OnlyBlockRule extends AsyncQuantumRule {
 
     /**
+     * A Set of Material to only spawn on
+     */
+    private @MonotonicNonNull Set<Material> materials;
+
+    /**
      * Constructs OnlyBlockRule
      */
     public OnlyBlockRule() {
         super(new BlockListOption());
+    }
+
+    @Override
+    public void postCreation() {
+        final @NonNull String[] materialIds = this.getOption(BlockListOption.class).getValue();
+
+        materials = new HashSet<>();
+
+        for (final @NonNull String materialId : materialIds) {
+            materials.add(Material.getMaterial(materialId));
+        }
     }
 
     /**
@@ -31,14 +48,6 @@ public class OnlyBlockRule extends AsyncQuantumRule {
      * @return true if valid, false if not
      */
     public boolean validate(@NonNull ChunkSnapshot snapshot, int x, int y, int z) {
-        final @NonNull String[] materialIds = this.getOption(BlockListOption.class).getValue();
-
-        final Set<Material> materials = new HashSet<>();
-
-        for (String materialId : materialIds) {
-            materials.add(Material.getMaterial(materialId));
-        }
-
         final @NonNull BlockData blockData = snapshot.getBlockData(x, y - 1, z);
 
         return materials.contains(blockData.getMaterial());
