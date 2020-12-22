@@ -26,7 +26,7 @@ public class IntegrationsModule extends AbstractModule {
     @Provides
     @Singleton
     @Inject
-    public @Nullable IntegrationsManager providePermissionApi(final @NonNull JavaPlugin plugin) {
+    public @Nullable IntegrationsManager provideIntegrationsManage(final @NonNull JavaPlugin plugin) {
         return new IntegrationsManager(plugin);
     }
 
