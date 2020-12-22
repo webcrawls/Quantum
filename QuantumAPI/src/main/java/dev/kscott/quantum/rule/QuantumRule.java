@@ -33,6 +33,14 @@ public abstract class QuantumRule {
     }
 
     /**
+     * Called after the rule is registered.
+     * This method is mostly used to parse options.
+     */
+    protected void postRegistration() {
+        // to be overridden
+    }
+
+    /**
      * Returns an option with a specified id
      *
      * @param id the id of the option
