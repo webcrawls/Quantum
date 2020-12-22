@@ -136,7 +136,7 @@ public class LocationProvider {
                 })
                 .synchronous(state -> {
                     // get & set the snapshot
-                    state.setSnapshot(state.getChunk().getChunkSnapshot());
+                    state.setSnapshot(state.getChunk().getChunkSnapshot(true, true, false));
 
                     return state;
                 })
