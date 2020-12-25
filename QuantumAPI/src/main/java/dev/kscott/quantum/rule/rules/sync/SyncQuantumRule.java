@@ -13,6 +13,7 @@ public abstract class SyncQuantumRule extends QuantumRule {
 
     /**
      * Constructs the SyncQuantumRule
+     *
      * @param options rule options list
      */
     public SyncQuantumRule(final @NonNull QuantumRuleOption<?>... options) {

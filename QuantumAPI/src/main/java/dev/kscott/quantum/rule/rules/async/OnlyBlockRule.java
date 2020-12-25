@@ -27,6 +27,9 @@ public class OnlyBlockRule extends AsyncQuantumRule {
         super(new BlockListOption());
     }
 
+    /**
+     * Loads {@link this#materials}
+     */
     @Override
     public void postCreation() {
         final @NonNull String[] materialIds = this.getOption(BlockListOption.class).getValue();

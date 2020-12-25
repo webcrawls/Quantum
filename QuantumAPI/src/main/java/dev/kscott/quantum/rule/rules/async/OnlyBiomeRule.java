@@ -9,6 +9,9 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Validates a location if it's in a given biome
+ */
 public class OnlyBiomeRule extends AsyncQuantumRule {
 
     /**

@@ -11,6 +11,11 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  */
 public abstract class AsyncQuantumRule extends QuantumRule {
 
+    /**
+     * Constructs AsyncQuantumRule
+     *
+     * @param options options list
+     */
     public AsyncQuantumRule(final @NonNull QuantumRuleOption<?>... options) {
         super(options);
     }
