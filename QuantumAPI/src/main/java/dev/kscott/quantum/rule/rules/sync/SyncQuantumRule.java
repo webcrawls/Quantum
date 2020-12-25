@@ -5,8 +5,16 @@ import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import org.bukkit.Chunk;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * A QuantumRule that is ran on the main thread, thus has
+ * access to the full Chunk.
+ */
 public abstract class SyncQuantumRule extends QuantumRule {
 
+    /**
+     * Constructs the SyncQuantumRule
+     * @param options rule options list
+     */
     public SyncQuantumRule(final @NonNull QuantumRuleOption<?>... options) {
         super(options);
     }

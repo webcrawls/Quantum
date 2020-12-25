@@ -5,6 +5,10 @@ import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import org.bukkit.ChunkSnapshot;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * A QuantumRule that is not ran on the main thread, thus only
+ * has access to a ChunkSnapshot instead of a Chunk.
+ */
 public abstract class AsyncQuantumRule extends QuantumRule {
 
     public AsyncQuantumRule(final @NonNull QuantumRuleOption<?>... options) {
