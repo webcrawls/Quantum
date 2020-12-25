@@ -13,8 +13,22 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * Provides the WildManager
+ */
 public class WildModule extends AbstractModule {
 
+    /**
+     * Constructs & returns the WildManager
+     *
+     * @param integrationsManager IntegrationsManager reference.
+     * @param lang Lang reference.
+     * @param audiences BukkitAudiences reference.
+     * @param config Config reference.
+     * @param locationProvider LocationProvider reference.
+     * @param plugin JavaPlugin reference.
+     * @return
+     */
     @Provides
     @Singleton
     @Inject
