@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import dev.kscott.quantumspawn.config.Config;
 import dev.kscott.quantumspawn.listeners.PlayerJoinListener;
 import dev.kscott.quantumspawn.module.ConfigModule;
+import dev.kscott.quantumspawn.module.PluginModule;
 import dev.kscott.quantumspawn.module.QuantumModule;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,7 @@ public final class QuantumSpawnPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         final @NonNull Injector injector = Guice.createInjector(
+                new PluginModule(this),
                 new QuantumModule(this),
                 new ConfigModule()
         );
