@@ -78,6 +78,14 @@ public class LocationProvider {
         return cf;
     }
 
+    /**
+     * Searches for a location with the given ruleset until it reaches max retries (or finds a valid location)
+     *
+     * @param tries how many times has the search been tried (call this with 0)
+     * @param start when was this search started
+     * @param quantumRuleset the ruleset to search with
+     * @param cf the CompletableFuture to call when this search completes or fails
+     */
     private void findLocation(final int tries, final long start, final @NonNull QuantumRuleset quantumRuleset, final @NonNull CompletableFuture<QuantumLocation> cf) {
         if (this.config.getMaxRetries() <= tries) {
             cf.completeExceptionally(new ExceededMaxRetriesException());
@@ -190,7 +198,7 @@ public class LocationProvider {
 
                         this.timer.addTime(searchTime);
                     } else {
-                        findLocation(tries+1, start, quantumRuleset, cf);
+                        findLocation(tries + 1, start, quantumRuleset, cf);
                     }
                 })
                 .execute();
