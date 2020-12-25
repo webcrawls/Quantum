@@ -29,7 +29,6 @@ public final class QuantumSpawnPlugin extends JavaPlugin {
             this.getServer().getPluginManager().registerEvents(playerJoinListener, this);
         }
 
-
         new Metrics(this, 9727);
     }
 
