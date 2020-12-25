@@ -8,15 +8,32 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * Listens on the PlayerMoveEvent to cancel warmups.
+ */
 public class PlayerMovementListener implements Listener {
 
+    /**
+     * WildManager reference.
+     */
     private final @NonNull WildManager wildManager;
 
+    /**
+     * Constructs PlayerMovementListener.
+     *
+     * @param wildManager WildManager reference.
+     */
     @Inject
     public PlayerMovementListener(final @NonNull WildManager wildManager) {
         this.wildManager = wildManager;
     }
 
+    /**
+     * If {@link PlayerMoveEvent#from} and {@link PlayerMoveEvent#to} are in different blocks,
+     * invalidate a player's warmup.
+     *
+     * @param event PlayerMoveEvent.
+     */
     @EventHandler
     public void onPlayerMove(final @NonNull PlayerMoveEvent event) {
 

@@ -10,8 +10,18 @@ import dev.kscott.quantumwild.config.Lang;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * Provides the configuration and lang objects
+ */
 public class ConfigModule extends AbstractModule {
 
+    /**
+     * Provides {@link Config}.
+     *
+     * @param rulesetRegistry RulesetRegistry reference.
+     * @param plugin JavaPlugin reference.
+     * @return Config.
+     */
     @Provides
     @Singleton
     @Inject
@@ -19,6 +29,12 @@ public class ConfigModule extends AbstractModule {
         return new Config(rulesetRegistry, plugin);
     }
 
+    /**
+     * Provides {@link Lang}
+     *
+     * @param plugin JavaPlugin reference.
+     * @return Lang.
+     */
     @Provides
     @Singleton
     @Inject
