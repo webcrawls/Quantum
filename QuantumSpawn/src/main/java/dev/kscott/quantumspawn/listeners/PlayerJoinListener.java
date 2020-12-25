@@ -1,5 +1,6 @@
 package dev.kscott.quantumspawn.listeners;
 
+import com.google.inject.Inject;
 import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantumspawn.config.Config;
@@ -38,6 +39,7 @@ public class PlayerJoinListener implements Listener {
      *
      * @param locationProvider LocationProvider reference.
      */
+    @Inject
     public PlayerJoinListener(
             final @NonNull JavaPlugin plugin,
             final @NonNull Config config,
