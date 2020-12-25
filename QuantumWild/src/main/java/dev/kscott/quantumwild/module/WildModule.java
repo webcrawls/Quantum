@@ -18,7 +18,7 @@ public class WildModule extends AbstractModule {
     @Provides
     @Singleton
     @Inject
-    public WildManager provideWildeManager(
+    public WildManager provideWildManager(
             final @NonNull IntegrationsManager integrationsManager,
             final @NonNull Lang lang,
             final @NonNull BukkitAudiences audiences,
