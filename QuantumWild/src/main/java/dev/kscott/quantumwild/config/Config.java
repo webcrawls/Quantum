@@ -44,15 +44,29 @@ public class Config {
      */
     private final @NonNull RulesetRegistry rulesetRegistry;
 
-    // Config values
+    /**
+     * How much cooldown should be applied if LP isn't enabled
+     */
     private int FALLBACK_COOLDOWN;
 
+    /**
+     * Is the per-world cooldown system enabled?
+     */
     private boolean PER_WORLD_COOLDOWN_ENABLED;
 
+    /**
+     * Is EssentialsX TP integration enabled?
+     */
     private boolean IS_ESSENTIALS_TP_INTEGRATION_ENABLED;
 
+    /**
+     * Is warmup time enabled?
+     */
     private boolean IS_WARMUP_ENABLED;
 
+    /**
+     * How long should teleport warmup be
+     */
     private int WARMUP_TIME;
 
     /**
@@ -150,22 +164,37 @@ public class Config {
         }
     }
 
+    /**
+     * @return {@link this#PER_WORLD_COOLDOWN_ENABLED}
+     */
     public boolean isPerWorldCooldownEnabled() {
         return PER_WORLD_COOLDOWN_ENABLED;
     }
 
+    /**
+     * @return {@link this#FALLBACK_COOLDOWN}
+     */
     public int getFallbackCooldown() {
         return FALLBACK_COOLDOWN;
     }
 
+    /**
+     * @return {@link this#IS_ESSENTIALS_TP_INTEGRATION_ENABLED}
+     */
     public boolean isEssentialsIntegrationEnabled() {
         return IS_ESSENTIALS_TP_INTEGRATION_ENABLED;
     }
 
+    /**
+     * @return {@link this#IS_WARMUP_ENABLED}
+     */
     public boolean isWarmupEnabled() {
         return IS_WARMUP_ENABLED;
     }
 
+    /**
+     * @return {@link this#WARMUP_TIME}
+     */
     public int getWarmupTime() {
         return WARMUP_TIME;
     }

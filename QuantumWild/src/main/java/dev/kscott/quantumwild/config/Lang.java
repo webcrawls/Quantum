@@ -14,6 +14,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
 
+/**
+ * Stores the Quantum lang and handles MiniMessage stuff
+ */
 public class Lang {
 
     /**
