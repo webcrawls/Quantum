@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+/**
+ * Contains a map of registered {@link QuantumRule}s
+ */
 public class RuleRegistry {
 
     /**

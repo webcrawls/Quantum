@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Stores everything about a QuantumRuleset
+ */
 public class QuantumRuleset {
 
     /**
@@ -88,6 +91,11 @@ public class QuantumRuleset {
         return rules;
     }
 
+    /**
+     * Returns all {@link AsyncQuantumRule}s associated with this ruleset
+     *
+     * @return a List of {@link AsyncQuantumRule} (may be empty)
+     */
     public @NonNull List<AsyncQuantumRule> getAsyncRules() {
         final @NonNull List<AsyncQuantumRule> asyncRules = new ArrayList<>();
 
@@ -100,6 +108,11 @@ public class QuantumRuleset {
         return asyncRules;
     }
 
+    /**
+     * Returns all {@link SyncQuantumRule}s associated with this ruleset
+     *
+     * @return a List of {@link SyncQuantumRule} (may be empty)
+     */
     public @NonNull List<SyncQuantumRule> getSyncRules() {
         final @NonNull List<SyncQuantumRule> syncRules = new ArrayList<>();
 

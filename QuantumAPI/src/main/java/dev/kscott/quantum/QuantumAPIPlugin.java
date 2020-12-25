@@ -12,9 +12,15 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
+/**
+ * The QuantumAPIPlugin. Loads the QuantumAPI.
+ */
 @Singleton
 public final class QuantumAPIPlugin extends JavaPlugin {
 
+    /**
+     * Registers modules, loads config, and exposes QuantumAPI.
+     */
     @Override
     public void onEnable() {
         final @NonNull Injector injector = Guice.createInjector(
@@ -39,6 +45,11 @@ public final class QuantumAPIPlugin extends JavaPlugin {
         new Metrics(this, 9725);
     }
 
+    /**
+     * Loads the Config through guice
+     *
+     * @param injector Guice injector instance
+     */
     private void loadConfig(final @NonNull Injector injector) {
         injector.getInstance(Config.class);
     }
