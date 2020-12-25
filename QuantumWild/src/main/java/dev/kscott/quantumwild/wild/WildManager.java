@@ -67,7 +67,7 @@ public class WildManager {
     private final @NonNull LocationProvider locationProvider;
 
     /**
-     * Constructs WildManager
+     * Constructs WildManager.
      *
      * @param config              {@link this#config}
      * @param integrationsManager {@link this#integrationsManager}
@@ -99,10 +99,10 @@ public class WildManager {
     /**
      * Returns the amount of cooldown that this player will receive.
      * This takes the player's world into consideration, and the value
-     * of {@link Config#isPerWorldCooldownEnabled()}
+     * of {@link Config#isPerWorldCooldownEnabled()}.
      *
-     * @param player Player to get cooldown for
-     * @return amount of cooldown, in seconds
+     * @param player Player to get cooldown for.
+     * @return amount of cooldown, in seconds.
      */
     public int getCooldownToApply(final @NonNull Player player) {
         if (!this.integrationsManager.isLuckPermsEnabled()) {
@@ -135,10 +135,10 @@ public class WildManager {
     }
 
     /**
-     * Returns when a player's cooldown will be up (in ms)
+     * Returns when a player's cooldown will be up (in ms).
      *
-     * @param player Player to check
-     * @return the timestamp of when their cooldown will be up, in ms will return 0 if there is no cooldown applied
+     * @param player Player to check.
+     * @return the timestamp of when their cooldown will be up, in ms will return 0 if there is no cooldown applied.
      */
     public long getCurrentCooldown(final @NonNull Player player) {
         if (this.config.isPerWorldCooldownEnabled()) {
@@ -160,9 +160,9 @@ public class WildManager {
 
     /**
      * Applies /wild cooldown to a Player, using the value from
-     * {@link this#getCooldownToApply(Player)}
+     * {@link this#getCooldownToApply(Player)}.
      *
-     * @param player Player to apply cooldown for
+     * @param player Player to apply cooldown for.
      */
     public void applyWildCooldown(final @NonNull Player player) {
         final long ms = getCooldownToApply(player) * 1000L;
@@ -184,10 +184,10 @@ public class WildManager {
     }
 
     /**
-     * Checks if the Player's cooldown has expired
+     * Checks if the Player's cooldown has expired.
      *
-     * @param player Player
-     * @return true they can
+     * @param player Player.
+     * @return true if they can.
      */
     public boolean canUseWild(final @NonNull Player player) {
         final long now = System.currentTimeMillis();
@@ -198,8 +198,8 @@ public class WildManager {
     /**
      * Teleports a player, sends messages, errors, etc.
      *
-     * @param player Player to teleport
-     * @return A CompletableFuture<Boolean>, where the boolean is true if it was a successful teleport, or false if it failed (i.e. cooldown, invalid world, etc)
+     * @param player Player to teleport.
+     * @return A CompletableFuture<Boolean>, where the boolean is true if it was a successful teleport, or false if it failed (i.e. cooldown, invalid world, etc).
      */
     public @NonNull CompletableFuture<Boolean> wildTeleportPlayer(final @NonNull Player player) {
         @NonNull CompletableFuture<Boolean> cf = new CompletableFuture<>();
@@ -263,11 +263,11 @@ public class WildManager {
     }
 
     /**
-     * Converts milliseconds to "Xh Xm Xs" format
-     * May also return "Xm Xs" or "Xs" if applicable
+     * Converts milliseconds to "Xh Xm Xs" format.
+     * May also return "Xm Xs" or "Xs" if applicable.
      *
-     * @param ms milliseconds, as a long
-     * @return formatted String
+     * @param ms milliseconds, as a long.
+     * @return formatted String.
      */
     private @NonNull String msToHms(final long ms) {
         long hours = TimeUnit.MILLISECONDS.toHours(ms);
@@ -292,7 +292,7 @@ public class WildManager {
     }
 
     /**
-     * Returns a Map, used for formatting placeholders
+     * Returns a Map, used for formatting placeholders.
      *
      * @param location Location
      * @return A map
@@ -305,6 +305,14 @@ public class WildManager {
         );
     }
 
+    /**
+     * Teleports a player, providing messages, and checks against all
+     * valid config options and stuff. Basically, the entire /wild code.
+     *
+     * @param cf CompletableFuture to be completed when teleportation is done.
+     * @param successCf CompletableFuture to be completed when teleportation is done.
+     * @param player Player to teleport
+     */
     private void teleportPlayer(
             final @NonNull CompletableFuture<QuantumLocation> cf,
             final @NonNull CompletableFuture<Boolean> successCf,
@@ -370,7 +378,7 @@ public class WildManager {
     }
 
     /**
-     * Invalidates a player's warmup, effectively cancelling it
+     * Invalidates a player's warmup, effectively cancelling it.
      *
      * @param player Player
      */
