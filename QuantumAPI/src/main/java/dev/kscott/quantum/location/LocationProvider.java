@@ -64,7 +64,7 @@ public class LocationProvider {
     }
 
     /**
-     * Returns a random spawn location for {@code world}
+     * Returns a random spawn location using {@code quantumRuleset}.
      *
      * @param quantumRuleset The ruleset to use for this search
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
