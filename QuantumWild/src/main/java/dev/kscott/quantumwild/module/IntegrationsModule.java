@@ -1,13 +1,10 @@
 package dev.kscott.quantumwild.module;
 
-import com.earth2me.essentials.Essentials;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import dev.kscott.quantumwild.IntegrationsManager;
-import net.luckperms.api.LuckPerms;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
