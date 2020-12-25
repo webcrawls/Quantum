@@ -32,7 +32,7 @@ public class QuantumLocation {
     /**
      * The generated location.
      */
-    private final @Nullable Location location;
+    private final @NonNull Location location;
 
     /**
      * Indicates whether or not this generation was successful.
@@ -56,7 +56,7 @@ public class QuantumLocation {
     public QuantumLocation(
             final long duration,
             final boolean success,
-            final @Nullable Location location,
+            final @NonNull Location location,
             final @NonNull QuantumRuleset ruleset
     ) {
         this.success = success;
@@ -75,7 +75,7 @@ public class QuantumLocation {
     /**
      * @return {@link this#location}
      */
-    public @Nullable Location getLocation() {
+    public @NonNull Location getLocation() {
         return location;
     }
 
