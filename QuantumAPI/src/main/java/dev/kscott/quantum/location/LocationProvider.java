@@ -2,6 +2,7 @@ package dev.kscott.quantum.location;
 
 import cloud.commandframework.paper.PaperCommandManager;
 import dev.kscott.quantum.config.Config;
+import dev.kscott.quantum.exceptions.ExceededMaxRetriesException;
 import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
@@ -85,7 +86,7 @@ public class LocationProvider {
         final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
 
         if (this.config.getMaxRetries() <= tries) {
-            cf.complete(new QuantumLocation(0, false, null, quantumRuleset));
+            cf.completeExceptionally(new ExceededMaxRetriesException());
             return cf;
         }
 
