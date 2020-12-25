@@ -66,28 +66,22 @@ public class LocationProvider {
     /**
      * Returns a random spawn location for {@code world}
      *
-     * @param ruleset The ruleset to use for this search
-     * @return A CompletableFuture<QuantumLocation>. Will complete when a valid location is found (or max retries is hit).
-     * If max retries is hit, {@link QuantumLocation#getLocation()} will return {@code null} and {@link QuantumLocation#isSuccess()} will return {@code false}.
-     */
-    public @NonNull CompletableFuture<QuantumLocation> getSpawnLocation(final @NonNull QuantumRuleset ruleset) {
-        return this.getSpawnLocation(0, System.currentTimeMillis(), ruleset);
-    }
-
-    /**
-     * Returns a random spawn location for {@code world}
-     *
      * @param quantumRuleset The ruleset to use for this search
-     * @param start          When this search was started
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
-    private @NonNull CompletableFuture<QuantumLocation> getSpawnLocation(final int tries, final long start, final @NonNull QuantumRuleset quantumRuleset) {
+    public @NonNull CompletableFuture<QuantumLocation> getSpawnLocation(final @NonNull QuantumRuleset quantumRuleset) {
 
         final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
 
+        findLocation(0, System.currentTimeMillis(), quantumRuleset, cf);
+
+        return cf;
+    }
+
+    private void findLocation(final int tries, final long start, final @NonNull QuantumRuleset quantumRuleset, final @NonNull CompletableFuture<QuantumLocation> cf) {
         if (this.config.getMaxRetries() <= tries) {
             cf.completeExceptionally(new ExceededMaxRetriesException());
-            return cf;
+            return;
         }
 
         this.commandManager.taskRecipe()
@@ -196,11 +190,9 @@ public class LocationProvider {
 
                         this.timer.addTime(searchTime);
                     } else {
-                        cf.complete(getSpawnLocation(tries + 1, start, state.getQuantumRuleset()).join());
+                        findLocation(tries+1, start, quantumRuleset, cf);
                     }
                 })
                 .execute();
-
-        return cf;
     }
 }
