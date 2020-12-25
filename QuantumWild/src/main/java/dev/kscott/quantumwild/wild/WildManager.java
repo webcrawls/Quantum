@@ -1,5 +1,6 @@
 package dev.kscott.quantumwild.wild;
 
+import dev.kscott.quantum.exceptions.ExceededMaxRetriesException;
 import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.location.QuantumLocation;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
@@ -318,15 +319,23 @@ public class WildManager {
             final @NonNull CompletableFuture<Boolean> successCf,
             final @NonNull Player player
     ) {
+        cf.exceptionally(ex -> {
+            if (ex != null) {
+                if (ex instanceof ExceededMaxRetriesException) {
+                    audiences.sender(player).sendMessage(lang.c("failed-spawn-location"));
+                }
+            }
+            return null;
+        });
+
+        if (cf.isCompletedExceptionally()) {
+            return;
+        }
+
         cf.thenAccept(quantumLocation -> {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    if (quantumLocation.getLocation() == null) {
-                        audiences.sender(player).sendMessage(lang.c("failed-spawn-location"));
-                        return;
-                    }
-
                     final @NonNull Location location = quantumLocation.getLocation();
 
                     if (config.isEssentialsIntegrationEnabled() && integrationsManager.isEssentialsEnabled()) {
