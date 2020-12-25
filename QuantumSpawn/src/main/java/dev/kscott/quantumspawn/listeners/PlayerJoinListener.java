@@ -2,6 +2,7 @@ package dev.kscott.quantumspawn.listeners;
 
 import com.google.inject.Inject;
 import dev.kscott.quantum.location.LocationProvider;
+import dev.kscott.quantum.location.QuantumLocation;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantumspawn.config.Config;
 import org.bukkit.World;
@@ -13,6 +14,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The PlayerJoinListener.
@@ -66,23 +69,18 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
-        this.locationProvider.getSpawnLocation(ruleset)
-                .thenAccept(quantumLocation -> {
-                    if (quantumLocation == null) {
-                        return;
-                    }
+        final @NonNull CompletableFuture<QuantumLocation> cf = this.locationProvider.getSpawnLocation(ruleset);
 
-                    if (quantumLocation.getLocation() == null) {
-                        return;
+        if (!cf.isCompletedExceptionally()) {
+            cf.thenAccept(quantumLocation -> {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.teleportAsync(quantumLocation.getLocation());
                     }
-
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            player.teleportAsync(quantumLocation.getLocation());
-                        }
-                    }.runTask(plugin);
-                });
+                }.runTask(plugin);
+            });
+        }
     }
 
 }
