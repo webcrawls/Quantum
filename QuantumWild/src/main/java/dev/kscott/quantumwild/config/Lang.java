@@ -15,17 +15,23 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 /**
- * Stores the Quantum lang and handles MiniMessage stuff
+ * Stores the Quantum lang and handles MiniMessage stuff.
  */
 public class Lang {
 
     /**
-     * JavaPlugin reference
+     * JavaPlugin reference.
      */
     private final @NonNull JavaPlugin plugin;
 
+    /**
+     * The root ConfigurationNode.
+     */
     private @Nullable ConfigurationNode root;
 
+    /**
+     * MiniMessage reference.
+     */
     private final @NonNull MiniMessage miniMessage;
 
     /**
