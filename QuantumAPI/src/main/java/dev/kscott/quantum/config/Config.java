@@ -152,6 +152,10 @@ public class Config {
 
             final @NonNull UUID worldUuid = world.getUID();
 
+            // Load the queue target
+
+            final int queueTarget = value.node("queue-target").getInt(10);
+
             // Load spawn target
             final @Nullable String spawnTargetString = value.node("spawn-target").getString();
 
@@ -255,7 +259,7 @@ public class Config {
             }
 
             // add the ruleset to the list
-            rulesets.add(new QuantumRuleset(id, worldUuid, spawnTarget, searchArea, rules));
+            rulesets.add(new QuantumRuleset(id, worldUuid, spawnTarget, searchArea, rules, queueTarget));
         }
 
         for (final QuantumRuleset ruleset : rulesets) {

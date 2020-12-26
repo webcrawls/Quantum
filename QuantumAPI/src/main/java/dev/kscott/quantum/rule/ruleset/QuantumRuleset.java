@@ -37,6 +37,11 @@ public class QuantumRuleset {
     private final @NonNull SearchArea searchArea;
 
     /**
+     * How many locations should Quantum queue for this ruleset?
+     */
+    private final int queueTarget;
+
+    /**
      * The rules that apply to this ruleset
      */
     private final @NonNull List<QuantumRule> rules;
@@ -46,13 +51,15 @@ public class QuantumRuleset {
             final @NonNull UUID worldUuid,
             final @NonNull YLocator yLocator,
             final @NonNull SearchArea searchArea,
-            final @NonNull List<QuantumRule> rules
+            final @NonNull List<QuantumRule> rules,
+            final int queueTarget
     ) {
         this.worldUuid = worldUuid;
         this.yLocator = yLocator;
         this.searchArea = searchArea;
         this.rules = rules;
         this.id = id;
+        this.queueTarget = queueTarget;
     }
 
     /**
@@ -71,6 +78,15 @@ public class QuantumRuleset {
      */
     public @NonNull YLocator getYLocator() {
         return yLocator;
+    }
+
+    /**
+     * Returns the requested queue target for this ruleset
+     *
+     * @return queue target
+     */
+    public int getQueueTarget() {
+        return queueTarget;
     }
 
     /**
