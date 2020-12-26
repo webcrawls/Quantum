@@ -13,7 +13,7 @@ plugins {
 
 allprojects {
     group = "dev.kscott.quantum"
-    version = "1.0.1"
+    version = "1.2.0"
 }
 
 repositories {
