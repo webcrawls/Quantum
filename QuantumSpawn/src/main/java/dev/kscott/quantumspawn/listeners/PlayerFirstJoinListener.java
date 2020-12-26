@@ -69,7 +69,7 @@ public class PlayerFirstJoinListener implements Listener {
         final @NonNull CompletableFuture<QuantumLocation> cf = this.locationProvider.getSpawnLocation(ruleset);
 
         cf.exceptionally(err -> {
-            this.plugin.getLogger().warning("Failed to generate a spawn (spawn-on-join) for "+player.getName()+": "+err.getMessage());
+            this.plugin.getLogger().warning("Failed to generate a spawn (spawn-on-first-join) for "+player.getName()+": "+err.getMessage());
             return null;
         });
 
