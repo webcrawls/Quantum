@@ -61,6 +61,11 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(final @NonNull PlayerJoinEvent event) {
         final @NonNull Player player = event.getPlayer();
+
+        if (!player.hasPlayedBefore()) {
+            return;
+        }
+
         final @NonNull World world = player.getWorld();
 
         final @Nullable QuantumRuleset ruleset = config.getRuleset(world);
@@ -70,6 +75,11 @@ public class PlayerJoinListener implements Listener {
         }
 
         final @NonNull CompletableFuture<QuantumLocation> cf = this.locationProvider.getSpawnLocation(ruleset);
+
+        cf.exceptionally(err -> {
+            this.plugin.getLogger().warning("Failed to generate a spawn (spawn-on-join) for "+player.getName()+": "+err.getMessage());
+            return null;
+        });
 
         if (!cf.isCompletedExceptionally()) {
             cf.thenAccept(quantumLocation -> {
