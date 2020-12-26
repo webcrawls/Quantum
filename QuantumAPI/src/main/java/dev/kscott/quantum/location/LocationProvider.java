@@ -15,7 +15,10 @@ import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -44,6 +47,12 @@ public class LocationProvider {
      */
     private final @NonNull Config config;
 
+    /**
+     * A map where the key is a String id representation of a QuantumRuleset,
+     * and the value is a set of locations to be used as the location queue.
+     */
+    private final @NonNull Map<String, Set<Location>> locationQueueMap;
+
 
     /**
      * Constructs the LocationProvider
@@ -61,6 +70,8 @@ public class LocationProvider {
         this.random = new Random();
         this.timer = timer;
         this.config = config;
+
+        this.locationQueueMap = new HashMap<>();
     }
 
     /**
