@@ -3,6 +3,7 @@ package dev.kscott.quantumspawn;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import dev.kscott.quantumspawn.config.Config;
+import dev.kscott.quantumspawn.listeners.PlayerFirstJoinListener;
 import dev.kscott.quantumspawn.listeners.PlayerJoinListener;
 import dev.kscott.quantumspawn.module.ConfigModule;
 import dev.kscott.quantumspawn.module.PluginModule;
@@ -27,9 +28,15 @@ public final class QuantumSpawnPlugin extends JavaPlugin {
         final @NonNull Config config = loadConfig(injector);
 
         if (config.isSpawnOnJoinEnabled()) {
-            final @NonNull PlayerJoinListener playerJoinListener = injector.getInstance(PlayerJoinListener.class);
-            this.getServer().getPluginManager().registerEvents(playerJoinListener, this);
+            this.getServer().getPluginManager().registerEvents(injector.getInstance(PlayerJoinListener.class), this);
+            this.getLogger().info("Random spawn on join is enabled!");
         }
+
+        if (config.isSpawnOnFirstJoinEnabled()) {
+            this.getServer().getPluginManager().registerEvents(injector.getInstance(PlayerFirstJoinListener.class), this);
+            this.getLogger().info("Random spawn on first join is enabled!");
+        }
+
 
         new Metrics(this, 9727);
     }
