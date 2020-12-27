@@ -66,23 +66,14 @@ public class PlayerFirstJoinListener implements Listener {
             return;
         }
 
-        final @NonNull CompletableFuture<QuantumLocation> cf = this.locationProvider.getSpawnLocation(ruleset);
+        final @Nullable QuantumLocation quantumLocation = this.locationProvider.getQueueLocation(ruleset);
 
-        cf.exceptionally(err -> {
-            this.plugin.getLogger().warning("Failed to generate a spawn (spawn-on-first-join) for "+player.getName()+": "+err.getMessage());
-            return null;
-        });
-
-        if (!cf.isCompletedExceptionally()) {
-            cf.thenAccept(quantumLocation -> {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        player.teleportAsync(quantumLocation.getLocation());
-                    }
-                }.runTask(plugin);
-            });
+        if (quantumLocation == null) {
+            this.plugin.getLogger().warning("The location queue was empty for " + ruleset.getId() + ", so " + player.getName() + " was not teleported. Please set " + ruleset.getId() + "'s queue target to a non-zero number to fix this.");
+            return;
         }
+
+        player.teleportAsync(quantumLocation.getLocation());
 
     }
 
