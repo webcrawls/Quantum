@@ -1,4 +1,4 @@
-package dev.kscott.quantumspawn.module;
+package dev.kscott.quantumspawn.inject;
 
 import com.google.inject.AbstractModule;
 import dev.kscott.quantumspawn.QuantumSpawnPlugin;
