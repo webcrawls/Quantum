@@ -8,6 +8,7 @@ import com.google.inject.Singleton;
 import dev.kscott.quantum.config.Config;
 import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.location.QuantumTimer;
+import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -24,9 +25,10 @@ public class LocationModule extends AbstractModule {
     public @NonNull LocationProvider provideLocationProvider(
             final @NonNull Config config,
             final @NonNull QuantumTimer timer,
-            final @NonNull PaperCommandManager<CommandSender> commandManager
+            final @NonNull PaperCommandManager<CommandSender> commandManager,
+            final @NonNull RulesetRegistry rulesetRegistry
     ) {
-        return new LocationProvider(config, timer, commandManager);
+        return new LocationProvider(config, timer, commandManager, rulesetRegistry);
     }
 
 }

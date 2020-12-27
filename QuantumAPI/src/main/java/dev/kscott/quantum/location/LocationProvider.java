@@ -6,6 +6,7 @@ import dev.kscott.quantum.exceptions.ExceededMaxRetriesException;
 import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
+import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
@@ -56,7 +57,8 @@ public class LocationProvider {
     public LocationProvider(
             final @NonNull Config config,
             final @NonNull QuantumTimer timer,
-            final @NonNull PaperCommandManager<CommandSender> commandManager
+            final @NonNull PaperCommandManager<CommandSender> commandManager,
+            final @NonNull RulesetRegistry rulesetRegistry
     ) {
         this.commandManager = commandManager;
         this.random = new Random();
