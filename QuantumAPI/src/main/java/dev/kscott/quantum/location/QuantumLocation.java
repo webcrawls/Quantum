@@ -35,13 +35,6 @@ public class QuantumLocation {
     private final @NonNull Location location;
 
     /**
-     * Indicates whether or not this generation was successful.
-     * A request can fail if MAX_TRIES is exceeded, and in these cases,
-     * this boolean will be false and {@link this#location} will be null.
-     */
-    private final boolean success;
-
-    /**
      * The ruleset used to generate this location.
      */
     private final @NonNull QuantumRuleset ruleset;
@@ -55,11 +48,9 @@ public class QuantumLocation {
      */
     public QuantumLocation(
             final long duration,
-            final boolean success,
             final @NonNull Location location,
             final @NonNull QuantumRuleset ruleset
     ) {
-        this.success = success;
         this.duration = duration;
         this.location = location;
         this.ruleset = ruleset;
@@ -84,12 +75,5 @@ public class QuantumLocation {
      */
     public @NonNull QuantumRuleset getRuleset() {
         return ruleset;
-    }
-
-    /**
-     * @return {@link this#success}
-     */
-    public boolean isSuccess() {
-        return success;
     }
 }

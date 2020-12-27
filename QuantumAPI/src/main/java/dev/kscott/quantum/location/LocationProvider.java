@@ -220,7 +220,6 @@ public class LocationProvider {
 
                         cf.complete(new QuantumLocation(
                                 searchTime,
-                                true,
                                 new Location(state.getWorld(), state.getX(), state.getY(), state.getZ()),
                                 state.getQuantumRuleset()
                         ));
