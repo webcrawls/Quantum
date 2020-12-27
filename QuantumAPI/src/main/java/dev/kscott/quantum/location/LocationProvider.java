@@ -65,11 +65,19 @@ public class LocationProvider {
         this.timer = timer;
         this.config = config;
 
-        this.locationQueue = new LocationQueue(this);
+        this.locationQueue = new LocationQueue(this, rulesetRegistry);
     }
 
     /**
      * Returns a random spawn location using {@code quantumRuleset}.
+     *
+     * Will first check if the queue for {@code quantumRuleset} was empty. If it was, then
+     * a new location will be generated to complete the {@link CompletableFuture} with.
+     * Additionally, this will trigger the LocationQueue to generate more locations for
+     * the ruleset (using the ruleset's configured queue target).
+     *
+     * If there was a location in the queue, then the {@link CompletableFuture} will be completed
+     * using the queue.
      *
      * @param quantumRuleset The ruleset to use for this search
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
@@ -84,8 +92,19 @@ public class LocationProvider {
             cf.complete(this.locationQueue.popLocation(quantumRuleset));
         }
 
+        this.locationQueue.getLocations(quantumRuleset);
 
         return cf;
+    }
+
+    /**
+     * Accesses the Location queue to find a location. If no location was in the queue, it will return null.
+     *
+     * @param quantumRuleset The target ruleset.
+     * @return Location from the queue. May be null if the queue was empty.
+     */
+    public @Nullable QuantumLocation getQueueLocation(final @NonNull QuantumRuleset quantumRuleset) {
+        return this.locationQueue.popLocation(quantumRuleset);
     }
 
     /**

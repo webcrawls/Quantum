@@ -1,6 +1,7 @@
 package dev.kscott.quantum.location;
 
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
+import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import org.bukkit.Location;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -27,12 +28,26 @@ public class LocationQueue {
      */
     private final @NonNull LocationProvider locationProvider;
 
+    private final @NonNull RulesetRegistry rulesetRegistry;
+
     /**
      * Constructs the LocationQueue
      */
-    public LocationQueue(final @NonNull LocationProvider locationProvider) {
+    public LocationQueue(
+            final @NonNull LocationProvider locationProvider,
+            final @NonNull RulesetRegistry rulesetRegistry
+    ) {
         this.locationQueueMap = new HashMap<>();
         this.locationProvider = locationProvider;
+        this.rulesetRegistry = rulesetRegistry;
+
+        for (final QuantumRuleset ruleset : rulesetRegistry.getRulesets()) {
+            if (ruleset.getQueueTarget() == 0) {
+                continue;
+            }
+
+            getLocations(ruleset);
+        }
     }
 
     protected void pushLocation(final @NonNull QuantumRuleset ruleset, final @NonNull QuantumLocation location) {
@@ -79,5 +94,7 @@ public class LocationQueue {
                 locations.add(quantumLocation);
             });
         }
+
+        System.out.println("get done");
     }
 }
