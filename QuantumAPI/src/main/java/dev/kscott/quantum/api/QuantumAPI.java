@@ -24,15 +24,24 @@ public class QuantumAPI {
         this.ruleRegistry = ruleRegistry;
     }
 
-    public LocationProvider getLocationProvider() {
+    /**
+     * @return the LocationProvider instance
+     */
+    public @NonNull LocationProvider getLocationProvider() {
         return locationProvider;
     }
 
-    public RulesetRegistry getRulesetRegistry() {
+    /**
+     * @return the RulesetRegistry instance
+     */
+    public @NonNull RulesetRegistry getRulesetRegistry() {
         return rulesetRegistry;
     }
 
-    public RuleRegistry getRuleRegistry() {
+    /**
+     * @return the RuleRegistry instance
+     */
+    public @NonNull RuleRegistry getRuleRegistry() {
         return ruleRegistry;
     }
 }
