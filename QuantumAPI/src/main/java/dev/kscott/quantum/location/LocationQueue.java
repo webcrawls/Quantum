@@ -81,7 +81,6 @@ public class LocationQueue {
 
         for (int i = 0; i < target; i++) {
             final int index = i;
-            System.out.println("queuing "+i+" for "+ruleset.getId());
             final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
 
             this.locationProvider.findLocation(0, System.currentTimeMillis(), ruleset, cf);
@@ -89,12 +88,8 @@ public class LocationQueue {
             cf.thenAccept(quantumLocation -> {
                 final @Nullable Queue<QuantumLocation> locations = locationQueueMap.computeIfAbsent(ruleset, k -> new ConcurrentLinkedQueue<>());
 
-                System.out.println("queue "+index+"done for "+ruleset.getId());
-
                 locations.add(quantumLocation);
             });
         }
-
-        System.out.println("get done");
     }
 }
