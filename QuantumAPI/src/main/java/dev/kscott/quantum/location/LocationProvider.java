@@ -47,12 +47,7 @@ public class LocationProvider {
      */
     private final @NonNull Config config;
 
-    /**
-     * A map where the key is a String id representation of a QuantumRuleset,
-     * and the value is a set of locations to be used as the location queue.
-     */
-    private final @NonNull Map<String, Set<Location>> locationQueueMap;
-
+    private final @NonNull LocationQueue locationQueue;
 
     /**
      * Constructs the LocationProvider
@@ -71,7 +66,7 @@ public class LocationProvider {
         this.timer = timer;
         this.config = config;
 
-        this.locationQueueMap = new HashMap<>();
+        this.locationQueue = new LocationQueue(this);
     }
 
     /**
@@ -81,10 +76,15 @@ public class LocationProvider {
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
     public @NonNull CompletableFuture<QuantumLocation> getSpawnLocation(final @NonNull QuantumRuleset quantumRuleset) {
-
         final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
 
-        findLocation(0, System.currentTimeMillis(), quantumRuleset, cf);
+        if (this.locationQueue.getLocationCount(quantumRuleset) == 0) {
+            findLocation(0, System.currentTimeMillis(), quantumRuleset, cf);
+            this.locationQueue.getLocations(quantumRuleset);
+        } else {
+            cf.complete(this.locationQueue.popLocation(quantumRuleset));
+        }
+
 
         return cf;
     }
@@ -97,7 +97,7 @@ public class LocationProvider {
      * @param quantumRuleset the ruleset to search with
      * @param cf             the CompletableFuture to call when this search completes or fails
      */
-    private void findLocation(final int tries, final long start, final @NonNull QuantumRuleset quantumRuleset, final @NonNull CompletableFuture<QuantumLocation> cf) {
+    protected void findLocation(final int tries, final long start, final @NonNull QuantumRuleset quantumRuleset, final @NonNull CompletableFuture<QuantumLocation> cf) {
         if (this.config.getMaxRetries() <= tries) {
             cf.completeExceptionally(new ExceededMaxRetriesException());
             return;
