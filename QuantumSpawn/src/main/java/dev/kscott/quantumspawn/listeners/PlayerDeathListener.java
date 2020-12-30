@@ -59,6 +59,10 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
+        if (config.isGoToBedEnabled() && player.getBedSpawnLocation() != null) {
+            return;
+        }
+
         final @NonNull World world = player.getWorld();
 
         final @Nullable QuantumRuleset ruleset = config.getRuleset(world);
