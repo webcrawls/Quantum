@@ -169,4 +169,8 @@ public class Config {
     public boolean isSpawnOnDeathEnabled() {
         return SPAWN_ON_DEATH;
     }
+
+    public boolean isGoToBedEnabled() {
+        return SPAWN_ON_DEATH_GO_TO_BED;
+    }
 }
