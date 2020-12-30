@@ -60,6 +60,11 @@ public class Config {
     private boolean SPAWN_ON_DEATH;
 
     /**
+     * Should players be sent to their bed on death, if they have one?
+     */
+    private boolean SPAWN_ON_DEATH_GO_TO_BED;
+
+    /**
      * Constructs the config, loads it, and loads rulesets.
      *
      * @param plugin          {@link this#plugin}
@@ -110,9 +115,10 @@ public class Config {
      * Loads QuantumWild's configuration values
      */
     private void loadConfigurationValues() {
-        this.SPAWN_ON_FIRST_JOIN = this.root.node("spawn").node("spawn-on-first-join").getBoolean(false);
-        this.SPAWN_ON_JOIN = this.root.node("spawn").node("spawn-on-join").getBoolean(false);
-        this.SPAWN_ON_DEATH = this.root.node("spawn").node("spawn-on-death").getBoolean(false);
+        this.SPAWN_ON_FIRST_JOIN = this.root.node("spawn").node("spawn-on-join").node("first-join").getBoolean(false);
+        this.SPAWN_ON_JOIN = this.root.node("spawn").node("spawn-on-join").node("on-join").getBoolean(false);
+        this.SPAWN_ON_DEATH = this.root.node("spawn").node("spawn-on-death").node("enabled").getBoolean(false);
+        this.SPAWN_ON_DEATH_GO_TO_BED = this.root.node("spawn").node("spawn-on-death").node("go-to-bed").getBoolean(false);
 
         this.worldRulesetMap.clear();
 
