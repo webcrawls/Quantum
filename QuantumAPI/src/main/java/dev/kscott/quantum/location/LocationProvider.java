@@ -152,7 +152,7 @@ public class LocationProvider {
                 })
                 .synchronous(state -> {
                     // Get the chunk future and add it to the state
-                    state.setChunkFuture(PaperLib.getChunkAtAsync(state.getWorld(), state.getChunkX(), state.getChunkZ()));
+                    state.setChunkFuture(PaperLib.getChunkAtAsync(state.getWorld(), state.getChunkX(), state.getChunkZ(), true, true));
 
                     return state;
                 })
