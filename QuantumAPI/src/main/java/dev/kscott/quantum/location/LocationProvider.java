@@ -214,7 +214,7 @@ public class LocationProvider {
                     return state;
                 })
                 .asynchronous(state -> {
-                    // Complete the cf, either with the new location, or the results of a recursive getSpawnLocation call
+                    // Complete the cf, either with the new location, or the results of a recursive findLocation call
                     if (state.isValid()) {
                         final long searchTime = System.currentTimeMillis() - start;
 
