@@ -14,3 +14,9 @@ permissions:
   quantum.wild.use:
     default: op
     description: access to /wild
+  quantum.wild.cooldown.bypass:
+    default: op
+    description: bypasses /wild cooldown
+  quantum.wild.warmup.bypass:
+    default: op
+    description: bypasses /wild cooldown

@@ -191,6 +191,10 @@ public class WildManager {
      * @return true if they can.
      */
     public boolean canUseWild(final @NonNull Player player) {
+        if (player.hasPermission("quantum.wild.cooldown.bypass")) {
+            return true;
+        }
+
         final long now = System.currentTimeMillis();
 
         return now >= getCurrentCooldown(player);
@@ -218,7 +222,7 @@ public class WildManager {
         final @NonNull CompletableFuture<QuantumLocation> locationCf = this.locationProvider.getSpawnLocation(ruleset);
 
         if (canUseWild(player)) {
-            if (this.config.isWarmupEnabled()) {
+            if (this.config.isWarmupEnabled() && !player.hasPermission("quantum.wild.warmup.bypass")) {
                 this.audiences.sender(player).sendMessage(lang.c("warmup", Map.of("{time}", msToHms(this.config.getWarmupTime() * 1000L))));
                 this.playersWarmingUp.add(player.getUniqueId());
 
