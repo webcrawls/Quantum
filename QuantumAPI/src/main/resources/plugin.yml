@@ -3,6 +3,9 @@ version: @version@
 main: dev.kscott.quantum.QuantumAPIPlugin
 api-version: 1.16
 description: A random location generation API for 1.16+
+softdepend:
+  - WorldEdit
+  - WorldGuard
 permissions:
   quantum.api.command.rules:
     description: Gives access to /quantum rules.
