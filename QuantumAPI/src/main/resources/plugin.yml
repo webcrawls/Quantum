@@ -3,3 +3,13 @@ version: @version@
 main: dev.kscott.quantum.QuantumAPIPlugin
 api-version: 1.16
 description: A random location generation API for 1.16+
+permissions:
+  quantum.api.command.use:
+    description: Gives access to the base /quantum command.
+    default: op
+  quantum.api.command.rules:
+    description: Gives access to /quantum rules.
+    default: op
+  quantum.api.command.rulesets:
+    description: Gives access to /quantum rulesets.
+    default: op
