@@ -80,24 +80,30 @@ public class QuantumCommand {
     private void setupCommands() {
         final Command.Builder<CommandSender> builder = this.commandManager.commandBuilder("quantum", "q");
 
-        this.commandManager.command(builder.literal(
-                "rulesets",
-                Description.of("Get the ids of all loaded rulesets")
+        this.commandManager.command(
+                builder.literal(
+                        "rulesets",
+                        Description.of("Get the ids of all loaded rulesets")
                 )
+                        .permission("quantum.api.command.rulesets")
                         .handler(this::handleRulesets)
         );
 
-        this.commandManager.command(builder.literal(
-                "rules",
-                Description.of("Get the ids all loaded rules")
+        this.commandManager.command
+                (builder.literal(
+                        "rules",
+                        Description.of("Get the ids all loaded rules")
                 )
+                        .permission("quantum.api.command.rules")
                         .handler(this::handleRules)
         );
 
-        this.commandManager.command(builder.literal(
-                "stats",
-                Description.of("See Quantum's performance")
+        this.commandManager.command(
+                builder.literal(
+                        "stats",
+                        Description.of("See Quantum's performance")
                 )
+                        .permission("quantum.api.command.stats")
                         .handler(this::handleStats)
         );
     }
