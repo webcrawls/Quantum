@@ -3,6 +3,7 @@ package dev.kscott.quantum.rule.ruleset;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +58,7 @@ public class RulesetRegistry {
      * @return a list of QuantumRuleset
      */
     public @NonNull Collection<QuantumRuleset> getRulesets() {
-        return this.rulesetMap.values();
+        return new ArrayList<>(this.rulesetMap.values());
     }
 
     /**
