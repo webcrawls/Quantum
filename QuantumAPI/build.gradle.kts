@@ -1,5 +1,8 @@
 repositories {
     mavenLocal()
+    maven {
+        url = uri("https://maven.enginehub.org/repo/")
+    }
 }
 
 dependencies {
@@ -10,4 +13,7 @@ dependencies {
     implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
 
     api("cloud.commandframework:cloud-paper:1.3.0-SNAPSHOT")
+
+    compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.4")
+
 }
