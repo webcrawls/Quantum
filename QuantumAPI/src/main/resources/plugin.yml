@@ -13,3 +13,6 @@ permissions:
   quantum.api.command.rulesets:
     description: Gives access to /quantum rulesets.
     default: op
+  quantum.api.command.reload:
+    description: Gives access to /quantum reload.
+    default: op
