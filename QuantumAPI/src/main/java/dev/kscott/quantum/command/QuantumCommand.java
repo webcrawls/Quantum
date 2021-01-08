@@ -64,6 +64,9 @@ public class QuantumCommand {
     /**
      * Constructs QuantumCommand
      *
+     * @param plugin JavaPlugin reference
+     * @param ruleRegistry RuleRegistry reference
+     * @param timer QuantumTimer reference
      * @param commandManager  CommandManager reference
      * @param bukkitAudiences BukkitAudiences reference
      * @param config          Config reference
@@ -125,6 +128,32 @@ public class QuantumCommand {
                         .permission("quantum.api.command.stats")
                         .handler(this::handleStats)
         );
+
+        this.commandManager.command(
+                builder.literal(
+                        "reload",
+                        Description.of("Reloads Quantum reload")
+                )
+                        .permission("quantum.api.command.reload")
+                        .handler(this::handleReload)
+        );
+    }
+
+    /**
+     * Handles /quantum reload
+     *
+     * @param context command context
+     */
+    private void handleReload(final @NonNull CommandContext<CommandSender> context) {
+        final @NonNull CommandSender sender = context.getSender();
+
+        config.reload();
+
+        final TextComponent.Builder component = Component.text()
+                .append(this.config.PREFIX)
+                .append(MiniMessage.get().parse(" <gray>Reloaded all rulesets!</gray>"));
+
+        bukkitAudiences.sender(sender).sendMessage(component);
     }
 
     /**
