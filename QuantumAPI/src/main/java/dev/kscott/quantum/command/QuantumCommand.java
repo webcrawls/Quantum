@@ -108,8 +108,8 @@ public class QuantumCommand {
                         .handler(this::handleRulesets)
         );
 
-        this.commandManager.command
-                (builder.literal(
+        this.commandManager.command(
+                builder.literal(
                         "rules",
                         Description.of("Get the ids all loaded rules")
                         )
