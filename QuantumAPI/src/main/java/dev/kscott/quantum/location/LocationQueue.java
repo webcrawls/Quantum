@@ -80,7 +80,6 @@ public class LocationQueue {
         final int target = ruleset.getQueueTarget();
 
         for (int i = 0; i < target; i++) {
-            final int index = i;
             final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
 
             this.locationProvider.findLocation(0, System.currentTimeMillis(), ruleset, cf);
