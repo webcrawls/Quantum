@@ -19,4 +19,4 @@ permissions:
     description: bypasses /wild cooldown
   quantum.wild.warmup.bypass:
     default: op
-    description: bypasses /wild cooldown
+    description: bypasses /wild warmup
