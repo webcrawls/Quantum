@@ -95,6 +95,9 @@ public class Config {
         this.loadConfigValues();
     }
 
+    /**
+     * Reloads the internal configuration node and re-registers rulesets.
+     */
     public void reload() {
         loadConfig();
         loadRulesets();
