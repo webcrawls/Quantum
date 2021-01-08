@@ -5,7 +5,9 @@ import dev.kscott.quantum.rule.rules.async.AvoidBlockRule;
 import dev.kscott.quantum.rule.rules.async.OnlyBiomeRule;
 import dev.kscott.quantum.rule.rules.async.OnlyBlockRule;
 import dev.kscott.quantum.rule.rules.sync.AvoidEntityRule;
+import dev.kscott.quantum.rule.rules.sync.AvoidRegionRule;
 import dev.kscott.quantum.rule.rules.sync.NearbyEntityRule;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -21,6 +23,11 @@ import java.util.Map;
 public class RuleRegistry {
 
     /**
+     * JavaPlugin reference.
+     */
+    private final @NonNull JavaPlugin plugin;
+
+    /**
      * The map where all rules are stored, by their id.
      */
     private final @NonNull Map<String, Class<? extends QuantumRule>> ruleMap;
@@ -28,8 +35,11 @@ public class RuleRegistry {
     /**
      * Constructs the rule registry and it's internal map
      */
-    public RuleRegistry() {
+    public RuleRegistry(
+            final @NonNull JavaPlugin plugin
+    ) {
         this.ruleMap = new HashMap<>();
+        this.plugin = plugin;
 
         // Async rules
         this.registerRule("avoid-block", AvoidBlockRule.class);
@@ -40,6 +50,11 @@ public class RuleRegistry {
         // Sync rules
         this.registerRule("avoid-entity", AvoidEntityRule.class);
         this.registerRule("nearby-entity", NearbyEntityRule.class);
+
+        // WorldGuard rules
+        if (this.plugin.getServer().getPluginManager().isPluginEnabled("WorldGuard")) {
+            this.registerRule("avoid-region", AvoidRegionRule.class);
+        }
     }
 
     /**
