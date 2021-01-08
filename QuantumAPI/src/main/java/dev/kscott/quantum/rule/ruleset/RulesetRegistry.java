@@ -60,4 +60,22 @@ public class RulesetRegistry {
         return this.rulesetMap.values();
     }
 
+    /**
+     * Unregisters a ruleset
+     *
+     * @param id id of the ruleset
+     */
+    public void unregisterRuleset(final @NonNull String id) {
+        this.rulesetMap.remove(id);
+    }
+
+    /**
+     * Unregisters a ruleset
+     *
+     * @param ruleset ruleset to unregister
+     */
+    public void unregisterRuleset(final @NonNull QuantumRuleset ruleset) {
+        unregisterRuleset(ruleset.getId());
+    }
+
 }
