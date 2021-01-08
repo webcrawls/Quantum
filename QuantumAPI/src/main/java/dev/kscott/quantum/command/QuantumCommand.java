@@ -18,6 +18,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
@@ -44,6 +45,11 @@ public class QuantumCommand {
     private final @NonNull RuleRegistry ruleRegistry;
 
     /**
+     * JavaPlugin reference
+     */
+    private final @NonNull JavaPlugin plugin;
+
+    /**
      * Config reference
      */
     private final @NonNull Config config;
@@ -64,7 +70,16 @@ public class QuantumCommand {
      * @param rulesetRegistry RulesetRegistry reference
      */
     @Inject
-    public QuantumCommand(final @NonNull QuantumTimer timer, final @NonNull RuleRegistry ruleRegistry, final @NonNull BukkitAudiences bukkitAudiences, final @NonNull Config config, final @NonNull CommandManager<CommandSender> commandManager, final @NonNull RulesetRegistry rulesetRegistry) {
+    public QuantumCommand(
+            final @NonNull JavaPlugin plugin,
+            final @NonNull QuantumTimer timer,
+            final @NonNull RuleRegistry ruleRegistry,
+            final @NonNull BukkitAudiences bukkitAudiences,
+            final @NonNull Config config,
+            final @NonNull CommandManager<CommandSender> commandManager,
+            final @NonNull RulesetRegistry rulesetRegistry
+    ) {
+        this.plugin = plugin;
         this.commandManager = commandManager;
         this.rulesetRegistry = rulesetRegistry;
         this.config = config;
@@ -81,6 +96,10 @@ public class QuantumCommand {
         final Command.Builder<CommandSender> builder = this.commandManager.commandBuilder("quantum", "q");
 
         this.commandManager.command(
+                builder.handler(this::handleMain)
+        );
+
+        this.commandManager.command(
                 builder.literal(
                         "rulesets",
                         Description.of("Get the ids of all loaded rulesets")
@@ -93,10 +112,10 @@ public class QuantumCommand {
                 (builder.literal(
                         "rules",
                         Description.of("Get the ids all loaded rules")
-                )
-                        .permission("quantum.api.command.rules")
-                        .handler(this::handleRules)
-        );
+                        )
+                                .permission("quantum.api.command.rules")
+                                .handler(this::handleRules)
+                );
 
         this.commandManager.command(
                 builder.literal(
@@ -106,6 +125,23 @@ public class QuantumCommand {
                         .permission("quantum.api.command.stats")
                         .handler(this::handleStats)
         );
+    }
+
+    /**
+     * Handles /quantum
+     *
+     * @param context command context
+     */
+    private void handleMain(final @NonNull CommandContext<CommandSender> context) {
+        final @NonNull CommandSender sender = context.getSender();
+
+        final @NonNull String version = this.plugin.getDescription().getVersion();
+
+        final TextComponent.Builder component = Component.text()
+                .append(this.config.PREFIX)
+                .append(MiniMessage.get().parse(" <gray>Quantum v<aqua>"+version+"</aqua></gray>"));
+
+        bukkitAudiences.sender(sender).sendMessage(component);
     }
 
     /**
