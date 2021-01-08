@@ -95,6 +95,11 @@ public class Config {
         this.loadConfigValues();
     }
 
+    public void reload() {
+        loadConfig();
+        loadRulesets();
+    }
+
     /**
      * Loads the config into the {@link this.root} node
      */
@@ -117,6 +122,10 @@ public class Config {
      */
     // TODO create a ruleset builder
     private void loadRulesets() {
+        for (final @NonNull QuantumRuleset ruleset : rulesetRegistry.getRulesets()) {
+            rulesetRegistry.unregisterRuleset(ruleset);
+        }
+
         this.plugin.getLogger().info("Loading rulesets...");
 
         final @NonNull List<QuantumRuleset> rulesets = new ArrayList<>();
