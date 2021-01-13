@@ -364,7 +364,7 @@ public class WildManager {
                                 .teleport(QuantumLocation.toCenterLocation(location), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
 
                     } else {
-                        PaperLib.teleportAsync(player, QuantumLocation.toCenterLocation(location))
+                        PaperLib.teleportAsync(player, QuantumLocation.toCenterHorizontalLocation(location))
                                 .thenAccept(success -> {
                                     if (success) {
                                         applyWildCooldown(player);
