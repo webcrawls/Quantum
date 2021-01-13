@@ -3,7 +3,6 @@ package dev.kscott.quantum.location;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import org.bukkit.Location;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * Represents a completed Quantum location request.
@@ -20,6 +19,20 @@ public class QuantumLocation {
         Location centerLoc = location.clone();
         centerLoc.setX(location.getBlockX() + 0.5);
         centerLoc.setY(location.getBlockY() + 0.5);
+        centerLoc.setZ(location.getBlockZ() + 0.5);
+        return centerLoc;
+    }
+
+    /**
+     * Clones {@code location} and returns the clone with x/z values set to 0.5, and y value to 0.
+     *
+     * @param location Location to center
+     * @return Centered location
+     */
+    public static @NonNull Location toCenterHorizontalLocation(final @NonNull Location location) {
+        Location centerLoc = location.clone();
+        centerLoc.setX(location.getBlockX() + 0.5);
+        centerLoc.setY(location.getBlockY());
         centerLoc.setZ(location.getBlockZ() + 0.5);
         return centerLoc;
     }
