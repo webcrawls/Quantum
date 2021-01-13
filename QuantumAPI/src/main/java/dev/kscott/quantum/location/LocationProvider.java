@@ -70,12 +70,12 @@ public class LocationProvider {
 
     /**
      * Returns a random spawn location using {@code quantumRuleset}.
-     *
+     * <p>
      * Will first check if the queue for {@code quantumRuleset} was empty. If it was, then
      * a new location will be generated to complete the {@link CompletableFuture} with.
      * Additionally, this will trigger the LocationQueue to generate more locations for
      * the ruleset (using the ruleset's configured queue target).
-     *
+     * <p>
      * If there was a location in the queue, then the {@link CompletableFuture} will be completed
      * using the queue.
      *
@@ -173,7 +173,7 @@ public class LocationProvider {
                     return state;
                 })
                 .asynchronous(state -> {
-                    // Get the y value and check async rules
+                    // Get the y value and run rule validators
 
                     state.setValid(true);
 
@@ -187,33 +187,13 @@ public class LocationProvider {
 
                     state.setY(y);
 
-                    for (final AsyncQuantumRule rule : state.getQuantumRuleset().getAsyncRules()) {
-                        boolean valid = rule.validate(state.getSnapshot(), state.getRelativeX(), y, state.getRelativeZ());
+                    final @NonNull CompletableFuture<Boolean> validCf = this.validateLocation(
+                            new Location(state.getWorld(), state.getX(), state.getY(), state.getZ()),
+                            state.getQuantumRuleset()
+                    );
 
-                        state.setValid(valid);
+                    state.setValid(validCf.join());
 
-                        if (!valid) {
-                            break;
-                        }
-                    }
-
-                    return state;
-                })
-                .synchronous(state -> {
-                    // Check sync rules
-                    for (final SyncQuantumRule rule : state.getQuantumRuleset().getSyncRules()) {
-                        boolean valid = rule.validate(state.getChunk(), state.getRelativeX(), state.getY(), state.getRelativeZ());
-
-                        state.setValid(valid);
-
-                        if (!valid) {
-                            break;
-                        }
-                    }
-
-                    return state;
-                })
-                .asynchronous(state -> {
                     // Complete the cf, either with the new location, or the results of a recursive findLocation call
                     if (state.isValid()) {
                         final long searchTime = System.currentTimeMillis() - start;
@@ -228,7 +208,68 @@ public class LocationProvider {
                     } else {
                         findLocation(tries + 1, start, quantumRuleset, cf);
                     }
+
+                    return state;
                 })
                 .execute();
+    }
+
+    /**
+     * Validates a Location against a ruleset.
+     *
+     * @param location Location to validate.
+     * @param quantumRuleset Ruleset to validate with.
+     * @return A CompletableFuture of Boolean, where the boolean is true if the location is valid, false if not.
+     */
+    public CompletableFuture<Boolean> validateLocation(
+            final @NonNull Location location,
+            final @NonNull QuantumRuleset quantumRuleset
+    ) {
+        final @NonNull CompletableFuture<Boolean> validCf = new CompletableFuture<>();
+
+        this.commandManager.taskRecipe().begin(quantumRuleset)
+                .synchronous(ruleset -> {
+                    final @NonNull QuantumLocationState state = new QuantumLocationState();
+
+                    state.setWorld(location.getWorld());
+                    state.setX(location.getBlockX());
+                    state.setY(location.getBlockY());
+                    state.setZ(location.getBlockZ());
+                    state.setQuantumRuleset(ruleset);
+
+                    state.setSnapshot(location.getChunk().getChunkSnapshot());
+                    state.setChunk(location.getChunk());
+
+                    return state;
+                })
+                .asynchronous(state -> {
+                    for (final AsyncQuantumRule rule : state.getQuantumRuleset().getAsyncRules()) {
+                        boolean valid = rule.validate(state.getSnapshot(), state.getRelativeX(), state.getY(), state.getRelativeZ());
+
+                        state.setValid(valid);
+
+                        if (!valid) {
+                            break;
+                        }
+                    }
+
+                    return state;
+                })
+                .synchronous(state -> {
+                    for (final SyncQuantumRule rule : state.getQuantumRuleset().getSyncRules()) {
+                        boolean valid = rule.validate(state.getChunk(), state.getRelativeX(), state.getY(), state.getRelativeZ());
+
+                        state.setValid(valid);
+
+                        if (!valid) {
+                            break;
+                        }
+                    }
+
+                    validCf.complete(state.isValid());
+                })
+                .execute();
+
+        return validCf;
     }
 }
