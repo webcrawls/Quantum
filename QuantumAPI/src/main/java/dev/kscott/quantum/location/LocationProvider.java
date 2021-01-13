@@ -85,15 +85,32 @@ public class LocationProvider {
     public @NonNull CompletableFuture<QuantumLocation> getSpawnLocation(final @NonNull QuantumRuleset quantumRuleset) {
         final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
 
-        if (this.locationQueue.getLocationCount(quantumRuleset) == 0) {
-            findLocation(0, System.currentTimeMillis(), quantumRuleset, cf);
-            this.locationQueue.getLocations(quantumRuleset);
-        } else {
-            cf.complete(this.locationQueue.popLocation(quantumRuleset));
-        }
+        this.commandManager.taskRecipe().begin(quantumRuleset)
+                .asynchronous(ruleset -> {
+                    if (this.locationQueue.getLocationCount(quantumRuleset) == 0) {
+                        findLocation(0, System.currentTimeMillis(), quantumRuleset, cf);
+                    } else {
+                        final @Nullable QuantumLocation location = this.locationQueue.popLocation(quantumRuleset);
 
-        this.locationQueue.getLocations(quantumRuleset);
+                        if (location == null) {
+                            findLocation(0, System.currentTimeMillis(), quantumRuleset, cf);
+                            this.locationQueue.getLocations(quantumRuleset);
+                        } else {
+                            boolean valid = this.validateLocation(location.getLocation(), quantumRuleset).join();
 
+                            if (!valid) {
+                                System.out.println("invalid location found");
+                                cf.complete(getSpawnLocation(ruleset).join());
+                            } else {
+                                cf.complete(this.locationQueue.popLocation(quantumRuleset));
+                            }
+
+                        }
+                    }
+
+                    this.locationQueue.getLocations(quantumRuleset);
+                })
+                .execute();
         return cf;
     }
 
@@ -187,8 +204,10 @@ public class LocationProvider {
 
                     state.setY(y);
 
+                    final @NonNull Location location = new Location(state.getWorld(), state.getX(), state.getY(), state.getZ());
+
                     final @NonNull CompletableFuture<Boolean> validCf = this.validateLocation(
-                            new Location(state.getWorld(), state.getX(), state.getY(), state.getZ()),
+                            location,
                             state.getQuantumRuleset()
                     );
 
@@ -200,7 +219,7 @@ public class LocationProvider {
 
                         cf.complete(new QuantumLocation(
                                 searchTime,
-                                new Location(state.getWorld(), state.getX(), state.getY(), state.getZ()),
+                                location,
                                 state.getQuantumRuleset()
                         ));
 
