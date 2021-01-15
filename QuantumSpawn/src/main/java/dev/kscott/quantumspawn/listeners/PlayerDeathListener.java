@@ -6,6 +6,7 @@ import dev.kscott.quantum.location.QuantumLocation;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantumspawn.config.Config;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -71,14 +72,16 @@ public class PlayerDeathListener implements Listener {
             return;
         }
 
-        final @Nullable QuantumLocation quantumLocation = this.locationProvider.getQueueLocation(ruleset);
+        final @NonNull CompletableFuture<QuantumLocation> locationCf = this.locationProvider.getLocation(ruleset);
 
-        if (quantumLocation == null) {
-            this.plugin.getLogger().warning("The location queue was empty for " + ruleset.getId() + ", so " + player.getName() + " was not teleported. Please set " + ruleset.getId() + "'s queue target to a non-zero number to fix this.");
-            return;
-        }
-
-        player.teleportAsync(quantumLocation.getLocation());
+        locationCf.thenAccept(quantumLocation -> {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.teleportAsync(QuantumLocation.toCenterHorizontalLocation(quantumLocation.getLocation()));
+                }
+            }.runTask(plugin);
+        });
     }
 
 }

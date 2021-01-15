@@ -52,9 +52,11 @@ public class PlayerFirstJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerFirstJoin(final @NonNull PlayerJoinEvent event) {
+        System.out.println("pje fired");
         final @NonNull Player player = event.getPlayer();
 
         if (player.hasPlayedBefore()) {
+            System.out.println("daweawdawdawawdaw");
             return;
         }
 
@@ -66,15 +68,16 @@ public class PlayerFirstJoinListener implements Listener {
             return;
         }
 
-        final @Nullable QuantumLocation quantumLocation = this.locationProvider.getQueueLocation(ruleset);
+        final @NonNull CompletableFuture<QuantumLocation> locationCf = this.locationProvider.getLocation(ruleset);
 
-        if (quantumLocation == null) {
-            this.plugin.getLogger().warning("The location queue was empty for " + ruleset.getId() + ", so " + player.getName() + " was not teleported. Please set " + ruleset.getId() + "'s queue target to a non-zero number to fix this.");
-            return;
-        }
-
-        player.teleportAsync(quantumLocation.getLocation());
-
+        locationCf.thenAccept(quantumLocation -> {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.teleportAsync(QuantumLocation.toCenterHorizontalLocation(quantumLocation.getLocation()));
+                }
+            }.runTask(plugin);
+        });
     }
 
 }
