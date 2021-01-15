@@ -2,14 +2,14 @@ package dev.kscott.quantum.location;
 
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
-import org.bukkit.Location;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ConcurrentSkipListSet;
 
 /**
  * The LocationQueue class. Handles Location queues for every
@@ -24,10 +24,13 @@ public class LocationQueue {
     private final @NonNull Map<QuantumRuleset, ConcurrentLinkedQueue<QuantumLocation>> locationQueueMap;
 
     /**
-     *
+     * LocationProvider reference.
      */
     private final @NonNull LocationProvider locationProvider;
 
+    /**
+     * RulesetRegistry reference.
+     */
     private final @NonNull RulesetRegistry rulesetRegistry;
 
     /**
@@ -50,18 +53,36 @@ public class LocationQueue {
         }
     }
 
+    /**
+     * Pushes a location to the top of the location queue.
+     *
+     * @param ruleset  Ruleset to associate the location with.
+     * @param location Location to add.
+     */
     protected void pushLocation(final @NonNull QuantumRuleset ruleset, final @NonNull QuantumLocation location) {
         final @Nullable Queue<QuantumLocation> locations = locationQueueMap.computeIfAbsent(ruleset, k -> new ConcurrentLinkedQueue<>());
 
         locations.add(location);
     }
 
+    /**
+     * Returns the amount of locations queued for a given ruleset.
+     *
+     * @param ruleset Ruleset to get location queue size for.
+     * @return size of queue for {@code ruleset}.
+     */
     protected int getLocationCount(final @NonNull QuantumRuleset ruleset) {
         final @Nullable Queue<QuantumLocation> locations = locationQueueMap.get(ruleset);
 
         return locations == null ? 0 : locations.size();
     }
 
+    /**
+     * Pops a Location from the queue, and returns it.
+     *
+     * @param ruleset Ruleset to get the Location of.
+     * @return Location queued for {@code ruleset}.
+     */
     protected @Nullable QuantumLocation popLocation(final @NonNull QuantumRuleset ruleset) {
         final @Nullable Queue<QuantumLocation> locations = locationQueueMap.get(ruleset);
 
@@ -76,6 +97,11 @@ public class LocationQueue {
         return location;
     }
 
+    /**
+     * Queues locations for a ruleset, based on the ruleset queue target.
+     *
+     * @param ruleset Ruleset to queue for.
+     */
     protected void getLocations(final @NonNull QuantumRuleset ruleset) {
         final int target = ruleset.getQueueTarget();
 
