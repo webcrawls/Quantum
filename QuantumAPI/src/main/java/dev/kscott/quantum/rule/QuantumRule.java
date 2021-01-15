@@ -1,6 +1,8 @@
 package dev.kscott.quantum.rule;
 
+import com.google.common.base.CaseFormat;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
+import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -71,4 +73,12 @@ public abstract class QuantumRule {
         return this.optionMap.values();
     }
 
+    /**
+     * Returns this rule's id.
+     *
+     * @return Rule id string (formatted "like-this")
+     */
+    public static String getRuleId(final @NonNull Class<? extends QuantumRule> clazz) {
+        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, clazz.getSimpleName());
+    }
 }
