@@ -17,7 +17,10 @@ import org.bukkit.command.CommandSender;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
+import java.util.Map;
+import java.util.Queue;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -297,5 +300,14 @@ public class LocationProvider {
                 .execute();
 
         return validCf;
+    }
+
+    /**
+     * Returns a Map of QuantumRuleset to List<QuantumLocation>
+     *
+     * @return location map
+     */
+    public @NonNull Map<QuantumRuleset, Queue<QuantumLocation>> getQueuedLocationMap() {
+        return this.locationQueue.getLocationMap();
     }
 }

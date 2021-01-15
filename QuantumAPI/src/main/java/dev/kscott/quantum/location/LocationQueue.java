@@ -1,5 +1,6 @@
 package dev.kscott.quantum.location;
 
+import com.google.common.collect.ImmutableMap;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -116,5 +117,14 @@ public class LocationQueue {
                 locations.add(quantumLocation);
             });
         }
+    }
+
+    /**
+     * Returns a Map of QuantumRuleset to Queue<QuantumLocation>. The queue holds all queued locations for the ruleset key.
+     *
+     * @return immutable map
+     */
+    public @NonNull Map<QuantumRuleset, Queue<QuantumLocation>> getLocationMap() {
+        return ImmutableMap.copyOf(this.locationQueueMap);
     }
 }
