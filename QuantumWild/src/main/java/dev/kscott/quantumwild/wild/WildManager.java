@@ -219,7 +219,7 @@ public class WildManager {
             return cf;
         }
 
-        final @NonNull CompletableFuture<QuantumLocation> locationCf = this.locationProvider.getSpawnLocation(ruleset);
+        final @NonNull CompletableFuture<QuantumLocation> locationCf = this.locationProvider.getLocation(ruleset);
 
         if (canUseWild(player)) {
             if (this.config.isWarmupEnabled() && !player.hasPermission("quantum.wild.warmup.bypass")) {

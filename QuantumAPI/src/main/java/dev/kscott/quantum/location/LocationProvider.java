@@ -3,6 +3,7 @@ package dev.kscott.quantum.location;
 import cloud.commandframework.paper.PaperCommandManager;
 import dev.kscott.quantum.config.Config;
 import dev.kscott.quantum.exceptions.ExceededMaxRetriesException;
+import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
@@ -82,7 +83,7 @@ public class LocationProvider {
      * @param quantumRuleset The ruleset to use for this search
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
-    public @NonNull CompletableFuture<QuantumLocation> getSpawnLocation(final @NonNull QuantumRuleset quantumRuleset) {
+    public @NonNull CompletableFuture<QuantumLocation> getLocation(final @NonNull QuantumRuleset quantumRuleset) {
         final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
 
         this.commandManager.taskRecipe().begin(quantumRuleset)
@@ -100,7 +101,7 @@ public class LocationProvider {
 
                             if (!valid) {
                                 System.out.println("invalid location found");
-                                cf.complete(getSpawnLocation(ruleset).join());
+                                cf.complete(getLocation(ruleset).join());
                             } else {
                                 cf.complete(this.locationQueue.popLocation(quantumRuleset));
                             }
@@ -225,6 +226,7 @@ public class LocationProvider {
 
                         this.timer.addTime(searchTime);
                     } else {
+                        System.out.println("invalid");
                         findLocation(tries + 1, start, quantumRuleset, cf);
                     }
 
@@ -265,6 +267,8 @@ public class LocationProvider {
                     for (final AsyncQuantumRule rule : state.getQuantumRuleset().getAsyncRules()) {
                         boolean valid = rule.validate(state.getSnapshot(), state.getRelativeX(), state.getY(), state.getRelativeZ());
 
+                        System.out.println("Rule "+ QuantumRule.getRuleId(rule.getClass())+": "+valid);
+
                         state.setValid(valid);
 
                         if (!valid) {
@@ -278,12 +282,15 @@ public class LocationProvider {
                     for (final SyncQuantumRule rule : state.getQuantumRuleset().getSyncRules()) {
                         boolean valid = rule.validate(state.getChunk(), state.getRelativeX(), state.getY(), state.getRelativeZ());
 
+                        System.out.println("Rule "+ QuantumRule.getRuleId(rule.getClass())+": "+valid);
+
                         state.setValid(valid);
 
                         if (!valid) {
                             break;
                         }
                     }
+
 
                     validCf.complete(state.isValid());
                 })
