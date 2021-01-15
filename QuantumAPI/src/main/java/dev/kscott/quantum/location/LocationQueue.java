@@ -104,7 +104,7 @@ public class LocationQueue {
      * @param ruleset Ruleset to queue for.
      */
     protected void getLocations(final @NonNull QuantumRuleset ruleset) {
-        final int target = ruleset.getQueueTarget();
+        final int target = ruleset.getQueueTarget() - this.getLocationCount(ruleset);
 
         for (int i = 0; i < target; i++) {
             final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
