@@ -25,38 +25,38 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 /**
- * LocationProvider, the core of Quantum. Generates spawn points, handles spawn rules, etc
+ * LocationProvider, the core of Quantum. Generates spawn points, handles spawn rules, etc.
  */
 public class LocationProvider {
 
     /**
-     * Random reference
+     * Random reference.
      */
     private final @NonNull Random random;
 
     /**
-     * PaperCommandManager reference
+     * PaperCommandManager reference.
      */
     private final @NonNull PaperCommandManager<CommandSender> commandManager;
 
     /**
-     * QuantumTimer reference
+     * QuantumTimer reference.
      */
     private final @NonNull QuantumTimer timer;
 
     /**
-     * Config reference
+     * Config reference.
      */
     private final @NonNull Config config;
 
     private final @NonNull LocationQueue locationQueue;
 
     /**
-     * Constructs the LocationProvider
+     * Constructs the LocationProvider.
      *
-     * @param config         {@link this#config}
-     * @param timer          {@link this#timer}
-     * @param commandManager {@link this#commandManager}
+     * @param config         {@link this#config}.
+     * @param timer          {@link this#timer}.
+     * @param commandManager {@link this#commandManager}.
      */
     public LocationProvider(
             final @NonNull Config config,
@@ -83,7 +83,7 @@ public class LocationProvider {
      * If there was a location in the queue, then the {@link CompletableFuture} will be completed
      * using the queue.
      *
-     * @param quantumRuleset The ruleset to use for this search
+     * @param quantumRuleset The ruleset to use for this search.
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
     public @NonNull CompletableFuture<QuantumLocation> getLocation(final @NonNull QuantumRuleset quantumRuleset) {
@@ -129,12 +129,12 @@ public class LocationProvider {
     }
 
     /**
-     * Searches for a location with the given ruleset until it reaches max retries (or finds a valid location)
+     * Searches for a location with the given ruleset until it reaches max retries (or finds a valid location).
      *
-     * @param tries          how many times has the search been tried (call this with 0)
-     * @param start          when was this search started
-     * @param quantumRuleset the ruleset to search with
-     * @param cf             the CompletableFuture to call when this search completes or fails
+     * @param tries          how many times has the search been tried (call this with 0).
+     * @param start          when was this search started.
+     * @param quantumRuleset the ruleset to search with.
+     * @param cf             the CompletableFuture to call when this search completes or fails.
      */
     protected void findLocation(final int tries, final long start, final @NonNull QuantumRuleset quantumRuleset, final @NonNull CompletableFuture<QuantumLocation> cf) {
         if (this.config.getMaxRetries() <= tries) {
@@ -303,9 +303,9 @@ public class LocationProvider {
     }
 
     /**
-     * Returns a Map of QuantumRuleset to List<QuantumLocation>
+     * Returns a Map of QuantumRuleset to List<QuantumLocation>.
      *
-     * @return location map
+     * @return location map.
      */
     public @NonNull Map<QuantumRuleset, Queue<QuantumLocation>> getQueuedLocationMap() {
         return this.locationQueue.getLocationMap();

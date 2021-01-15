@@ -34,32 +34,32 @@ import java.util.Queue;
 public class QuantumCommand {
 
     /**
-     * CommandManager reference
+     * CommandManager reference.
      */
     private final @NonNull CommandManager<CommandSender> commandManager;
 
     /**
-     * RulesetRegistry reference
+     * RulesetRegistry reference.
      */
     private final @NonNull RulesetRegistry rulesetRegistry;
 
     /**
-     * RuleRegistry reference
+     * RuleRegistry reference.
      */
     private final @NonNull RuleRegistry ruleRegistry;
 
     /**
-     * JavaPlugin reference
+     * JavaPlugin reference.
      */
     private final @NonNull JavaPlugin plugin;
 
     /**
-     * Config reference
+     * Config reference.
      */
     private final @NonNull Config config;
 
     /**
-     * BukkitAudiences reference
+     * BukkitAudiences reference.
      */
     private final @NonNull BukkitAudiences bukkitAudiences;
 
@@ -71,16 +71,16 @@ public class QuantumCommand {
     private final @NonNull LocationProvider locationProvider;
 
     /**
-     * Constructs QuantumCommand
+     * Constructs QuantumCommand.
      *
-     * @param plugin           JavaPlugin reference
-     * @param ruleRegistry     RuleRegistry reference
-     * @param timer            QuantumTimer reference
-     * @param commandManager   CommandManager reference
-     * @param bukkitAudiences  BukkitAudiences reference
-     * @param config           Config reference
-     * @param rulesetRegistry  RulesetRegistry reference
-     * @param locationProvider locationProvider reference
+     * @param plugin           JavaPlugin reference.
+     * @param ruleRegistry     RuleRegistry reference.
+     * @param timer            QuantumTimer reference.
+     * @param commandManager   CommandManager reference.
+     * @param bukkitAudiences  BukkitAudiences reference.
+     * @param config           Config reference.
+     * @param rulesetRegistry  RulesetRegistry reference.
+     * @param locationProvider LocationProvider reference.
      */
     @Inject
     public QuantumCommand(
@@ -161,9 +161,9 @@ public class QuantumCommand {
     }
 
     /**
-     * Handles /quantum reload
+     * Handles /quantum reload.
      *
-     * @param context command context
+     * @param context command context.
      */
     private void handleReload(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
@@ -178,9 +178,9 @@ public class QuantumCommand {
     }
 
     /**
-     * Handles /quantum
+     * Handles /quantum.
      *
-     * @param context command context
+     * @param context command context.
      */
     private void handleMain(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
@@ -195,9 +195,9 @@ public class QuantumCommand {
     }
 
     /**
-     * Handles /quantum rulesets
+     * Handles /quantum rulesets.
      *
-     * @param context command context
+     * @param context command context.
      */
     private void handleRulesets(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
@@ -218,9 +218,9 @@ public class QuantumCommand {
     }
 
     /**
-     * Handles /quantum rules
+     * Handles /quantum rules.
      *
-     * @param context command context
+     * @param context command context.
      */
     private void handleRules(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
@@ -246,7 +246,7 @@ public class QuantumCommand {
     /**
      * Handles /quantum stats.
      *
-     * @param context command context
+     * @param context command context.
      */
     private void handleStats(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
@@ -283,7 +283,7 @@ public class QuantumCommand {
     /**
      * Handles /quantum queue.
      *
-     * @param context command context
+     * @param context command context.
      */
     private void handleQueue(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();

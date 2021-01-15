@@ -35,7 +35,7 @@ public class LocationQueue {
     private final @NonNull RulesetRegistry rulesetRegistry;
 
     /**
-     * Constructs the LocationQueue
+     * Constructs the LocationQueue.
      */
     public LocationQueue(
             final @NonNull LocationProvider locationProvider,
@@ -122,7 +122,7 @@ public class LocationQueue {
     /**
      * Returns a Map of QuantumRuleset to Queue<QuantumLocation>. The queue holds all queued locations for the ruleset key.
      *
-     * @return immutable map
+     * @return immutable map.
      */
     public @NonNull Map<QuantumRuleset, Queue<QuantumLocation>> getLocationMap() {
         return ImmutableMap.copyOf(this.locationQueueMap);
