@@ -19,3 +19,6 @@ permissions:
   quantum.api.command.reload:
     description: Gives access to /quantum reload.
     default: op
+  quantum.api.command.queue:
+    description: Gives access to /quantum queue.
+    default: op

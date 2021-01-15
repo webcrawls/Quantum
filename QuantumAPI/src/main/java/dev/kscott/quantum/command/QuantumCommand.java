@@ -6,6 +6,8 @@ import cloud.commandframework.Description;
 import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
 import dev.kscott.quantum.config.Config;
+import dev.kscott.quantum.location.LocationProvider;
+import dev.kscott.quantum.location.QuantumLocation;
 import dev.kscott.quantum.location.QuantumTimer;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
@@ -23,6 +25,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 /**
  * The base /quantum command.
@@ -59,18 +63,24 @@ public class QuantumCommand {
      */
     private final @NonNull BukkitAudiences bukkitAudiences;
 
+    /**
+     * QuantumTimer reference.
+     */
     private final @NonNull QuantumTimer timer;
+
+    private final @NonNull LocationProvider locationProvider;
 
     /**
      * Constructs QuantumCommand
      *
-     * @param plugin JavaPlugin reference
-     * @param ruleRegistry RuleRegistry reference
-     * @param timer QuantumTimer reference
-     * @param commandManager  CommandManager reference
-     * @param bukkitAudiences BukkitAudiences reference
-     * @param config          Config reference
-     * @param rulesetRegistry RulesetRegistry reference
+     * @param plugin           JavaPlugin reference
+     * @param ruleRegistry     RuleRegistry reference
+     * @param timer            QuantumTimer reference
+     * @param commandManager   CommandManager reference
+     * @param bukkitAudiences  BukkitAudiences reference
+     * @param config           Config reference
+     * @param rulesetRegistry  RulesetRegistry reference
+     * @param locationProvider locationProvider reference
      */
     @Inject
     public QuantumCommand(
@@ -80,7 +90,8 @@ public class QuantumCommand {
             final @NonNull BukkitAudiences bukkitAudiences,
             final @NonNull Config config,
             final @NonNull CommandManager<CommandSender> commandManager,
-            final @NonNull RulesetRegistry rulesetRegistry
+            final @NonNull RulesetRegistry rulesetRegistry,
+            final @NonNull LocationProvider locationProvider
     ) {
         this.plugin = plugin;
         this.commandManager = commandManager;
@@ -89,6 +100,7 @@ public class QuantumCommand {
         this.bukkitAudiences = bukkitAudiences;
         this.ruleRegistry = ruleRegistry;
         this.timer = timer;
+        this.locationProvider = locationProvider;
         setupCommands();
     }
 
@@ -115,10 +127,10 @@ public class QuantumCommand {
                 builder.literal(
                         "rules",
                         Description.of("Get the ids all loaded rules")
-                        )
-                                .permission("quantum.api.command.rules")
-                                .handler(this::handleRules)
-                );
+                )
+                        .permission("quantum.api.command.rules")
+                        .handler(this::handleRules)
+        );
 
         this.commandManager.command(
                 builder.literal(
@@ -136,6 +148,15 @@ public class QuantumCommand {
                 )
                         .permission("quantum.api.command.reload")
                         .handler(this::handleReload)
+        );
+
+        this.commandManager.command(
+                builder.literal(
+                        "queue",
+                        Description.of("Shows QuantumAPI queue stats")
+                )
+                        .permission("quantum.api.command.queue")
+                        .handler(this::handleQueue)
         );
     }
 
@@ -168,7 +189,7 @@ public class QuantumCommand {
 
         final TextComponent.Builder component = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>Quantum v<aqua>"+version+"</aqua></gray>"));
+                .append(MiniMessage.get().parse(" <gray>Quantum v<aqua>" + version + "</aqua></gray>"));
 
         bukkitAudiences.sender(sender).sendMessage(component);
     }
@@ -222,6 +243,11 @@ public class QuantumCommand {
         this.bukkitAudiences.sender(sender).sendMessage(Identity.nil(), component);
     }
 
+    /**
+     * Handles /quantum stats.
+     *
+     * @param context command context
+     */
     private void handleStats(final @NonNull CommandContext<CommandSender> context) {
         final @NonNull CommandSender sender = context.getSender();
 
@@ -252,6 +278,28 @@ public class QuantumCommand {
                 .append(this.config.PREFIX)
                 .append(MiniMessage.get().parse(" <gray>On average, Quantum has spent <aqua>" + seconds + " seconds</aqua> searching for locations."));
         audience.sendMessage(timeComponent);
+    }
+
+    /**
+     * Handles /quantum queue.
+     *
+     * @param context command context
+     */
+    private void handleQueue(final @NonNull CommandContext<CommandSender> context) {
+        final @NonNull CommandSender sender = context.getSender();
+
+        final @NonNull Audience audience = this.bukkitAudiences.sender(sender);
+
+        final @NonNull Map<QuantumRuleset, Queue<QuantumLocation>> locationMap = this.locationProvider.getQueuedLocationMap();
+
+        for (final Map.Entry<QuantumRuleset, Queue<QuantumLocation>> locationEntry : locationMap.entrySet()) {
+            final TextComponent.Builder component = Component.text()
+                    .append(this.config.PREFIX)
+                    .append(MiniMessage.get().parse(" <aqua>"+locationEntry.getKey().getId()+"</aqua> <gray>has <aqua>"+locationEntry.getValue().size()+"</aqua> queued locations.</gray>"));
+
+            audience.sendMessage(component);
+        }
+
     }
 
 }
