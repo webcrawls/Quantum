@@ -17,6 +17,10 @@ public class AvoidClaimsRule extends SyncQuantumRule {
 
     private final @NonNull List<String> factionsWhitelist = new ArrayList<>();
 
+    public AvoidClaimsRule() {
+        super(new FactionsWhitelistOption());
+    }
+
     @Override
     public void postCreation() {
         factionsWhitelist.addAll(Arrays.asList(this.getOption(FactionsWhitelistOption.class).getValue()));
