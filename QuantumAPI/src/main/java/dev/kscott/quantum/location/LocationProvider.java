@@ -266,11 +266,9 @@ public class LocationProvider {
 
                     return state;
                 })
-                .asynchronous(state -> {
+                .synchronous(state -> {
                     for (final AsyncQuantumRule rule : state.getQuantumRuleset().getAsyncRules()) {
                         boolean valid = rule.validate(state.getSnapshot(), state.getRelativeX(), state.getY(), state.getRelativeZ());
-
-                        System.out.println("Rule "+ QuantumRule.getRuleId(rule.getClass())+": "+valid);
 
                         state.setValid(valid);
 
@@ -282,15 +280,15 @@ public class LocationProvider {
                     return state;
                 })
                 .synchronous(state -> {
-                    for (final SyncQuantumRule rule : state.getQuantumRuleset().getSyncRules()) {
-                        boolean valid = rule.validate(state.getChunk(), state.getRelativeX(), state.getY(), state.getRelativeZ());
+                    if (state.isValid()) {
+                        for (final SyncQuantumRule rule : state.getQuantumRuleset().getSyncRules()) {
+                            boolean valid = rule.validate(state.getChunk(), state.getRelativeX(), state.getY(), state.getRelativeZ());
 
-                        System.out.println("Rule "+ QuantumRule.getRuleId(rule.getClass())+": "+valid);
+                            state.setValid(valid);
 
-                        state.setValid(valid);
-
-                        if (!valid) {
-                            break;
+                            if (!valid) {
+                                break;
+                            }
                         }
                     }
 
