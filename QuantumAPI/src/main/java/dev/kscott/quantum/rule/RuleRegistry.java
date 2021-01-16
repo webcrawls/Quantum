@@ -55,6 +55,7 @@ public class RuleRegistry {
             this.registerRule(AvoidRegionRule.class);
         }
 
+        // Factions rules
         if (this.plugin.getServer().getPluginManager().isPluginEnabled("Factions")) {
             this.registerRule(AvoidClaimsRule.class);
         }
