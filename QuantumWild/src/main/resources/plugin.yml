@@ -1,4 +1,5 @@
 name: QuantumWild
+author: bluely (kadenscott)
 version: @version@
 main: dev.kscott.quantumwild.QuantumWildPlugin
 api-version: 1.16

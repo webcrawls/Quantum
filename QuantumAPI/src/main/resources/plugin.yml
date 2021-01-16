@@ -1,5 +1,6 @@
 name: QuantumAPI
 version: @version@
+author: bluely (kadenscott)
 main: dev.kscott.quantum.QuantumAPIPlugin
 api-version: 1.16
 description: A random location generation API for 1.16+
