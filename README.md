@@ -27,6 +27,10 @@ _NOTE: Read the [wiki](../../wiki) for an introduction to Quantum's features and
 Here's a break down of Quantum's main selling points:
 
 - [x] **Supports 1.16+**
+
+## Notes on Compiling
+
+To compile, you must have access to the [FactionsUUID jar](https://www.spigotmc.org/resources/factionsuuid.1035/). Please download it, and put it in `{project_root}/libs/Factions.jar`.
     
 ## Credits
 
