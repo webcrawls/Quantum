@@ -79,7 +79,7 @@ public class WildCommand {
     }
 
     /**
-     * Initializes & registers commands
+     * Initializes & registers commands.
      */
     private void setupCommands() {
         final Command.Builder<CommandSender> builder = this.commandManager.commandBuilder("wild", "w");
