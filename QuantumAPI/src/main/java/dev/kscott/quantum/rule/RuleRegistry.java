@@ -153,7 +153,7 @@ public class RuleRegistry {
          *
          * @return rule Class
          */
-        public Class<? extends QuantumRule> getRuleClass() {
+        public @NonNull Class<? extends QuantumRule> getRuleClass() {
             return ruleClass;
         }
 
