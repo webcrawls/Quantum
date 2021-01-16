@@ -150,7 +150,7 @@ public class WildCommand {
         if (arg1Optional.isEmpty() && arg2Optional.isEmpty()) {
             if (sender instanceof Player) {
                 player = (Player) sender;
-                world = player.getWorld();
+                world = this.config.isDefaultWorldEnabled() ? this.config.getDefaultWorld() : player.getWorld();
             } else {
                 audiences.sender(sender).sendMessage(lang.c("no-console"));
                 return;
@@ -207,7 +207,7 @@ public class WildCommand {
         }
 
         if (player != null && (world == null && worldArgLocation == ArgLocation.UNK)) {
-            world = player.getWorld();
+            world = this.config.isDefaultWorldEnabled() ? this.config.getDefaultWorld() : player.getWorld();
         }
 
         if (player == null && world != null) {
