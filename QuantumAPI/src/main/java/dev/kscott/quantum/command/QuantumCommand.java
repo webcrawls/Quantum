@@ -3,12 +3,14 @@ package dev.kscott.quantum.command;
 import cloud.commandframework.Command;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.Description;
+import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
 import dev.kscott.quantum.config.Config;
 import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.location.QuantumLocation;
 import dev.kscott.quantum.location.QuantumTimer;
+import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
@@ -19,9 +21,13 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,6 +163,16 @@ public class QuantumCommand {
                 )
                         .permission("quantum.api.command.queue")
                         .handler(this::handleQueue)
+        );
+
+        this.commandManager.command(
+                builder.literal(
+                        "validate",
+                        Description.of("Validates a location with a given ruleset")
+                )
+                        .permission("quantum.api.command.validate")
+                        .argument(StringArgument.of("ruleset"))
+                        .handler(this::handleValidate)
         );
     }
 
@@ -299,6 +315,52 @@ public class QuantumCommand {
 
             audience.sendMessage(component);
         }
+    }
+
+    /**
+     * Handles /quantum validate.
+     *
+     * @param context command context.
+     */
+    private void handleValidate(final @NonNull CommandContext<CommandSender> context) {
+        final @NonNull CommandSender sender = context.getSender();
+        final @NonNull Audience audience = this.bukkitAudiences.sender(sender);
+
+        if (!(sender instanceof Player)) {
+            final TextComponent.Builder component = Component.text()
+                    .append(this.config.PREFIX)
+                    .append(MiniMessage.get().parse(" <red>Only players can execute this command.</red>"));
+            audience.sendMessage(component);
+            return;
+        }
+
+        final @NonNull Player player = (Player) sender;
+
+        final @NonNull String rulesetId = context.get("ruleset");
+        final @Nullable QuantumRuleset ruleset = this.rulesetRegistry.getRuleset(rulesetId);
+
+        if (ruleset == null) {
+            final TextComponent.Builder component = Component.text()
+                    .append(this.config.PREFIX)
+                    .append(MiniMessage.get().parse(" <red>There is no ruleset with the id <yellow>"+rulesetId+"</yellow></red>"));
+            audience.sendMessage(component);
+            return;
+        }
+
+        final @NonNull Location location = player.getLocation();
+
+        this.locationProvider.validateLocation(location, ruleset)
+            .thenAccept(valid -> {
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        final TextComponent.Builder component = Component.text()
+                                .append(config.PREFIX)
+                                .append(MiniMessage.get().parse(valid ? " <aqua>This location is valid.</aqua>" : " <red>This location is not valid.</red>"));
+                        audience.sendMessage(component);
+                    }
+                }.runTask(plugin);
+            });
 
     }
 

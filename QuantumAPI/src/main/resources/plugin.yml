@@ -22,3 +22,6 @@ permissions:
   quantum.api.command.queue:
     description: Gives access to /quantum queue.
     default: op
+  quantum.api.command.validate:
+    description: Gives access to /quantum validate.
+    default: op
