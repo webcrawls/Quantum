@@ -286,13 +286,13 @@ public class QuantumCommand {
                 .append(MiniMessage.get().parse(" <gray>Quantum has generated <aqua>" + searches + " location" + (searches == 1 ? "" : "s") + "</aqua>."));
         audience.sendMessage(searchesComponent);
 
-        final long time = this.timer.getAverageTime();
-
-        final long seconds = time / 1000;
+        final double seconds = this.timer.getTotalTime() / 1000.0;
+        final double average = this.timer.getAverageTime() / 1000.0;
 
         final TextComponent.Builder timeComponent = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>On average, Quantum has spent <aqua>" + seconds + " seconds</aqua> searching for locations."));
+                .append(MiniMessage.get().parse(" <gray>On average, Quantum spends <aqua>" + average + " seconds</aqua> searching for a location."))
+                .append(MiniMessage.get().parse(" <gray>In total, Quantum has spent <aqua>" + seconds + " seconds</aqua> searching for locations."));
         audience.sendMessage(timeComponent);
     }
 
