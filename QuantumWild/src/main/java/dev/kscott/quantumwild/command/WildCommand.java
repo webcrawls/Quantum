@@ -23,17 +23,17 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Handles /wild commands & subcommands
+ * Handles /wild commands & subcommands.
  */
 public class WildCommand {
 
     /**
-     * CommandManager reference
+     * CommandManager reference.
      */
     private final @NonNull CommandManager<CommandSender> commandManager;
 
     /**
-     * Lang reference
+     * Lang reference.
      */
     private final @NonNull Lang lang;
 
@@ -43,23 +43,23 @@ public class WildCommand {
     private final @NonNull Config config;
 
     /**
-     * WildManager reference
+     * WildManager reference.
      */
     private final @NonNull WildManager wildManager;
 
     /**
-     * BukkitAudiences reference
+     * BukkitAudiences reference.
      */
     private final @NonNull BukkitAudiences audiences;
 
     /**
-     * Constructs WildCommand
+     * Constructs WildCommand.
      *
-     * @param lang           {@link this#lang}
-     * @param config         {@link this#config}
-     * @param audiences      {@link this#audiences}
-     * @param commandManager {@link this#commandManager}
-     * @param wildManager    {@link this#wildManager}
+     * @param lang           {@link this#lang}.
+     * @param config         {@link this#config}.
+     * @param audiences      {@link this#audiences}.
+     * @param commandManager {@link this#commandManager}.
+     * @param wildManager    {@link this#wildManager}.
      */
     @Inject
     public WildCommand(
