@@ -79,6 +79,6 @@ public abstract class QuantumRule {
      * @return Rule id string (formatted "like-this")
      */
     public static String getRuleId(final @NonNull Class<? extends QuantumRule> clazz) {
-        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, clazz.getSimpleName());
+        return CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, clazz.getSimpleName().replace("Rule", ""));
     }
 }
