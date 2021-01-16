@@ -68,7 +68,7 @@ public class PlayerJoinListener implements Listener {
             return;
         }
 
-        final @NonNull World world = player.getWorld();
+        final @NonNull World world = this.config.isDefaultWorldEnabled() ? this.config.getDefaultWorld() : player.getWorld();
 
         final @Nullable QuantumRuleset ruleset = config.getRuleset(world);
 
