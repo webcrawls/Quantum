@@ -42,29 +42,28 @@ public class RuleRegistry {
         this.plugin = plugin;
 
         // Async rules
-        this.registerRule("avoid-block", AvoidBlockRule.class);
-        this.registerRule("only-block", OnlyBlockRule.class);
-        this.registerRule("avoid-biome", AvoidBiomeRule.class);
-        this.registerRule("only-biome", OnlyBiomeRule.class);
+        this.registerRule(AvoidBlockRule.class);
+        this.registerRule(OnlyBlockRule.class);
+        this.registerRule(AvoidBiomeRule.class);
+        this.registerRule(OnlyBiomeRule.class);
 
         // Sync rules
-        this.registerRule("avoid-entity", AvoidEntityRule.class);
-        this.registerRule("nearby-entity", NearbyEntityRule.class);
+        this.registerRule(AvoidEntityRule.class);
+        this.registerRule(NearbyEntityRule.class);
 
         // WorldGuard rules
         if (this.plugin.getServer().getPluginManager().isPluginEnabled("WorldGuard")) {
-            this.registerRule("avoid-region", AvoidRegionRule.class);
+            this.registerRule(AvoidRegionRule.class);
         }
     }
 
     /**
      * Registers a rule with a given id
      *
-     * @param id        id of rule
      * @param ruleClass the class of the rule to regiser
      */
-    public void registerRule(String id, Class<? extends QuantumRule> ruleClass) {
-        this.ruleMap.put(id, ruleClass);
+    public void registerRule(Class<? extends QuantumRule> ruleClass) {
+        this.ruleMap.put(QuantumRule.getRuleId(ruleClass), ruleClass);
     }
 
     /**
