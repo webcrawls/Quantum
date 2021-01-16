@@ -215,4 +215,20 @@ public class Config {
     public int getWarmupTime() {
         return WARMUP_TIME;
     }
+
+    /**
+     * @return {@link this#DEFAULT_WORLD_ENABLED}
+     */
+    public boolean isDefaultWorldEnabled() {
+        return DEFAULT_WORLD_ENABLED;
+    }
+
+    /**
+     * May be null if {@link this#DEFAULT_WORLD_ENABLED} is false.
+     *
+     * @return {@link this#DEFAULT_WORLD}
+     */
+    public @Nullable World getDEFAULT_WORLD() {
+        return DEFAULT_WORLD;
+    }
 }
