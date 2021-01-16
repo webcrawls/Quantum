@@ -70,6 +70,16 @@ public class Config {
     private int WARMUP_TIME;
 
     /**
+     * Is the default world enabled?
+     */
+    private boolean DEFAULT_WORLD_ENABLED;
+
+    /**
+     * The default world
+     */
+    private @Nullable World DEFAULT_WORLD;
+
+    /**
      * Constructs the config, loads it, and loads rulesets.
      *
      * @param plugin          {@link this#plugin}
@@ -125,6 +135,13 @@ public class Config {
         this.IS_ESSENTIALS_TP_INTEGRATION_ENABLED = this.root.node("wild").node("teleportation").node("essentialsx-integration").getBoolean(false);
         this.IS_WARMUP_ENABLED = this.root.node("wild").node("teleportation").node("warmup").node("enabled").getBoolean(false);
         this.WARMUP_TIME = this.root.node("wild").node("teleportation").node("warmup").node("warmup-time").getInt(5);
+        this.DEFAULT_WORLD_ENABLED = this.root.node("wild").node("teleportation").node("default-world").node("enabled").getBoolean(false);
+        this.DEFAULT_WORLD = Bukkit.getWorld(this.root.node("wild").node("teleportation").node("default-world").node("world").getString("world"));
+
+        if (this.DEFAULT_WORLD_ENABLED && this.DEFAULT_WORLD == null) {
+            this.plugin.getLogger().warning("The default-world configuration option is enabled, but the world name does not exist! Please review your QuantumWild configuration.");
+            this.DEFAULT_WORLD_ENABLED = false;
+        }
 
         this.worldRulesetMap.clear();
 
