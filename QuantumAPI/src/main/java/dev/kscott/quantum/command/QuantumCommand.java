@@ -3,6 +3,7 @@ package dev.kscott.quantum.command;
 import cloud.commandframework.Command;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.Description;
+import cloud.commandframework.arguments.CommandArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
@@ -21,7 +22,9 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,10 +32,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * The base /quantum command.
@@ -165,13 +167,19 @@ public class QuantumCommand {
                         .handler(this::handleQueue)
         );
 
+        final CommandArgument<CommandSender, String> rulesetArg = StringArgument.<CommandSender>newBuilder("ruleset")
+                .asOptional()
+                .withSuggestionsProvider((ctx, arg) -> this.rulesetRegistry.getRulesets().stream().map(QuantumRuleset::getId).collect(Collectors.toList()))
+                .build();
+
+
         this.commandManager.command(
                 builder.literal(
                         "validate",
                         Description.of("Validates a location with a given ruleset")
                 )
                         .permission("quantum.api.command.validate")
-                        .argument(StringArgument.of("ruleset"))
+                        .argument(rulesetArg)
                         .handler(this::handleValidate)
         );
     }
