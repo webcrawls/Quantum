@@ -11,6 +11,7 @@ public class HighestPossibleYLocator extends RangeYLocator {
     public HighestPossibleYLocator() {
         // 254 so the RangeYLocator can check 254 & 255
         // if it was 255 it would try checking 255, and 255+1 (256) and error out since that's above max height
-        super(254, 0);
+        // same reason why we're checking down to 1 instead of 0
+        super(254, 1);
     }
 }
