@@ -56,9 +56,9 @@ public class RuleRegistry {
     }
 
     /**
-     * Registers a rule with a given id
+     * Registers a rule with a given id.
      *
-     * @param ruleClass the class of the rule to regiser
+     * @param ruleClass the class of the rule to register.
      */
     public void registerRule(Class<? extends QuantumRule> ruleClass) {
         this.ruleMap.put(QuantumRule.getRuleId(ruleClass), ruleClass);
