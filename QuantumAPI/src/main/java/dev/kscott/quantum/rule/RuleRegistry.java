@@ -1,6 +1,7 @@
 package dev.kscott.quantum.rule;
 
 import dev.kscott.quantum.rule.rules.async.*;
+import dev.kscott.quantum.rule.rules.sync.AvoidClaimsRule;
 import dev.kscott.quantum.rule.rules.sync.AvoidEntityRule;
 import dev.kscott.quantum.rule.rules.sync.AvoidRegionRule;
 import dev.kscott.quantum.rule.rules.sync.NearbyEntityRule;
@@ -52,6 +53,10 @@ public class RuleRegistry {
         // WorldGuard rules
         if (this.plugin.getServer().getPluginManager().isPluginEnabled("WorldGuard")) {
             this.registerRule(AvoidRegionRule.class);
+        }
+
+        if (this.plugin.getServer().getPluginManager().isPluginEnabled("Factions")) {
+            this.registerRule(AvoidClaimsRule.class);
         }
     }
 
