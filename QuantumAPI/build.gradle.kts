@@ -3,6 +3,7 @@ repositories {
     maven {
         url = uri("https://maven.enginehub.org/repo/")
     }
+
 }
 
 dependencies {
@@ -14,6 +15,8 @@ dependencies {
 
     api("cloud.commandframework:cloud-paper:1.3.0-SNAPSHOT")
 
+    // integrations
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.4")
+    compileOnly(files("../libs/Factions.jar"))
 
 }
