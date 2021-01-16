@@ -206,10 +206,8 @@ public class WildManager {
      * @param player Player to teleport.
      * @return A CompletableFuture<Boolean>, where the boolean is true if it was a successful teleport, or false if it failed (i.e. cooldown, invalid world, etc).
      */
-    public @NonNull CompletableFuture<Boolean> wildTeleportPlayer(final @NonNull Player player) {
+    public @NonNull CompletableFuture<Boolean> wildTeleportPlayer(final @NonNull Player player, final @NonNull World world) {
         @NonNull CompletableFuture<Boolean> cf = new CompletableFuture<>();
-
-        final @NonNull World world = player.getWorld();
 
         final @Nullable QuantumRuleset ruleset = this.config.getRuleset(world);
 
