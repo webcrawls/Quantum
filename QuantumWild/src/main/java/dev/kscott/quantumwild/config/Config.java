@@ -228,7 +228,7 @@ public class Config {
      *
      * @return {@link this#DEFAULT_WORLD}
      */
-    public @Nullable World getDEFAULT_WORLD() {
+    public @Nullable World getDefaultWorld() {
         return DEFAULT_WORLD;
     }
 }
