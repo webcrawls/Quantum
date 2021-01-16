@@ -6,6 +6,7 @@ import cloud.commandframework.arguments.CommandArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import com.google.inject.Inject;
+import dev.kscott.quantumwild.config.Config;
 import dev.kscott.quantumwild.config.Lang;
 import dev.kscott.quantumwild.wild.WildManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -37,6 +38,11 @@ public class WildCommand {
     private final @NonNull Lang lang;
 
     /**
+     * Config reference.
+     */
+    private final @NonNull Config config;
+
+    /**
      * WildManager reference
      */
     private final @NonNull WildManager wildManager;
@@ -50,6 +56,7 @@ public class WildCommand {
      * Constructs WildCommand
      *
      * @param lang           {@link this#lang}
+     * @param config         {@link this#config}
      * @param audiences      {@link this#audiences}
      * @param commandManager {@link this#commandManager}
      * @param wildManager    {@link this#wildManager}
@@ -57,10 +64,12 @@ public class WildCommand {
     @Inject
     public WildCommand(
             final @NonNull Lang lang,
+            final @NonNull Config config,
             final @NonNull BukkitAudiences audiences,
             final @NonNull CommandManager<CommandSender> commandManager,
             final @NonNull WildManager wildManager
     ) {
+        this.config = config;
         this.lang = lang;
         this.audiences = audiences;
         this.commandManager = commandManager;
