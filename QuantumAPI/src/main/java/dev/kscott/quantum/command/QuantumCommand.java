@@ -76,6 +76,9 @@ public class QuantumCommand {
      */
     private final @NonNull QuantumTimer timer;
 
+    /**
+     * LocationProvider reference.
+     */
     private final @NonNull LocationProvider locationProvider;
 
     /**
