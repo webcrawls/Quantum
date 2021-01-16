@@ -54,7 +54,6 @@ public class RangeYLocator implements YLocator {
                 final boolean yAboveClear = snapshot.getBlockType(x, y+1, z).isAir();
 
                 if (yBelowSafe && yClear && yAboveClear) {
-                    System.out.println("pog");
                     return y;
                 }
             }

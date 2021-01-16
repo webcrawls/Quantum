@@ -103,7 +103,6 @@ public class LocationProvider {
                             boolean valid = this.validateLocation(location.getLocation(), quantumRuleset).join();
 
                             if (!valid) {
-                                System.out.println("invalid location found");
                                 cf.complete(getLocation(ruleset).join());
                             } else {
                                 cf.complete(this.locationQueue.popLocation(quantumRuleset));
@@ -229,7 +228,6 @@ public class LocationProvider {
 
                         this.timer.addTime(searchTime);
                     } else {
-                        System.out.println("invalid");
                         findLocation(tries + 1, start, quantumRuleset, cf);
                     }
 
