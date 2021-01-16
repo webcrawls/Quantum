@@ -17,8 +17,8 @@ public final class QuantumWildPlugin extends JavaPlugin {
         final @NonNull Injector injector = Guice.createInjector(
                 new QuantumModule(this),
                 new PluginModule(this),
-                new CommandModule(this),
                 new ConfigModule(),
+                new CommandModule(this),
                 new IntegrationsModule(),
                 new WildModule()
         );

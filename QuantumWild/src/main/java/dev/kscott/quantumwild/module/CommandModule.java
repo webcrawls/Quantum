@@ -3,10 +3,13 @@ package dev.kscott.quantumwild.module;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator;
+import cloud.commandframework.minecraft.extras.MinecraftExceptionHandler;
 import cloud.commandframework.paper.PaperCommandManager;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import dev.kscott.quantumwild.config.Lang;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -23,6 +26,8 @@ public class CommandModule extends AbstractModule {
      */
     private final @NonNull Plugin plugin;
 
+    private final @NonNull BukkitAudiences audiences;
+
     /**
      * Constructs the CommandModule
      *
@@ -30,6 +35,7 @@ public class CommandModule extends AbstractModule {
      */
     public CommandModule(final @NonNull Plugin plugin) {
         this.plugin = plugin;
+        this.audiences = BukkitAudiences.create(plugin);
     }
 
     /**
@@ -39,7 +45,7 @@ public class CommandModule extends AbstractModule {
      */
     @Provides
     @Singleton
-    public final CommandManager<CommandSender> provideCommandManager() {
+    public final CommandManager<CommandSender> provideCommandManager(final @NonNull Lang lang) {
         try {
             final @NonNull Function<CommandSender, CommandSender> mapper = Function.identity();
 
@@ -53,6 +59,10 @@ public class CommandModule extends AbstractModule {
             if (commandManager.queryCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
                 commandManager.registerAsynchronousCompletions();
             }
+
+            new MinecraftExceptionHandler<CommandSender>()
+                    .withHandler(MinecraftExceptionHandler.ExceptionType.NO_PERMISSION, e -> lang.c("no-permission"))
+                    .apply(commandManager, audiences::sender);
 
             return commandManager;
         } catch (Exception e) {
