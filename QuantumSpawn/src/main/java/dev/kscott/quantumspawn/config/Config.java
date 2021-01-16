@@ -65,6 +65,16 @@ public class Config {
     private boolean SPAWN_ON_DEATH_GO_TO_BED;
 
     /**
+     * Is the default world system enabled?
+     */
+    private boolean DEFAULT_WORLD_ENABLED;
+
+    /**
+     * The default world to put the player in.
+     */
+    private @Nullable World DEFAULT_WORLD;
+
+    /**
      * Constructs the config, loads it, and loads rulesets.
      *
      * @param plugin          {@link this#plugin}
@@ -119,6 +129,13 @@ public class Config {
         this.SPAWN_ON_JOIN = this.root.node("spawn").node("spawn-on-join").node("on-join").getBoolean(false);
         this.SPAWN_ON_DEATH = this.root.node("spawn").node("spawn-on-death").node("enabled").getBoolean(false);
         this.SPAWN_ON_DEATH_GO_TO_BED = this.root.node("spawn").node("spawn-on-death").node("go-to-bed").getBoolean(false);
+        this.DEFAULT_WORLD_ENABLED = this.root.node("spawn").node("default-world").node("enabled").getBoolean(false);
+        this.DEFAULT_WORLD = Bukkit.getWorld(this.root.node("spawn").node("default-world").node("world").getString(""));
+
+        if (this.DEFAULT_WORLD_ENABLED && this.DEFAULT_WORLD == null) {
+            this.plugin.getLogger().warning("The default-world configuration option is enabled, but the world name does not exist! Please review your QuantumWild configuration.");
+            this.DEFAULT_WORLD_ENABLED = false;
+        }
 
         this.worldRulesetMap.clear();
 
@@ -173,4 +190,21 @@ public class Config {
     public boolean isGoToBedEnabled() {
         return SPAWN_ON_DEATH_GO_TO_BED;
     }
+
+    /**
+     * @return {@link this#DEFAULT_WORLD_ENABLED}
+     */
+    public boolean isDefaultWorldEnabled() {
+        return DEFAULT_WORLD_ENABLED;
+    }
+
+    /**
+     * May be null if {@link this#DEFAULT_WORLD_ENABLED} is false.
+     *
+     * @return {@link this#DEFAULT_WORLD}
+     */
+    public @Nullable World getDefaultWorld() {
+        return DEFAULT_WORLD;
+    }
 }
+
