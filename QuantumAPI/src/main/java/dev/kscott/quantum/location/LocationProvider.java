@@ -264,7 +264,7 @@ public class LocationProvider {
 
                     return state;
                 })
-                .synchronous(state -> {
+                .asynchronous(state -> {
                     for (final AsyncQuantumRule rule : state.getQuantumRuleset().getAsyncRules()) {
                         boolean valid = rule.validate(state.getSnapshot(), state.getRelativeX(), state.getY(), state.getRelativeZ());
 
