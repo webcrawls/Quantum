@@ -52,11 +52,9 @@ public class PlayerFirstJoinListener implements Listener {
 
     @EventHandler
     public void onPlayerFirstJoin(final @NonNull PlayerJoinEvent event) {
-        System.out.println("pje fired");
         final @NonNull Player player = event.getPlayer();
 
         if (player.hasPlayedBefore()) {
-            System.out.println("daweawdawdawawdaw");
             return;
         }
 
