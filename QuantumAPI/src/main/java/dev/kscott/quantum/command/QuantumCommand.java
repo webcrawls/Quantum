@@ -82,6 +82,11 @@ public class QuantumCommand {
     private final @NonNull LocationProvider locationProvider;
 
     /**
+     * Stores a list of all registered ruleset ids for command completion.
+     */
+    private final @NonNull List<String> rulesetIds;
+
+    /**
      * Constructs QuantumCommand.
      *
      * @param plugin           JavaPlugin reference.
@@ -112,6 +117,7 @@ public class QuantumCommand {
         this.ruleRegistry = ruleRegistry;
         this.timer = timer;
         this.locationProvider = locationProvider;
+        this.rulesetIds = this.rulesetRegistry.getRulesets().stream().map(QuantumRuleset::getId).collect(Collectors.toList());
         setupCommands();
     }
 
@@ -172,7 +178,7 @@ public class QuantumCommand {
 
         final CommandArgument<CommandSender, String> rulesetArg = StringArgument.<CommandSender>newBuilder("ruleset")
                 .asOptional()
-                .withSuggestionsProvider((ctx, arg) -> this.rulesetRegistry.getRulesets().stream().map(QuantumRuleset::getId).collect(Collectors.toList()))
+                .withSuggestionsProvider((ctx, arg) -> rulesetIds)
                 .build();
 
 
