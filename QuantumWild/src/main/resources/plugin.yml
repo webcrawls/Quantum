@@ -15,6 +15,12 @@ permissions:
   quantum.wild.use:
     default: op
     description: access to /wild
+  quantum.wild.world.<world>:
+    default: op
+    description: allows access to /wild <world> (replace world with whatever world you want to allow access to)
+  quantum.wild.others:
+    default: op
+    description: access to /wild <player> [world]
   quantum.wild.cooldown.bypass:
     default: op
     description: bypasses /wild cooldown
