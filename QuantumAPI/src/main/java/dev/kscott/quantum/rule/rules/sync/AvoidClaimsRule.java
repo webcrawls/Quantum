@@ -31,8 +31,9 @@ public class AvoidClaimsRule extends SyncQuantumRule {
         final @NonNull Location location = chunk.getBlock(x, y, z).getLocation();
         final @NonNull FLocation fLocation = new FLocation(location);
 
-        final @Nullable Faction faction = Board.getInstance().getFactionAt(fLocation);
+        final @NonNull Faction faction = Board.getInstance().getFactionAt(fLocation);
+        final @NonNull String tag = faction.getComparisonTag();
 
-        return faction == null || factionsWhitelist.contains(faction.getId());
+        return factionsWhitelist.contains(tag);
     }
 }
