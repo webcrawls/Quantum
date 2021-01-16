@@ -17,7 +17,7 @@ dependencies {
     compileOnly("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
 
     compileOnly("cloud.commandframework:cloud-paper:1.4.0")
-    compileOnly("cloud.commandframework:cloud-minecraft-extras:1.4.0")
+    implementation("cloud.commandframework:cloud-minecraft-extras:1.4.0")
 
     compileOnly("net.luckperms:api:5.2")
 
