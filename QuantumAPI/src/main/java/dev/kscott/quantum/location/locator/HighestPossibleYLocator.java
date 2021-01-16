@@ -1,23 +1,16 @@
 package dev.kscott.quantum.location.locator;
 
-import org.bukkit.ChunkSnapshot;
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 /**
- * A YLocator that returns the highest Y
+ * A YLocator that returns the highest Y.
  */
-public class HighestPossibleYLocator implements YLocator {
+public class HighestPossibleYLocator extends RangeYLocator {
 
     /**
-     * Checks against the snapshot's heightmap to get the highest Y value
-     *
-     * @param snapshot The snapshot of the chunk to look for
-     * @param x        the X coordinate (relative to chunk, 0-15)
-     * @param z        the Z coordinate (relative to chunk, 0-15)
-     * @return The highest valid Y value
+     * Constructs HighestPossibleYLocator.
      */
-    @Override
-    public int getValidY(@NonNull ChunkSnapshot snapshot, int x, int z) {
-        return snapshot.getHighestBlockYAt(x, z);
+    public HighestPossibleYLocator() {
+        // 254 so the RangeYLocator can check 254 & 255
+        // if it was 255 it would try checking 255, and 255+1 (256) and error out since that's above max height
+        super(254, 0);
     }
 }
