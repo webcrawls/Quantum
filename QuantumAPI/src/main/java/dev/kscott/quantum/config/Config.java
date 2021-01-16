@@ -8,6 +8,8 @@ import dev.kscott.quantum.location.locator.YLocator;
 import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
+import dev.kscott.quantum.rule.rules.async.AvoidAirRule;
+import dev.kscott.quantum.rule.rules.async.AvoidBlockRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;
@@ -222,6 +224,7 @@ public class Config {
             final @NonNull SearchArea searchArea = new SearchArea(minX, maxX, minZ, maxZ);
 
             final @NonNull List<QuantumRule> rules = new ArrayList<>();
+            rules.add(new AvoidAirRule());
 
             // TODO find some better way of doing this - configurate might have some mapper function
             for (final ConfigurationNode ruleConfig : value.node("rules").childrenList()) {

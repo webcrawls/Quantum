@@ -19,6 +19,6 @@ public class AvoidAirRule extends AsyncQuantumRule {
      */
     @Override
     public boolean validate(@NonNull ChunkSnapshot snapshot, int x, int y, int z) {
-        return !snapshot.getBlockData(x, y, z).getMaterial().isAir();
+        return !snapshot.getBlockData(x, y-1, z).getMaterial().isAir();
     }
 }
