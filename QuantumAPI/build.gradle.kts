@@ -13,7 +13,7 @@ dependencies {
     implementation("net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT")
     implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
 
-    api("cloud.commandframework:cloud-paper:1.3.0-SNAPSHOT")
+    api("cloud.commandframework:cloud-paper:1.4.0")
 
     // integrations
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.4")
