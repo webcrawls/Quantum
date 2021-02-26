@@ -37,11 +37,26 @@ public class RangeYLocator implements YLocator {
      */
     @Override
     public int getValidY(@NonNull ChunkSnapshot snapshot, int x, int z) {
+        // TODO Change hard bound limits for 1.17+
         if (maxY > minY) {
             for (int y = minY; y <= maxY; y++) {
-                final boolean yBelowSafe = snapshot.getBlockType(x, y-1, z).isSolid();
+                boolean yBelowSafe;
+
+                if (y-1 < 0) {
+                    yBelowSafe = false;
+                } else {
+                    yBelowSafe = snapshot.getBlockType(x, y-1, z).isSolid();
+                }
+
                 final boolean yClear = snapshot.getBlockType(x, y, z).isAir();
-                final boolean yAboveClear = snapshot.getBlockType(x, y + 1, z).isAir();
+
+                boolean yAboveClear;
+
+                if (y+1 > 255) {
+                    yAboveClear = true;
+                } else {
+                    yAboveClear = snapshot.getBlockType(x, y + 1, z).isAir();
+                }
 
                 if (yClear && yAboveClear && yBelowSafe) {
                     return y;
@@ -49,9 +64,23 @@ public class RangeYLocator implements YLocator {
             }
         } else {
             for (int y = minY; y >= maxY; y--) {
-                final boolean yBelowSafe = snapshot.getBlockType(x, y-1, z).isSolid();
+                boolean yBelowSafe;
+
+                if (y-1 < 0) {
+                    yBelowSafe = false;
+                } else {
+                    yBelowSafe = snapshot.getBlockType(x, y-1, z).isSolid();
+                }
+
                 final boolean yClear = snapshot.getBlockType(x, y, z).isAir();
-                final boolean yAboveClear = snapshot.getBlockType(x, y+1, z).isAir();
+
+                boolean yAboveClear;
+
+                if (y+1 > 255) {
+                    yAboveClear = true;
+                } else {
+                    yAboveClear = snapshot.getBlockType(x, y + 1, z).isAir();
+                }
 
                 if (yBelowSafe && yClear && yAboveClear) {
                     return y;
