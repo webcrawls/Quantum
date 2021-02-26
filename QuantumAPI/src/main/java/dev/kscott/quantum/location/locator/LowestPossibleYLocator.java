@@ -6,6 +6,6 @@ package dev.kscott.quantum.location.locator;
 public class LowestPossibleYLocator extends RangeYLocator {
 
     public LowestPossibleYLocator() {
-        super(0, 255);
+        super(1, 254);
     }
 }
