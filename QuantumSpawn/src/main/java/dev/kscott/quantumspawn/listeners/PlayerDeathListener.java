@@ -19,6 +19,9 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * Listens on player death-related events.
+ */
 public class PlayerDeathListener implements Listener {
 
     /**
@@ -52,6 +55,11 @@ public class PlayerDeathListener implements Listener {
         this.locationProvider = locationProvider;
     }
 
+    /**
+     * Handles the {@link PlayerRespawnEvent} and teleports them if enabled.
+     *
+     * @param event {@link PlayerRespawnEvent}.
+     */
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         final @NonNull Player player = event.getPlayer();
