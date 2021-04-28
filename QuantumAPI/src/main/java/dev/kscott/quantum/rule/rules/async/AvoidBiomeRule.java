@@ -25,10 +25,6 @@ public class AvoidBiomeRule extends AsyncQuantumRule {
     }
 
     /**
-     * Parses BiomeListOption into {@link AvoidBiomeRule#biomes}
-     */
-
-    /**
      * Loads {@link this#biomes}
      */
     @Override
