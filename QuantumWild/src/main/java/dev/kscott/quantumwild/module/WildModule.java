@@ -14,20 +14,20 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * Provides the WildManager
+ * Provides {@link WildManager}.
  */
 public class WildModule extends AbstractModule {
 
     /**
      * Constructs & returns the WildManager
      *
-     * @param integrationsManager IntegrationsManager reference.
-     * @param lang                Lang reference.
-     * @param audiences           BukkitAudiences reference.
-     * @param config              Config reference.
-     * @param locationProvider    LocationProvider reference.
-     * @param plugin              JavaPlugin reference.
-     * @return
+     * @param integrationsManager {@link IntegrationsManager} reference.
+     * @param lang                {@link Lang} reference.
+     * @param audiences           {@link BukkitAudiences} reference.
+     * @param config              {@link Config} reference.
+     * @param locationProvider    {@link LocationProvider} reference.
+     * @param plugin              {@link JavaPlugin} reference.
+     * @return new {@link WildManager} reference.
      */
     @Provides
     @Singleton
