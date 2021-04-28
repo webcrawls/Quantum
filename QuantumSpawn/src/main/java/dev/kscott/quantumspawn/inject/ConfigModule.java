@@ -19,7 +19,7 @@ public class ConfigModule extends AbstractModule {
      * Provides {@link Config}.
      *
      * @param rulesetRegistry RulesetRegistry reference.
-     * @param plugin JavaPlugin reference.
+     * @param plugin          JavaPlugin reference.
      * @return Config.
      */
     @Provides

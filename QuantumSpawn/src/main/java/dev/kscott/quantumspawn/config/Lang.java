@@ -86,13 +86,13 @@ public class Lang {
         if (root != null) {
             value = root.node(key.split("\\.")).getString();
         } else {
-            value = "<red>ERR: No lang key found for "+key+"</red>";
+            value = "<red>ERR: No lang key found for " + key + "</red>";
         }
 
         if (value == null) {
             this.plugin.getLogger().severe("Tried to load lang key '" + key + "', but it didn't exist.");
             this.plugin.getLogger().severe("Using default value.");
-            value = "<red>ERR: No lang key found for "+key+"</red>";
+            value = "<red>ERR: No lang key found for " + key + "</red>";
         }
 
         for (final Map.Entry<String, String> entry : replacements.entrySet()) {

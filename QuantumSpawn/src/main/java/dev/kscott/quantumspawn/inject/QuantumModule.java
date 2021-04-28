@@ -40,6 +40,7 @@ public class QuantumModule extends AbstractModule {
 
     /**
      * Provides {@link QuantumAPI#locationProvider}.
+     *
      * @return LocationProvider reference.
      */
     @Provides
@@ -50,6 +51,7 @@ public class QuantumModule extends AbstractModule {
 
     /**
      * Provides {@link QuantumAPI#rulesetRegistry}.
+     *
      * @return RulesetRegistry reference.
      */
     @Provides
@@ -60,6 +62,7 @@ public class QuantumModule extends AbstractModule {
 
     /**
      * Provides {@link QuantumAPI#ruleRegistry}.
+     *
      * @return RuleRegistry reference.
      */
     @Provides
