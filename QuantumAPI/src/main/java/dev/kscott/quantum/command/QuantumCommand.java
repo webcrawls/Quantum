@@ -368,17 +368,15 @@ public class QuantumCommand {
         final @NonNull Location location = player.getLocation();
 
         this.locationProvider.validateLocation(location, ruleset)
-                .thenAccept(valid -> {
-                    new BukkitRunnable() {
-                        @Override
-                        public void run() {
-                            final TextComponent.Builder component = Component.text()
-                                    .append(config.PREFIX)
-                                    .append(MiniMessage.get().parse(valid ? " <aqua>This location is valid.</aqua>" : " <red>This location is not valid.</red>"));
-                            audience.sendMessage(component);
-                        }
-                    }.runTask(plugin);
-                });
+                .thenAccept(valid -> new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        final TextComponent.Builder component = Component.text()
+                                .append(config.PREFIX)
+                                .append(MiniMessage.get().parse(valid ? " <aqua>This location is valid.</aqua>" : " <red>This location is not valid.</red>"));
+                        audience.sendMessage(component);
+                    }
+                }.runTask(plugin));
 
     }
 
