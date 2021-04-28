@@ -12,19 +12,19 @@ import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * The module that interacts with (and exposes) the QuantumAPI
+ * Interacts and exposes {@link QuantumAPI}.
  */
 public class QuantumModule extends AbstractModule {
 
     /**
-     * QuantumAPI reference.
+     * {@link QuantumAPI} reference.
      */
     private final @MonotonicNonNull QuantumAPI quantumAPI;
 
     /**
-     * Constructs QuantumModule (and loads the QuantumAPI).
+     * Constructs {@link QuantumModule}, and loads the QuantumAPI.
      *
-     * @param plugin JavaPlugin reference.
+     * @param plugin {@link JavaPlugin} reference.
      */
     public QuantumModule(final @NonNull JavaPlugin plugin) {
         if (!plugin.getServer().getPluginManager().isPluginEnabled("QuantumAPI")) {
@@ -39,9 +39,9 @@ public class QuantumModule extends AbstractModule {
     }
 
     /**
-     * Provides {@link QuantumAPI#locationProvider}.
+     * Provides {@link LocationProvider}.
      *
-     * @return LocationProvider reference.
+     * @return {@link LocationProvider} reference.
      */
     @Provides
     @Singleton
@@ -50,9 +50,9 @@ public class QuantumModule extends AbstractModule {
     }
 
     /**
-     * Provides {@link QuantumAPI#rulesetRegistry}.
+     * Provides {@link RulesetRegistry}.
      *
-     * @return RulesetRegistry reference.
+     * @return {@link RulesetRegistry} reference.
      */
     @Provides
     @Singleton
@@ -61,9 +61,9 @@ public class QuantumModule extends AbstractModule {
     }
 
     /**
-     * Provides {@link QuantumAPI#ruleRegistry}.
+     * Provides {@link RulesetRegistry}.
      *
-     * @return RuleRegistry reference.
+     * @return {@link RulesetRegistry} reference.
      */
     @Provides
     @Singleton
