@@ -30,11 +30,6 @@ public class LocationQueue {
     private final @NonNull LocationProvider locationProvider;
 
     /**
-     * RulesetRegistry reference.
-     */
-    private final @NonNull RulesetRegistry rulesetRegistry;
-
-    /**
      * Constructs the LocationQueue.
      */
     public LocationQueue(
@@ -43,7 +38,6 @@ public class LocationQueue {
     ) {
         this.locationQueueMap = new HashMap<>();
         this.locationProvider = locationProvider;
-        this.rulesetRegistry = rulesetRegistry;
 
         for (final QuantumRuleset ruleset : rulesetRegistry.getRulesets()) {
             if (ruleset.getQueueTarget() == 0) {
