@@ -1,30 +1,34 @@
 # Quantum
 
-Quantum is a random location generator plugin for Minecraft servers running 1.16+. It provides an exhaustive API to
-allow plugins and users to define their own custom location generation algorithms.
+Quantum is a location generation API for Minecraft 1.16+. It provides an interface (through plugin extensions) to interact with internal location APIs. Quantum can be configured to generate locations under highly customizable criteria, such as:
 
-As Quantum is intended to be used as an API, there are no user-facing features implemented. Instead of bundlng the logic
-for the various first-party modules, Quantum is currently split up into three modules: QuantumAPI, QuantumWild, and
-QuantumSpawn.
+- **always** in a forest biome...
+- **never** in a water lake...
+- **always** near a pig...
+- **never** near a zombie...
+- **within** 1000 blocks of 0,0...
+- AND **never** in a cave!
 
-## QuantumAPI
+These are only a few of the many possibilities Quantum's advanced configuration offers. Quantum is very adaptable, and can (and is!) used by many types of servers: Factions, minigames, PvP, and more. Quantum's documentation is constantly growing, so make sure to check out the wiki page and the [Discord server](https://chat.ksc.sh)!
 
-- An API for plugins
-- Provides configuration for users to modify rulesets
+## Modules
 
-## QuantumSpawn
+### QuantumAPI
 
-- Requires QuamtumAPI
-- Uses rulesets to enable random spawning mechanics
+- An API for plugins.
+- Provides configuration for users to modify rulesets.
 
-QuantumSpawn is still in development, but you can read more [here](#).
+### QuantumSpawn
 
-## QuantumWild
+- Requires QuantumAPI.
+- Uses rulesets to enable random spawning mechanics.
 
-- Requires QuantumAPI
-- Provides /wild commands with configurable cooldown & per-world options
+### QuantumWild
 
-QuantumWild is still in development, but you can read more [here](#).
+- Requires QuantumAPI.
+- Provides /wild commands with configurable cooldown & per-world options.
+
+> Keep in mind, these modules often receive updates bringing more features. See the wiki page and my Discord server to get the latest information. 
 
 ## Features
 
