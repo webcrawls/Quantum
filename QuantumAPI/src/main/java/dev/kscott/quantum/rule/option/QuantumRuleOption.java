@@ -55,7 +55,7 @@ public class QuantumRuleOption<T> {
      * @return TypeToken
      */
     public @NonNull TypeToken<T> getTypeToken() {
-        return new TypeToken<T>(getClass()) {
+        return new TypeToken<>(getClass()) {
         };
     }
 
