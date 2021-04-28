@@ -80,14 +80,12 @@ public class PlayerDeathListener implements Listener {
 
         final @NonNull CompletableFuture<QuantumLocation> locationCf = this.locationProvider.getLocation(ruleset);
 
-        locationCf.thenAccept(quantumLocation -> {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    player.teleportAsync(QuantumLocation.toCenterHorizontalLocation(quantumLocation.getLocation()));
-                }
-            }.runTask(plugin);
-        });
+        locationCf.thenAccept(quantumLocation -> new BukkitRunnable() {
+            @Override
+            public void run() {
+                player.teleportAsync(QuantumLocation.toCenterHorizontalLocation(quantumLocation.getLocation()));
+            }
+        }.runTask(plugin));
     }
 
 }

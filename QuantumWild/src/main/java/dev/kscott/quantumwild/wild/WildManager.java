@@ -338,58 +338,56 @@ public class WildManager {
             return;
         }
 
-        cf.thenAccept(quantumLocation -> {
-            new BukkitRunnable() {
-                @Override
-                public void run() {
-                    final @NonNull Location location = quantumLocation.getLocation();
+        cf.thenAccept(quantumLocation -> new BukkitRunnable() {
+            @Override
+            public void run() {
+                final @NonNull Location location = quantumLocation.getLocation();
 
-                    if (config.isEssentialsIntegrationEnabled() && integrationsManager.isEssentialsEnabled()) {
-                        final @NonNull CompletableFuture<Boolean> essCf = new CompletableFuture<>();
+                if (config.isEssentialsIntegrationEnabled() && integrationsManager.isEssentialsEnabled()) {
+                    final @NonNull CompletableFuture<Boolean> essCf = new CompletableFuture<>();
 
-                        essCf.thenAccept(success -> {
-                            successCf.complete(success);
+                    essCf.thenAccept(success -> {
+                        successCf.complete(success);
 
-                            if (success) {
-                                applyWildCooldown(player);
-                                audiences.sender(player).sendMessage(
-                                        lang.c(
-                                                "tp-success",
-                                                locationToPlaceholderMap(location)
-                                        )
-                                );
-                            }
-                        });
+                        if (success) {
+                            applyWildCooldown(player);
+                            audiences.sender(player).sendMessage(
+                                    lang.c(
+                                            "tp-success",
+                                            locationToPlaceholderMap(location)
+                                    )
+                            );
+                        }
+                    });
 
-                        integrationsManager.getEssentials().getUser(player)
-                                .getAsyncTeleport()
-                                .teleport(QuantumLocation.toCenterLocation(location), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
+                    integrationsManager.getEssentials().getUser(player)
+                            .getAsyncTeleport()
+                            .teleport(QuantumLocation.toCenterLocation(location), null, PlayerTeleportEvent.TeleportCause.PLUGIN, essCf);
 
-                    } else {
-                        PaperLib.teleportAsync(player, QuantumLocation.toCenterHorizontalLocation(location))
-                                .thenAccept(success -> {
-                                    if (success) {
-                                        applyWildCooldown(player);
-                                        audiences.sender(player).sendMessage(
-                                                lang.c(
-                                                        "tp-success",
-                                                        locationToPlaceholderMap(location)
-                                                )
-                                        );
-                                    } else {
-                                        audiences.sender(player).sendMessage(
-                                                lang.c(
-                                                        "failed-spawn-location",
-                                                        locationToPlaceholderMap(location)
-                                                )
-                                        );
-                                    }
-                                    successCf.complete(success);
-                                });
-                    }
+                } else {
+                    PaperLib.teleportAsync(player, QuantumLocation.toCenterHorizontalLocation(location))
+                            .thenAccept(success -> {
+                                if (success) {
+                                    applyWildCooldown(player);
+                                    audiences.sender(player).sendMessage(
+                                            lang.c(
+                                                    "tp-success",
+                                                    locationToPlaceholderMap(location)
+                                            )
+                                    );
+                                } else {
+                                    audiences.sender(player).sendMessage(
+                                            lang.c(
+                                                    "failed-spawn-location",
+                                                    locationToPlaceholderMap(location)
+                                            )
+                                    );
+                                }
+                                successCf.complete(success);
+                            });
                 }
-            }.runTask(plugin);
-        });
+            }
+        }.runTask(plugin));
     }
 
     /**
