@@ -1,5 +1,6 @@
 package dev.kscott.quantum.command;
 
+import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.Command;
 import cloud.commandframework.CommandManager;
 import cloud.commandframework.Description;
@@ -133,7 +134,7 @@ public class QuantumCommand {
         this.commandManager.command(
                 builder.literal(
                         "rulesets",
-                        Description.of("Get the ids of all loaded rulesets")
+                        ArgumentDescription.of("Get the ids of all loaded rulesets")
                 )
                         .permission("quantum.api.command.rulesets")
                         .handler(this::handleRulesets)
@@ -142,7 +143,7 @@ public class QuantumCommand {
         this.commandManager.command(
                 builder.literal(
                         "rules",
-                        Description.of("Get the ids all loaded rules")
+                        ArgumentDescription.of("Get the ids all loaded rules")
                 )
                         .permission("quantum.api.command.rules")
                         .handler(this::handleRules)
@@ -151,7 +152,7 @@ public class QuantumCommand {
         this.commandManager.command(
                 builder.literal(
                         "stats",
-                        Description.of("See Quantum's performance")
+                        ArgumentDescription.of("See Quantum's performance")
                 )
                         .permission("quantum.api.command.stats")
                         .handler(this::handleStats)
@@ -160,7 +161,7 @@ public class QuantumCommand {
         this.commandManager.command(
                 builder.literal(
                         "reload",
-                        Description.of("Reloads Quantum reload")
+                        ArgumentDescription.of("Reloads Quantum reload")
                 )
                         .permission("quantum.api.command.reload")
                         .handler(this::handleReload)
@@ -169,7 +170,7 @@ public class QuantumCommand {
         this.commandManager.command(
                 builder.literal(
                         "queue",
-                        Description.of("Shows QuantumAPI queue stats")
+                        ArgumentDescription.of("Shows QuantumAPI queue stats")
                 )
                         .permission("quantum.api.command.queue")
                         .handler(this::handleQueue)
@@ -184,7 +185,7 @@ public class QuantumCommand {
         this.commandManager.command(
                 builder.literal(
                         "validate",
-                        Description.of("Validates a location with a given ruleset")
+                        ArgumentDescription.of("Validates a location with a given ruleset")
                 )
                         .permission("quantum.api.command.validate")
                         .argument(rulesetArg)
