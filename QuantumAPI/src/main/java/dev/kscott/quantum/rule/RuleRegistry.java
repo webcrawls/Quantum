@@ -25,17 +25,17 @@ import java.util.Map;
 public class RuleRegistry {
 
     /**
-     * JavaPlugin reference.
+     * {@link JavaPlugin} reference.
      */
     private final @NonNull JavaPlugin plugin;
 
     /**
-     * The map where all rules are stored, by their id.
+     * Stores all registered rules by their id.
      */
     private final @NonNull Map<String, Class<? extends QuantumRule>> ruleMap;
 
     /**
-     * Constructs the rule registry and it's internal map
+     * Constructs the rule registry and it's internal map.
      */
     public RuleRegistry(
             final @NonNull JavaPlugin plugin
@@ -66,19 +66,19 @@ public class RuleRegistry {
     }
 
     /**
-     * Registers a rule with a given id.
+     * Registers a {@link QuantumRule} class..
      *
-     * @param ruleClass the class of the rule to register.
+     * @param ruleClass the {@link Class} of the {@link QuantumRule} to register.
      */
     public void registerRule(Class<? extends QuantumRule> ruleClass) {
         this.ruleMap.put(QuantumRule.getRuleId(ruleClass), ruleClass);
     }
 
     /**
-     * Constructs a fresh QuantumRule of the given id
+     * Constructs a fresh {@link QuantumRule} of the given id.
      *
-     * @param id id of QuantumRule
-     * @return A new QuantumRule object
+     * @param id id of {@link QuantumRule}.
+     * @return A new {@link QuantumRule} object.
      */
     public @Nullable QuantumRule createFreshRule(String id) {
         if (!this.ruleMap.containsKey(id)) {
@@ -89,10 +89,10 @@ public class RuleRegistry {
     }
 
     /**
-     * Constructs a fresh QuantumRule
+     * Constructs a fresh {@link QuantumRule}.
      *
-     * @param quantumRuleClass class of QuantumRule
-     * @return a new QuantumRule object
+     * @param quantumRuleClass {@link Class} of {@link QuantumRule}.
+     * @return a new {@link QuantumRule}.
      */
     public @Nullable QuantumRule createFreshRule(final @NonNull Class<? extends QuantumRule> quantumRuleClass) {
         QuantumRule quantumRule;
@@ -108,9 +108,9 @@ public class RuleRegistry {
     }
 
     /**
-     * Returns a Collection of all registered QuantumRules
+     * Returns a {@link Collection} of all registered {@link QuantumRule}s.
      *
-     * @return QuantumRule Collection
+     * @return {@link Collection} of all registered {@link QuantumRule}s.
      */
     public @NonNull Collection<EffectiveRule> getRules() {
         final @NonNull Collection<EffectiveRule> effectiveRules = new HashSet<>();
@@ -129,20 +129,20 @@ public class RuleRegistry {
     public static class EffectiveRule {
 
         /**
-         * The id of the rule
+         * The id of the rule.
          */
         private final @NonNull String id;
 
         /**
-         * The class of the rule
+         * The class of the rule.
          */
         private final @NonNull Class<? extends QuantumRule> ruleClass;
 
         /**
-         * Constructs the EffectiveRule
+         * Constructs {@link EffectiveRule}.
          *
-         * @param id        id of rule
-         * @param ruleClass class of rule
+         * @param id        id of rule.
+         * @param ruleClass class of rule.
          */
         private EffectiveRule(final @NonNull String id, final @NonNull Class<? extends QuantumRule> ruleClass) {
             this.id = id;
@@ -150,18 +150,18 @@ public class RuleRegistry {
         }
 
         /**
-         * Returns the rule's id
+         * Returns the rule's id.
          *
-         * @return String id
+         * @return id.
          */
         public @NonNull String getId() {
             return id;
         }
 
         /**
-         * Returns the rule's class
+         * Returns the rule's class.
          *
-         * @return rule Class
+         * @return {@link QuantumRule}'s {@link Class}.
          */
         public @NonNull Class<? extends QuantumRule> getRuleClass() {
             return ruleClass;
