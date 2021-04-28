@@ -3,10 +3,9 @@ package dev.kscott.quantum.rule.option;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * A QuantumRuleOption with an optional value.
- * If this value isn't defined, it will use {@link OptionalQuantumRuleOption#defaultValue}.
+ * A {@link QuantumRuleOption} with an optional value.
  *
- * @param <T>
+ * @param <T> type of this rule.
  */
 public class OptionalQuantumRuleOption<T> extends QuantumRuleOption<T> {
 
@@ -16,10 +15,10 @@ public class OptionalQuantumRuleOption<T> extends QuantumRuleOption<T> {
     private final T defaultValue;
 
     /**
-     * Constructs OptionalQuantumRuleOption
+     * Constructs {@link OptionalQuantumRuleOption}
      *
-     * @param id           the id of this option
-     * @param defaultValue
+     * @param id           the id of this option.
+     * @param defaultValue default value to return if null.
      */
     public OptionalQuantumRuleOption(final @NonNull String id, final @NonNull T defaultValue) {
         super(id);
@@ -35,6 +34,10 @@ public class OptionalQuantumRuleOption<T> extends QuantumRuleOption<T> {
         return this.value;
     }
 
+    /**
+     * Returns the default value.
+     * @return the default value.
+     */
     public T getDefaultValue() {
         return defaultValue;
     }
