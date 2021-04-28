@@ -1,6 +1,8 @@
 # Quantum
 
-Quantum is a location generation API for Minecraft 1.16+. It provides an interface (through plugin extensions) to interact with internal location APIs. Quantum can be configured to generate locations under highly customizable criteria, such as:
+> _An insanely customizable location generation suite, including /rtp, /wild, random spawns, and more!_ 
+
+Quantum is a location generation suite for Minecraft 1.16+. It provides an interface (through plugin extensions) to interact with internal location APIs. Quantum can be configured to generate locations under highly customizable criteria, such as:
 
 - **always** in a forest biome...
 - **never** in a water lake...
