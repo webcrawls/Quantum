@@ -20,7 +20,7 @@ import java.util.function.Function;
  */
 public class CommandModule extends AbstractModule {
 
-    private @MonotonicNonNull PaperCommandManager<CommandSender> commandManager;
+    private final@MonotonicNonNull PaperCommandManager<CommandSender> commandManager;
 
     /**
      * Constructs the CommandModule
