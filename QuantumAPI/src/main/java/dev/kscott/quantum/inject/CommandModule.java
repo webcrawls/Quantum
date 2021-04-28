@@ -20,11 +20,6 @@ import java.util.function.Function;
  */
 public class CommandModule extends AbstractModule {
 
-    /**
-     * Plugin reference
-     */
-    private final @NonNull Plugin plugin;
-
     private @MonotonicNonNull PaperCommandManager<CommandSender> commandManager;
 
     /**
@@ -33,8 +28,6 @@ public class CommandModule extends AbstractModule {
      * @param plugin Plugin reference
      */
     public CommandModule(final @NonNull Plugin plugin) {
-        this.plugin = plugin;
-
         try {
             final @NonNull Function<CommandSender, CommandSender> mapper = Function.identity();
 
