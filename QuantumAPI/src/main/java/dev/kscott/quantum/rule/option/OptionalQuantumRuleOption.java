@@ -11,7 +11,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public class OptionalQuantumRuleOption<T> extends QuantumRuleOption<T> {
 
     /**
-     * The default value to return if {@link OptionalQuantumRuleOption#defaultValue} is null.
+     * The default value to return if null.
      */
     private final T defaultValue;
 
