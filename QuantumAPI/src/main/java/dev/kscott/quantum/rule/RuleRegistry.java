@@ -25,23 +25,19 @@ import java.util.Map;
 public class RuleRegistry {
 
     /**
-     * {@link JavaPlugin} reference.
-     */
-    private final @NonNull JavaPlugin plugin;
-
-    /**
      * Stores all registered rules by their id.
      */
     private final @NonNull Map<String, Class<? extends QuantumRule>> ruleMap;
 
     /**
-     * Constructs the rule registry and it's internal map.
+     * Constructs the rule registry and its internal map.
+     *
+     * @param plugin {@link JavaPlugin} instance.
      */
     public RuleRegistry(
             final @NonNull JavaPlugin plugin
     ) {
         this.ruleMap = new HashMap<>();
-        this.plugin = plugin;
 
         // Async rules
         this.registerRule(AvoidBlockRule.class);
@@ -55,12 +51,12 @@ public class RuleRegistry {
         this.registerRule(NearbyEntityRule.class);
 
         // WorldGuard rules
-        if (this.plugin.getServer().getPluginManager().isPluginEnabled("WorldGuard")) {
+        if (plugin.getServer().getPluginManager().isPluginEnabled("WorldGuard")) {
             this.registerRule(AvoidRegionRule.class);
         }
 
         // Factions rules
-        if (this.plugin.getServer().getPluginManager().isPluginEnabled("Factions")) {
+        if (plugin.getServer().getPluginManager().isPluginEnabled("Factions")) {
             this.registerRule(AvoidClaimsRule.class);
         }
     }
