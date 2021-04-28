@@ -9,19 +9,19 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
- * Listens on the PlayerMoveEvent to cancel warmups.
+ * Listens on the {@link PlayerMoveEvent} to cancel warmups.
  */
 public class PlayerMovementListener implements Listener {
 
     /**
-     * WildManager reference.
+     * {@link WildManager} reference.
      */
     private final @NonNull WildManager wildManager;
 
     /**
-     * Constructs PlayerMovementListener.
+     * Constructs {@link PlayerMovementListener}.
      *
-     * @param wildManager WildManager reference.
+     * @param wildManager {@link WildManager} reference.
      */
     @Inject
     public PlayerMovementListener(final @NonNull WildManager wildManager) {
@@ -29,8 +29,8 @@ public class PlayerMovementListener implements Listener {
     }
 
     /**
-     * If {@link PlayerMoveEvent#from} and {@link PlayerMoveEvent#to} are in different blocks,
-     * invalidate a player's warmup.
+     * If {@link PlayerMoveEvent#getFrom} and {@link PlayerMoveEvent#getTo} are in different blocks,
+     * the player's warmup will be invalidated.
      *
      * @param event PlayerMoveEvent.
      */
