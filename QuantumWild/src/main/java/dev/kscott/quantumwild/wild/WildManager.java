@@ -19,7 +19,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -312,9 +316,9 @@ public class WildManager {
      * Teleports a player, providing messages, and checks against all
      * valid config options and stuff. Basically, the entire /wild code.
      *
-     * @param cf CompletableFuture to be completed when teleportation is done.
+     * @param cf        CompletableFuture to be completed when teleportation is done.
      * @param successCf CompletableFuture to be completed when teleportation is done.
-     * @param player Player to teleport
+     * @param player    Player to teleport
      */
     private void teleportPlayer(
             final @NonNull CompletableFuture<QuantumLocation> cf,

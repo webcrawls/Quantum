@@ -1,14 +1,14 @@
-import org.apache.tools.ant.filters.ReplaceTokens
 import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.apache.tools.ant.filters.ReplaceTokens
 import org.checkerframework.gradle.plugin.CheckerFrameworkPlugin
 
 
 plugins {
     id("java")
     id("java-library")
-    id("com.github.johnrengelman.shadow") version("6.1.0")
-    id("org.checkerframework") version("0.5.13")
+    id("com.github.johnrengelman.shadow") version ("6.1.0")
+    id("org.checkerframework") version ("0.5.13")
 }
 
 allprojects {

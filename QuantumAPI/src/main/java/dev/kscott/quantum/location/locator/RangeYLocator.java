@@ -42,17 +42,17 @@ public class RangeYLocator implements YLocator {
             for (int y = minY; y <= maxY; y++) {
                 boolean yBelowSafe;
 
-                if (y-1 < 0) {
+                if (y - 1 < 0) {
                     yBelowSafe = false;
                 } else {
-                    yBelowSafe = snapshot.getBlockType(x, y-1, z).isSolid();
+                    yBelowSafe = snapshot.getBlockType(x, y - 1, z).isSolid();
                 }
 
                 final boolean yClear = snapshot.getBlockType(x, y, z).isAir();
 
                 boolean yAboveClear;
 
-                if (y+1 > 255) {
+                if (y + 1 > 255) {
                     yAboveClear = true;
                 } else {
                     yAboveClear = snapshot.getBlockType(x, y + 1, z).isAir();
@@ -66,17 +66,17 @@ public class RangeYLocator implements YLocator {
             for (int y = minY; y >= maxY; y--) {
                 boolean yBelowSafe;
 
-                if (y-1 < 0) {
+                if (y - 1 < 0) {
                     yBelowSafe = false;
                 } else {
-                    yBelowSafe = snapshot.getBlockType(x, y-1, z).isSolid();
+                    yBelowSafe = snapshot.getBlockType(x, y - 1, z).isSolid();
                 }
 
                 final boolean yClear = snapshot.getBlockType(x, y, z).isAir();
 
                 boolean yAboveClear;
 
-                if (y+1 > 255) {
+                if (y + 1 > 255) {
                     yAboveClear = true;
                 } else {
                     yAboveClear = snapshot.getBlockType(x, y + 1, z).isAir();

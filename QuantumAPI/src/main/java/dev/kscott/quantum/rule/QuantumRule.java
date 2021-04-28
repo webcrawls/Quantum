@@ -2,7 +2,6 @@ package dev.kscott.quantum.rule;
 
 import com.google.common.base.CaseFormat;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
-import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -37,7 +36,8 @@ public abstract class QuantumRule {
      * Called after the rule is created ({@link RuleRegistry#createFreshRule(Class)}.
      * This method should be used to parse options.
      */
-    public void postCreation() {}
+    public void postCreation() {
+    }
 
     /**
      * Returns an option with a specified id

@@ -42,8 +42,8 @@ public class PlayerMovementListener implements Listener {
 
         if (!(
                 from.getBlockX() == to.getBlockX() &&
-                from.getBlockY() == to.getBlockY() &&
-                from.getBlockZ() == to.getBlockZ()
+                        from.getBlockY() == to.getBlockY() &&
+                        from.getBlockZ() == to.getBlockZ()
         )) {
             this.wildManager.invalidateWarmup(event.getPlayer());
         }

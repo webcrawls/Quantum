@@ -22,6 +22,7 @@ public class QuantumTimer {
 
     /**
      * Adds a time to the search time array.
+     *
      * @param time amount of time spent searching for a location, in ms.
      */
     public void addTime(final long time) {
@@ -43,6 +44,7 @@ public class QuantumTimer {
 
     /**
      * Returns the total amount of time spent
+     *
      * @return total time in ms.
      */
     public long getTotalTime() {
@@ -57,6 +59,7 @@ public class QuantumTimer {
 
     /**
      * Returns the amount of times in the search time array.
+     *
      * @return length of search time array.
      */
     public int getTotalSearches() {

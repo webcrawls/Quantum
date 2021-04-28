@@ -9,7 +9,6 @@ import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.option.QuantumRuleOption;
 import dev.kscott.quantum.rule.rules.async.AvoidAirRule;
-import dev.kscott.quantum.rule.rules.async.AvoidBlockRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
 import dev.kscott.quantum.rule.ruleset.search.SearchArea;

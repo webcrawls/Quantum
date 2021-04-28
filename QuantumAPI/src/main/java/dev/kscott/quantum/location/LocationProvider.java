@@ -3,7 +3,6 @@ package dev.kscott.quantum.location;
 import cloud.commandframework.paper.PaperCommandManager;
 import dev.kscott.quantum.config.Config;
 import dev.kscott.quantum.exceptions.ExceededMaxRetriesException;
-import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
@@ -20,7 +19,6 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -239,7 +237,7 @@ public class LocationProvider {
     /**
      * Validates a Location against a ruleset.
      *
-     * @param location Location to validate.
+     * @param location       Location to validate.
      * @param quantumRuleset Ruleset to validate with.
      * @return A CompletableFuture of Boolean, where the boolean is true if the location is valid, false if not.
      */

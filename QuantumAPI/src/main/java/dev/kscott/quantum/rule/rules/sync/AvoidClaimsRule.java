@@ -7,7 +7,6 @@ import dev.kscott.quantum.rule.option.FactionsWhitelistOption;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;

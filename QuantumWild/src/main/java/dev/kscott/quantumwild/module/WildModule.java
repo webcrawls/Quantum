@@ -22,11 +22,11 @@ public class WildModule extends AbstractModule {
      * Constructs & returns the WildManager
      *
      * @param integrationsManager IntegrationsManager reference.
-     * @param lang Lang reference.
-     * @param audiences BukkitAudiences reference.
-     * @param config Config reference.
-     * @param locationProvider LocationProvider reference.
-     * @param plugin JavaPlugin reference.
+     * @param lang                Lang reference.
+     * @param audiences           BukkitAudiences reference.
+     * @param config              Config reference.
+     * @param locationProvider    LocationProvider reference.
+     * @param plugin              JavaPlugin reference.
      * @return
      */
     @Provides

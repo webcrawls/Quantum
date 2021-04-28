@@ -11,7 +11,6 @@ import dev.kscott.quantum.config.Config;
 import dev.kscott.quantum.location.LocationProvider;
 import dev.kscott.quantum.location.QuantumLocation;
 import dev.kscott.quantum.location.QuantumTimer;
-import dev.kscott.quantum.rule.QuantumRule;
 import dev.kscott.quantum.rule.RuleRegistry;
 import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
@@ -22,9 +21,7 @@ import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,8 +29,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 /**
@@ -328,7 +327,7 @@ public class QuantumCommand {
         for (final Map.Entry<QuantumRuleset, Queue<QuantumLocation>> locationEntry : locationMap.entrySet()) {
             final TextComponent.Builder component = Component.text()
                     .append(this.config.PREFIX)
-                    .append(MiniMessage.get().parse(" <aqua>"+locationEntry.getKey().getId()+"</aqua> <gray>has <aqua>"+locationEntry.getValue().size()+"</aqua> queued locations.</gray>"));
+                    .append(MiniMessage.get().parse(" <aqua>" + locationEntry.getKey().getId() + "</aqua> <gray>has <aqua>" + locationEntry.getValue().size() + "</aqua> queued locations.</gray>"));
 
             audience.sendMessage(component);
         }
@@ -359,7 +358,7 @@ public class QuantumCommand {
         if (ruleset == null) {
             final TextComponent.Builder component = Component.text()
                     .append(this.config.PREFIX)
-                    .append(MiniMessage.get().parse(" <red>There is no ruleset with the id <yellow>"+rulesetId+"</yellow></red>"));
+                    .append(MiniMessage.get().parse(" <red>There is no ruleset with the id <yellow>" + rulesetId + "</yellow></red>"));
             audience.sendMessage(component);
             return;
         }
@@ -367,17 +366,17 @@ public class QuantumCommand {
         final @NonNull Location location = player.getLocation();
 
         this.locationProvider.validateLocation(location, ruleset)
-            .thenAccept(valid -> {
-                new BukkitRunnable() {
-                    @Override
-                    public void run() {
-                        final TextComponent.Builder component = Component.text()
-                                .append(config.PREFIX)
-                                .append(MiniMessage.get().parse(valid ? " <aqua>This location is valid.</aqua>" : " <red>This location is not valid.</red>"));
-                        audience.sendMessage(component);
-                    }
-                }.runTask(plugin);
-            });
+                .thenAccept(valid -> {
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            final TextComponent.Builder component = Component.text()
+                                    .append(config.PREFIX)
+                                    .append(MiniMessage.get().parse(valid ? " <aqua>This location is valid.</aqua>" : " <red>This location is not valid.</red>"));
+                            audience.sendMessage(component);
+                        }
+                    }.runTask(plugin);
+                });
 
     }
 

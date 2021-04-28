@@ -1,6 +1,10 @@
 package dev.kscott.quantum.rule;
 
-import dev.kscott.quantum.rule.rules.async.*;
+import dev.kscott.quantum.rule.rules.async.AvoidAirRule;
+import dev.kscott.quantum.rule.rules.async.AvoidBiomeRule;
+import dev.kscott.quantum.rule.rules.async.AvoidBlockRule;
+import dev.kscott.quantum.rule.rules.async.OnlyBiomeRule;
+import dev.kscott.quantum.rule.rules.async.OnlyBlockRule;
 import dev.kscott.quantum.rule.rules.sync.AvoidClaimsRule;
 import dev.kscott.quantum.rule.rules.sync.AvoidEntityRule;
 import dev.kscott.quantum.rule.rules.sync.AvoidRegionRule;
