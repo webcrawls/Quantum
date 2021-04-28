@@ -221,7 +221,8 @@ public class QuantumCommand {
 
         final TextComponent.Builder component = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>Quantum v<aqua>" + version + "</aqua></gray>"));
+                .append(MiniMessage.get().parse(" <gray>Quantum v<aqua>" + version + "</aqua></gray>"))
+                .append(MiniMessage.get().parse(" <gray>Join the support Discord @ <aqua>chat.ksc.sh</aqua>!</gray>"));
 
         bukkitAudiences.sender(sender).sendMessage(component);
     }
