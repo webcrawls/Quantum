@@ -13,24 +13,26 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * The LocationQueue class. Handles Location queues for every
- * QuantumRuleset.
+ * Handles {@link QuantumLocation} queues for every {@link QuantumRuleset}.
  */
 public class LocationQueue {
 
     /**
-     * A map where the key is a  QuantumRuleset,
+     * A map where the key is a {@link QuantumRuleset},
      * and the value is a set of locations to be used as the location queue.
      */
     private final @NonNull Map<QuantumRuleset, ConcurrentLinkedQueue<QuantumLocation>> locationQueueMap;
 
     /**
-     * LocationProvider reference.
+     * {@link LocationProvider} reference.
      */
     private final @NonNull LocationProvider locationProvider;
 
     /**
-     * Constructs the LocationQueue.
+     * Constructs {@link LocationQueue}.
+     *
+     * @param locationProvider {@link LocationProvider} reference.
+     * @param rulesetRegistry {@link RulesetRegistry} reference.
      */
     public LocationQueue(
             final @NonNull LocationProvider locationProvider,
