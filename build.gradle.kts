@@ -7,7 +7,7 @@ import org.checkerframework.gradle.plugin.CheckerFrameworkPlugin
 plugins {
     id("java")
     id("java-library")
-    id("com.github.johnrengelman.shadow") version ("6.1.0")
+    id("com.github.johnrengelman.shadow") version ("7.0.0")
     id("org.checkerframework") version ("0.5.13")
 }
 
@@ -48,9 +48,9 @@ subprojects {
         compileOnlyApi("org.checkerframework:checker-qual:3.5.0")
         compileOnlyApi("com.google.guava:guava:21.0")
         compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
-        compile("io.papermc:paperlib:1.0.6")
+        implementation("io.papermc:paperlib:1.0.6")
 
-        implementation("com.google.inject:guice:5.0.0-BETA-1")
+        implementation("com.google.inject:guice:5.0.1")
 
         implementation("org.bstats:bstats-bukkit:1.8")
     }
