@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly(project(":QuantumAPI"))
+    compileOnly(projects.quantumAPI)
 
     compileOnly("org.spongepowered:configurate-hocon:4.0.0")
 
