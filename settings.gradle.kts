@@ -1,10 +1,6 @@
-rootProject.name = 'Quantum'
+rootProject.name = "Quantum"
 
-[
-        "API",
-        "Spawn",
-        "Wild"
-].each {
+listOf("API", "Spawn", "Wild").forEach {
     include(":Quantum$it")
     project(":Quantum$it").projectDir = file("Quantum$it")
 }
