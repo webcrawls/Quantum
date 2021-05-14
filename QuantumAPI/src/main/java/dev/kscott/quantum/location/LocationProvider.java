@@ -7,7 +7,6 @@ import dev.kscott.quantum.rule.rules.async.AsyncQuantumRule;
 import dev.kscott.quantum.rule.rules.sync.SyncQuantumRule;
 import dev.kscott.quantum.rule.ruleset.QuantumRuleset;
 import dev.kscott.quantum.rule.ruleset.RulesetRegistry;
-import dev.kscott.quantum.rule.ruleset.search.SearchArea;
 import io.papermc.lib.PaperLib;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -49,6 +48,7 @@ public class LocationProvider {
 
     private final @NonNull LocationQueue locationQueue;
 
+
     /**
      * Constructs the LocationProvider.
      *
@@ -70,6 +70,16 @@ public class LocationProvider {
         this.locationQueue = new LocationQueue(this, rulesetRegistry);
     }
 
+    public @NonNull CompletableFuture<QuantumLocation> getLocation(final @NonNull QuantumRuleset quantumRuleset) {
+        final int MaxX = quantumRuleset.getSearchArea().getMaxX();
+        final int MinX = quantumRuleset.getSearchArea().getMinX();
+        final int MaxZ = quantumRuleset.getSearchArea().getMaxZ();
+        final int MinZ = quantumRuleset.getSearchArea().getMinZ();
+
+        return this.getLocation(quantumRuleset, MaxX, MinX, MaxZ, MinZ);
+    }
+
+
     /**
      * Returns a random spawn location using {@code quantumRuleset}.
      * <p>
@@ -84,13 +94,14 @@ public class LocationProvider {
      * @param quantumRuleset The ruleset to use for this search.
      * @return A CompletableFuture<Location>. Will complete when a valid location is found.
      */
-    public @NonNull CompletableFuture<QuantumLocation> getLocation(final @NonNull QuantumRuleset quantumRuleset) {
+    public @NonNull CompletableFuture<QuantumLocation> getLocation(final @NonNull QuantumRuleset quantumRuleset, int MaxX, int MinX, int MaxZ, int MinZ) {
+
         final @NonNull CompletableFuture<QuantumLocation> cf = new CompletableFuture<>();
 
         this.commandManager.taskRecipe().begin(quantumRuleset)
                 .asynchronous(ruleset -> {
                     if (this.locationQueue.getLocationCount(quantumRuleset) == 0) {
-                        findLocation(0, System.currentTimeMillis(), quantumRuleset, cf);
+                        findLocation(0, System.currentTimeMillis(), quantumRuleset, cf, MaxX, MinX, MaxZ, MinZ);
                     } else {
                         final @Nullable QuantumLocation location = this.locationQueue.popLocation(quantumRuleset);
 
@@ -101,7 +112,7 @@ public class LocationProvider {
                             boolean valid = this.validateLocation(location.getLocation(), quantumRuleset).join();
 
                             if (!valid) {
-                                cf.complete(getLocation(ruleset).join());
+                                cf.complete(getLocation(ruleset, MaxX, MinX, MaxZ, MinZ).join());
                             } else {
                                 cf.complete(this.locationQueue.popLocation(quantumRuleset));
                             }
@@ -134,6 +145,30 @@ public class LocationProvider {
      * @param cf             the CompletableFuture to call when this search completes or fails.
      */
     protected void findLocation(final int tries, final long start, final @NonNull QuantumRuleset quantumRuleset, final @NonNull CompletableFuture<QuantumLocation> cf) {
+
+        final int MaxX = quantumRuleset.getSearchArea().getMaxX();
+        final int MinX = quantumRuleset.getSearchArea().getMinX();
+        final int MaxZ = quantumRuleset.getSearchArea().getMaxZ();
+        final int MinZ = quantumRuleset.getSearchArea().getMinZ();
+
+        this.findLocation(tries, start, quantumRuleset, cf, MaxX, MinX, MaxZ, MinZ);
+    }
+
+
+    /**
+     * Searches for a location with the given ruleset until it reaches max retries (or finds a valid location).
+     *
+     * @param tries          how many times has the search been tried (call this with 0).
+     * @param start          when was this search started.
+     * @param quantumRuleset the ruleset to search with.
+     * @param cf             the CompletableFuture to call when this search completes or fails.
+     * @param MaxX           area where quantum find location in
+     * @param MinX           area where quantum find location in
+     * @param MaxZ           area where quantum find location in
+     * @param MinZ           area where quantum find location in
+     */
+    public void findLocation(final int tries, final long start, final @NonNull QuantumRuleset quantumRuleset, final @NonNull CompletableFuture<QuantumLocation> cf, int MaxX, int MinX, int MaxZ, int MinZ) {
+
         if (this.config.getMaxRetries() <= tries) {
             cf.completeExceptionally(new ExceededMaxRetriesException());
             return;
@@ -158,10 +193,9 @@ public class LocationProvider {
                 })
                 .asynchronous(state -> {
                     // Do some random generation
-                    final @NonNull SearchArea searchArea = state.getQuantumRuleset().getSearchArea();
 
-                    final int x = random.nextInt((searchArea.getMaxX() - searchArea.getMinX()) + 1) + searchArea.getMinX();
-                    final int z = random.nextInt((searchArea.getMaxZ() - searchArea.getMinZ()) + 1) + searchArea.getMinZ();
+                    final int x = random.nextInt((MaxX - MinX) + 1) + MinX;
+                    final int z = random.nextInt((MaxZ - MinZ) + 1) + MinZ;
 
                     state.setX(x);
                     state.setZ(z);
@@ -226,7 +260,7 @@ public class LocationProvider {
 
                         this.timer.addTime(searchTime);
                     } else {
-                        findLocation(tries + 1, start, quantumRuleset, cf);
+                        findLocation(tries + 1, start, quantumRuleset, cf, MaxX, MinX, MaxZ, MinZ);
                     }
 
                     return state;
