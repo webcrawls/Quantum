@@ -32,5 +32,4 @@ dependencies {
             strictly("0.9.0")
         }
     }
-
 }

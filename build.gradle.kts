@@ -9,6 +9,7 @@ plugins {
     id("java-library")
     id("com.github.johnrengelman.shadow") version ("7.0.0")
     id("org.checkerframework") version ("0.5.13")
+    id("maven")
 }
 
 allprojects {
@@ -115,7 +116,7 @@ subprojects {
     }
 
     configure<JavaPluginConvention> {
-        sourceCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_16
         targetCompatibility = sourceCompatibility
     }
 }
