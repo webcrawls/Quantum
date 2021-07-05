@@ -22,6 +22,7 @@ dependencies {
     implementation("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
 
     api("cloud.commandframework:cloud-paper:1.4.0")
+    api("com.google.inject:guice:5.0.1")
 
     // integrations
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.4")
