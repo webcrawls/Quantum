@@ -50,8 +50,6 @@ subprojects {
         compileOnly("com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT")
         implementation("io.papermc:paperlib:1.0.6")
 
-        implementation("com.google.inject:guice:5.0.1")
-
         implementation("org.bstats:bstats-bukkit:1.8")
     }
 
