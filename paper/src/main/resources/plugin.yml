@@ -1,0 +1,7 @@
+name: Quantum
+
+version: ${version}
+author: bluely (kadenscott)
+main: sh.kaden.quantum.paper.PaperQuantumPlugin
+api-version: 1.17
+description: RTP, /wild, and an awesome API.
