@@ -204,7 +204,7 @@ public class QuantumCommand {
 
         final TextComponent.Builder component = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>Reloaded all rulesets!</gray>"));
+                .append(MiniMessage.miniMessage().deserialize(" <gray>Reloaded all rulesets!</gray>"));
 
         bukkitAudiences.sender(sender).sendMessage(component);
     }
@@ -221,8 +221,8 @@ public class QuantumCommand {
 
         final TextComponent.Builder component = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>Quantum v<aqua>" + version + "</aqua></gray>"))
-                .append(MiniMessage.get().parse(" <gray>Join the support Discord @ <aqua>chat.ksc.sh</aqua>!</gray>"));
+                .append(MiniMessage.miniMessage().deserialize(" <gray>Quantum v<aqua>" + version + "</aqua></gray>"))
+                .append(MiniMessage.miniMessage().deserialize(" <gray>Join the support Discord @ <aqua>chat.ksc.sh</aqua>!</gray>"));
 
         bukkitAudiences.sender(sender).sendMessage(component);
     }
@@ -239,12 +239,12 @@ public class QuantumCommand {
 
         final TextComponent.Builder component = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>There " + (rulesets.size() == 1 ? "is" : "are") + " currently <aqua>" + rulesets.size() + "</aqua> registered ruleset" + (rulesets.size() == 1 ? "" : "s") + ": "));
+                .append(MiniMessage.miniMessage().deserialize(" <gray>There " + (rulesets.size() == 1 ? "is" : "are") + " currently <aqua>" + rulesets.size() + "</aqua> registered ruleset" + (rulesets.size() == 1 ? "" : "s") + ": "));
 
         for (int i = 0; i < rulesets.size(); i++) {
             boolean isLast = i + 1 == rulesets.size();
             final @NonNull QuantumRuleset ruleset = rulesets.get(i);
-            component.append(MiniMessage.get().parse("<aqua>" + ruleset.getId() + "<aqua>" + (isLast ? "" : ", ")));
+            component.append(MiniMessage.miniMessage().deserialize("<aqua>" + ruleset.getId() + "<aqua>" + (isLast ? "" : ", ")));
         }
 
         this.bukkitAudiences.sender(sender).sendMessage(Identity.nil(), component);
@@ -262,7 +262,7 @@ public class QuantumCommand {
 
         final TextComponent.Builder component = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>There " + (rules.size() == 1 ? "is" : "are") + " currently <aqua>" + rules.size() + "</aqua> registered rules" + (rules.size() == 1 ? "" : "s") + ": "));
+                .append(MiniMessage.miniMessage().deserialize(" <gray>There " + (rules.size() == 1 ? "is" : "are") + " currently <aqua>" + rules.size() + "</aqua> registered rules" + (rules.size() == 1 ? "" : "s") + ": "));
 
         for (int i = 0; i < rules.size(); i++) {
             boolean isLast = i + 1 == rules.size();
@@ -270,7 +270,7 @@ public class QuantumCommand {
 
             final boolean isAsync = AsyncQuantumRule.class.isAssignableFrom(rule.getRuleClass());
 
-            component.append(MiniMessage.get().parse("<aqua>" + rule.getId() + " <dark_aqua>" + (isAsync ? "async" : "sync") + "</dark_aqua></aqua>" + (isLast ? "" : ", ")));
+            component.append(MiniMessage.miniMessage().deserialize("<aqua>" + rule.getId() + " <dark_aqua>" + (isAsync ? "async" : "sync") + "</dark_aqua></aqua>" + (isLast ? "" : ", ")));
         }
 
         this.bukkitAudiences.sender(sender).sendMessage(Identity.nil(), component);
@@ -291,7 +291,7 @@ public class QuantumCommand {
         if (searches == 0) {
             final TextComponent.Builder component = Component.text()
                     .append(this.config.PREFIX)
-                    .append(MiniMessage.get().parse(" <gray>Quantum has not generated any locations yet."));
+                    .append(MiniMessage.miniMessage().deserialize(" <gray>Quantum has not generated any locations yet."));
 
             audience.sendMessage(component);
             return;
@@ -300,7 +300,7 @@ public class QuantumCommand {
 
         final TextComponent.Builder searchesComponent = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>Quantum has generated <aqua>" + searches + " location" + (searches == 1 ? "" : "s") + "</aqua>."));
+                .append(MiniMessage.miniMessage().deserialize(" <gray>Quantum has generated <aqua>" + searches + " location" + (searches == 1 ? "" : "s") + "</aqua>."));
         audience.sendMessage(searchesComponent);
 
         final double seconds = this.timer.getTotalTime() / 1000.0;
@@ -308,8 +308,8 @@ public class QuantumCommand {
 
         final TextComponent.Builder timeComponent = Component.text()
                 .append(this.config.PREFIX)
-                .append(MiniMessage.get().parse(" <gray>On average, Quantum spends <aqua>" + average + " seconds</aqua> searching for a location."))
-                .append(MiniMessage.get().parse(" <gray>In total, Quantum has spent <aqua>" + seconds + " seconds</aqua> searching for locations."));
+                .append(MiniMessage.miniMessage().deserialize(" <gray>On average, Quantum spends <aqua>" + average + " seconds</aqua> searching for a location."))
+                .append(MiniMessage.miniMessage().deserialize(" <gray>In total, Quantum has spent <aqua>" + seconds + " seconds</aqua> searching for locations."));
         audience.sendMessage(timeComponent);
     }
 
@@ -328,7 +328,7 @@ public class QuantumCommand {
         for (final Map.Entry<QuantumRuleset, Queue<QuantumLocation>> locationEntry : locationMap.entrySet()) {
             final TextComponent.Builder component = Component.text()
                     .append(this.config.PREFIX)
-                    .append(MiniMessage.get().parse(" <aqua>" + locationEntry.getKey().getId() + "</aqua> <gray>has <aqua>" + locationEntry.getValue().size() + "</aqua> queued locations.</gray>"));
+                    .append(MiniMessage.miniMessage().deserialize(" <aqua>" + locationEntry.getKey().getId() + "</aqua> <gray>has <aqua>" + locationEntry.getValue().size() + "</aqua> queued locations.</gray>"));
 
             audience.sendMessage(component);
         }
@@ -346,7 +346,7 @@ public class QuantumCommand {
         if (!(sender instanceof Player)) {
             final TextComponent.Builder component = Component.text()
                     .append(this.config.PREFIX)
-                    .append(MiniMessage.get().parse(" <red>Only players can execute this command.</red>"));
+                    .append(MiniMessage.miniMessage().deserialize(" <red>Only players can execute this command.</red>"));
             audience.sendMessage(component);
             return;
         }
@@ -359,7 +359,7 @@ public class QuantumCommand {
         if (ruleset == null) {
             final TextComponent.Builder component = Component.text()
                     .append(this.config.PREFIX)
-                    .append(MiniMessage.get().parse(" <red>There is no ruleset with the id <yellow>" + rulesetId + "</yellow></red>"));
+                    .append(MiniMessage.miniMessage().deserialize(" <red>There is no ruleset with the id <yellow>" + rulesetId + "</yellow></red>"));
             audience.sendMessage(component);
             return;
         }
@@ -372,7 +372,7 @@ public class QuantumCommand {
                     public void run() {
                         final TextComponent.Builder component = Component.text()
                                 .append(config.PREFIX)
-                                .append(MiniMessage.get().parse(valid ? " <aqua>This location is valid.</aqua>" : " <red>This location is not valid.</red>"));
+                                .append(MiniMessage.miniMessage().deserialize(valid ? " <aqua>This location is valid.</aqua>" : " <red>This location is not valid.</red>"));
                         audience.sendMessage(component);
                     }
                 }.runTask(plugin));

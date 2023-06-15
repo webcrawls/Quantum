@@ -40,7 +40,7 @@ public class Lang {
      * @param plugin {@link this#plugin}
      */
     public Lang(final @NonNull JavaPlugin plugin) {
-        this.miniMessage = MiniMessage.get();
+        this.miniMessage = MiniMessage.miniMessage();
         this.plugin = plugin;
 
         // Save config to file if it doesn't already exist
@@ -99,7 +99,7 @@ public class Lang {
             value = value.replace(entry.getKey(), entry.getValue());
         }
 
-        return this.miniMessage.parse(value);
+        return this.miniMessage.deserialize(value);
     }
 
 }

@@ -36,7 +36,7 @@ subprojects {
         }
         maven {
             name = "sonatype"
-            url = uri("https://oss.sonatype.org/content/groups/public/")
+            url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
         }
         maven {
             name = "bStats"
