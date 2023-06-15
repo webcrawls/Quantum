@@ -41,7 +41,7 @@ public class Config {
      * The component to prefix all Quantum messages with.
      * TODO: Move this to a separate lang object
      */
-    public final Component PREFIX = MiniMessage.get().parse("<gray>[<color:#5bde9f>Quantum</color:#5bde9f>]<gray>");
+    public final Component PREFIX = MiniMessage.miniMessage().deserialize("<gray>[<color:#5bde9f>Quantum</color:#5bde9f>]<gray>");
 
     /**
      * JavaPlugin reference
